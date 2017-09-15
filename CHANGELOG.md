@@ -17,9 +17,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Node - * App Event * for the connection and disconnect event of the app
 - Node - * LCD Widgets * to simplify the use of this widget
 - On-line documentation of each node
+- Send PROFILE command on login
 
 ### Changed
-- Blynk Protocol - Send and receive message functions, with more options, like 'Blynk-library-js'
+- Blynk Protocol - Rewritten send and receive message functions, with more options, like 'Blynk-library-js'
+- Heartbeat once 10 seconds
+- Max virtual pin allowed 128
 
 [Unreleased]: https://github.com/gablau/node-red-contrib-blynk-ws/compare/v0.1.0...HEAD
 
