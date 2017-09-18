@@ -45,7 +45,7 @@ module.exports = function(RED) {
             for (var i = 0, offset = 5; i < cmd.len; i++, offset++) {
                 cmd.body += String.fromCharCode(dataview.getInt8(offset));
             }
-            if (cmd.body != '') {
+            if (cmd.body !== '') {
                 var values = cmd.body.split('\0');
                 if (values.length > 1) {
                     cmd.operation = values[0];
@@ -228,6 +228,19 @@ module.exports = function(RED) {
         this.dbg_mail = n.dbg_mail;
         this.dbg_prop = n.dbg_prop;
         this.dbg_low = n.dbg_low;
+        this.dbg_pins = n.dbg_pins;
+        this.log_pins = [];
+        
+        if (typeof this.dbg_pins === 'string' ) {
+            var tmp_pins = this.dbg_pins.split(',');
+            for(var i=0; i<tmp_pins.length; i++) { 
+                tmp_pins[i] = +tmp_pins[i]; 
+                if(Number.isInteger(tmp_pins[i]) && Number.parseInt(tmp_pins[i])>=0 && Number.parseInt(tmp_pins[i])<=127) {
+                    this.log_pins.push(tmp_pins[i].toString());
+                }
+            } 
+        }
+        
 
         this._inputNodes = []; // collection of nodes that want to receive events
         this._clients = {};
@@ -248,6 +261,9 @@ module.exports = function(RED) {
         this.closing = false;
         
         var node = this;
+        
+        node.log("LOG PINS " + JSON.stringify(this.log_pins));
+        
 
         function startconn() { // Connect to remote endpoint
             //should not start connection if no server or key
@@ -286,8 +302,7 @@ module.exports = function(RED) {
             socket.on('message', function (data, flags) {
                 if (node.dbg_low) {
                     node.log("RECV <- " + messageToDebugString(data));
-                    //node.log("RECV RAW <- " + printData(data));
-                }
+               }
                 var cmd = decodeCommand(data);
                 if (!node.logged) {
                     if (cmd.type === MsgType.RSP && cmd.msgId === 1) {
@@ -299,12 +314,6 @@ module.exports = function(RED) {
                         }
                     }
                 } else {
-                    /*if (cmd.type == MsgType.RSP && cmd.msgId && cmd.msgId <= node.msg_callbacks.length) {
-                        var err = null
-                        if (cmd.status != MsgStatus.OK) {
-                            err = cmd.status;
-                        }
-                     } else {*/
                     switch (cmd.type) {
                         case MsgType.HW:
                         case MsgType.BRIDGE:
@@ -409,12 +418,20 @@ module.exports = function(RED) {
         });
     };
     
+    BlynkClientNode.prototype.isLogPin = function (pin) {
+        if (this.log_pins.indexOf(pin) > -1) {
+            return true;
+        } else {
+            return false;
+        }
+    };
+    
     BlynkClientNode.prototype.sendRsp = function (msg_type, msg_id, msg_len, data) {
         var self = this;
         data = data || "";
         msg_id = msg_id || (self.msg_id++);
         if (msg_type === MsgType.RSP) {
-            data = blynkHeader(msg_type, msg_id, msg_len)
+            data = blynkHeader(msg_type, msg_id, msg_len);
             if (this.dbg_low) {
                 this.log("SEND -> Cmd: " + getCommandByCode(msg_type) + " Id: " + msg_id + " Status: " + getStatusByCode(msg_len));
             }
@@ -453,14 +470,14 @@ module.exports = function(RED) {
     };
 
     BlynkClientNode.prototype.virtualWrite = function(vpin, val) {
-        if(this.dbg_all || this.dbg_write){
+        if(this.dbg_all || this.dbg_write || this.isLogPin(vpin)){
             this.log("virtualWrite: -> " + JSON.stringify(['vw', vpin].concat(val)));
         }
         this.sendMsg(MsgType.HW, ['vw', vpin].concat(val));
     };
     
     BlynkClientNode.prototype.setProperty = function(vpin, prop, val) {
-        if(this.dbg_all  || this.dbg_prop){
+        if(this.dbg_all  || this.dbg_prop || this.isLogPin(vpin)){
             this.log("setProperty -> " + JSON.stringify([vpin, prop].concat(val)));
         }
         this.sendMsg(MsgType.PROPERTY, [vpin, prop].concat(val));
@@ -482,6 +499,9 @@ module.exports = function(RED) {
 
 
     BlynkClientNode.prototype.handleWriteEvent = function(command) {
+        if(this.dbg_all || this.dbg_write || this.isLogPin(command.pin)){
+           this.log("writeEvent: -> cmd " + JSON.stringify(command));
+        }
         for (var i = 0; i < this._inputNodes.length; i++) {
             if (this._inputNodes[i].nodeType == 'write' && this._inputNodes[i].pin == command.pin) {
                 var msg;
@@ -493,6 +513,10 @@ module.exports = function(RED) {
                 if (command.array) {
                     msg.arrayOfValues = command.array;
                 }
+                
+                if(this.dbg_all || this.dbg_write || this.isLogPin(command.pin)){
+                    this.log("writeEvent: -> output " + JSON.stringify(msg));
+                }
 
                 this._inputNodes[i].send(msg);
             }
@@ -500,7 +524,9 @@ module.exports = function(RED) {
     };
 
     BlynkClientNode.prototype.handleReadEvent = function(command) {
-
+        if(this.dbg_all || this.dbg_read || this.isLogPin(command.pin)){
+	     this.log("readEvent: -> cmd " + JSON.stringify(command));
+        }
         for (var i = 0; i < this._inputNodes.length; i++) {
             if (this._inputNodes[i].nodeType == 'read' && this._inputNodes[i].pin == command.pin) {
                 var msg;
@@ -508,6 +534,10 @@ module.exports = function(RED) {
                 msg = {
                     payload: this._inputNodes[i].pin
                 };
+                
+                if(this.dbg_all || this.dbg_read || this.isLogPin(command.pin)){
+                    this.log("readEvent: -> output " + JSON.stringify(msg));
+                }
 
                 this._inputNodes[i].send(msg);
             }
@@ -830,7 +860,7 @@ module.exports = function(RED) {
                 if (msg.hasOwnProperty("prop") && node.serverConfig && node.serverConfig.logged) {
                     prop = Buffer.isBuffer(msg.prop) ? msg.prop : RED.util.ensureString(msg.prop);
                 }
-                if(prop!='bycode'){ //single propery
+                if(prop!=='bycode'){ //single propery
                   node.serverConfig.setProperty(node.pin, prop, payload); 
                 }
                 else { //multiple property
@@ -1021,6 +1051,94 @@ module.exports = function(RED) {
         });
     }
     RED.nodes.registerType("blynk-ws-out-notify", BlynkOutNotifyNode);
+    
+    /* Table Widget*/
+    function BlynkOutTableNode(n) {
+        RED.nodes.createNode(this, n);
+        var node = this;
+        this.server = n.client;
+        this.pin = n.pin;
+        
+        this.rowIdx = 0;
+
+        this.serverConfig = RED.nodes.getNode(this.server);
+        if (!this.serverConfig) {
+            this.error(RED._("websocket.errors.missing-conf"));
+        } else {
+            // TODO: nls
+            this.serverConfig.on('opened', function(n) {
+                node.status({
+                    fill: "yellow",
+                    shape: "dot",
+                    text: "connecting " + n
+                });
+            });
+            this.serverConfig.on('connected', function(n) {
+                node.status({
+                    fill: "green",
+                    shape: "dot",
+                    text: "connected to pin V" + node.pin
+                });
+            });
+            this.serverConfig.on('erro', function() {
+                node.status({
+                    fill: "red",
+                    shape: "ring",
+                    text: "error"
+                });
+            });
+            this.serverConfig.on('closed', function() {
+                node.status({
+                    fill: "red",
+                    shape: "ring",
+                    text: "disconnected"
+                });
+            });
+        }
+        this.on("input", function(msg) {
+            if (msg.hasOwnProperty("payload") && node.serverConfig && node.serverConfig.logged) {
+                var payload = Buffer.isBuffer(msg.payload) ? msg.payload : RED.util.ensureString(msg.payload);
+                var subject = msg.topic ? msg.topic : payload;
+                if (msg.hasOwnProperty("clear") && msg.clear == true) {
+                  node.serverConfig.virtualWrite(node.pin, 'clr');
+                }
+                if (msg.hasOwnProperty("add")) {
+                  var args = Array.isArray(msg.add) ? msg.add : ['',''];
+                  var cmd = ['add', this.rowIdx];
+                  this.rowIdx++;
+                  node.serverConfig.virtualWrite(node.pin, cmd.concat(args));
+                }
+                if (msg.hasOwnProperty("loadtable")) {
+                  var arrargs = Array.isArray(msg.loadtable) ? msg.loadtable : [];
+                  for(var i=0; i<arrargs.length; i++) {
+                        if(Array.isArray(arrargs[i])) { //array name : key
+                            var cmd = ['add', this.rowIdx];
+                            this.rowIdx++;
+                            node.serverConfig.virtualWrite(node.pin, cmd.concat(arrargs[i]));
+                        }
+                        else{ //array  name
+                            var cmd = ['add', this.rowIdx];
+                            this.rowIdx++;
+                            node.serverConfig.virtualWrite(node.pin, cmd.concat(arrargs[i],' '));
+                        }
+                    }
+                }
+                if (msg.hasOwnProperty("update")) {
+                  var args = Array.isArray(msg.update) ? msg.update : ['',' ',' '];
+                    if(args.length<=2) args.concat(' ');
+                    var cmd = ['update'];
+                  node.serverConfig.virtualWrite(node.pin, cmd.concat(args));
+                }
+                
+                if (msg.hasOwnProperty("pick")) {
+                  if(Number.isInteger(msg.pick) && msg.pick>=0) {
+                        node.serverConfig.virtualWrite(node.pin, ['pick', msg.pick.toString()]);
+                    }
+                }
+            }
+        });
+    }
+    RED.nodes.registerType("blynk-ws-out-table", BlynkOutTableNode);
 
 
 };

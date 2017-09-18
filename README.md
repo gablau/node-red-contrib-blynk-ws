@@ -24,6 +24,11 @@ Supports both SSL wss:// and non secure ws:// connection to local server and Bly
 - emails
 - notify
 - LCD widget
+- Table widget
+
+### Changelog
+
+[Detailed changelog](CHANGELOG.md)
 
 ### Blynk App Settings
 

@@ -6,6 +6,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [0.2.0] - 2017-09-18
+### Added
+- Debug option to log only specified pins number
+- Node - * Table Widgets * to simplify the use of this widget
+- Link to official documentation
+
+### Fixed
+- Missing logs on read and write event
+
 ## 0.1.0 - 2017-09-15
 ### Added
 - Implemented SSL usage on the websocket connection.
@@ -24,5 +33,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Heartbeat once 10 seconds
 - Max virtual pin allowed 128
 
-[Unreleased]: https://github.com/gablau/node-red-contrib-blynk-ws/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/gablau/node-red-contrib-blynk-ws/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/gablau/node-red-contrib-blynk-ws/compare/v0.1.0...v0.2.0
 

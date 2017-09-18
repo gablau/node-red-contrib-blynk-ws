@@ -48,6 +48,9 @@
         if(this.type === 'blynk-ws-out-lcd') {
 	        _type = 'LCD';
         } 
+        if(this.type === 'blynk-ws-out-table') {
+	        _type = 'Table';
+        } 
         if(this.pin) {
 	        _pin ='Pin V'+ this.pin + ' - ' +  _type;
         }
@@ -89,7 +92,8 @@
             dbg_notify: {value:false},
             dbg_mail: {value:false},
             dbg_prop: {value:false},
-            dbg_low: {value:false}
+            dbg_low: {value:false},
+            dbg_pins: {value:''}
         },
         inputs:0,
         outputs:0,
@@ -259,6 +263,27 @@
         oneditsave: ws_oneditsave,
         oneditprepare: ws_oneditprepare
     });
+    
+    RED.nodes.registerType('blynk-ws-out-table',{
+        category: 'Blynk_ws',
+        paletteLabel: 'out table',
+        defaults: {
+            name: {value: ''},
+            pin: {value: 0},
+            client: {type: "blynk-ws-client", validate: ws_validateclient}
+        },
+        color:"#1BC17C",
+        icon:'table.png',     
+        align: 	'right',
+        inputs:	1,
+        outputs:0,
+        labelStyle: function() {
+            return this.name?"node_label_italic":"";
+        },
+        label: ws_label,
+        oneditsave: ws_oneditsave,
+        oneditprepare: ws_oneditprepare
+    });
 
 
 })();
@@ -284,6 +309,10 @@
 <script type="text/x-red" data-help-name="blynk-ws-in-read">
     <p>Blynk read event node.</p>
     <p><code>msg.payload</code> will contain the virtual pin number that triggered the read event.</p>
+    <p class="form-tips">
+        Official documentation: 
+        <a href="http://docs.blynk.cc/#blynk-main-operations-get-data-from-hardware-perform-requests-by-widget">Read</a>
+    <p>
 </script>
 
 <!-- Blynk Input Node - Write -->
@@ -304,8 +333,12 @@
 
 <script type="text/x-red" data-help-name="blynk-ws-in-write">
     <p>Blynk write event node.</p>
-    <p><code>msg.payload</code> will contain the the value to write to the specified pin.</p>
+    <p><code>msg.payload</code> will contain the the value sent from the specified pin.</p>
     <p><code>msg.arrayOfValues</code> will contain an array of values sent, useful for Widgets that have the MERGE ability.</p>
+    <p class="form-tips">
+        Official documentation: 
+        <a href="http://docs.blynk.cc/#blynk-main-operations-send-data-from-app-to-hardware">Write</a>
+    <p>
 </script>
 
 <!-- Blynk Input Node - App -->
@@ -325,6 +358,10 @@
     <p><code>msg.payload</code> will contain the the value app send.</p>
     <p><code>'acon'</code> App connected.</p>
     <p><code>'adis'</code> App disconnected.</p>
+    <p class="form-tips">
+        Official documentation: 
+        none
+    <p>
 </script>
 
 <!-- Blynk out Node - Write -->
@@ -346,6 +383,10 @@
 <script type="text/x-red" data-help-name="blynk-ws-out-write">
     <p>Blynk write node.</p>
     <p>This node will write the value in <code>msg.payload</code> to the specified pin number.</p>.
+    <p class="form-tips">
+        Official documentation: 
+        <a href="http://docs.blynk.cc/#blynk-main-operations-get-data-from-hardware-pushing-data-from-hardware">Push data</a>
+    <p>
 </script>
 
 <!-- Blynk out Node - SetProperty -->
@@ -401,27 +442,29 @@
     <code>msg.isonplay</code> to set the isOnPlay property (only Media Player widget)<br>
     </p><br>  
     
-    <b>Reference: <a href="http://docs.blynk.cc/#blynk-main-operations-change-widget-properties">Blynk Docs - Change widget properties</a></b><br> 
     <br>
     <h2>All WIDGETS</h2>
     <p>Four widget properties are supported - <code>color</code>, <code>label</code>, <code>min</code>, <code>max</code> for all widgets : </p>
-<p><code>label</code> is string for label of all widgets.</p><p><code>color</code> is string in <a href="http://www.w3schools.com/html/html_colors.asp">HEX</a> format (in the form: #RRGGBB, 
-where RR (red), GG (green) and BB (blue) are hexadecimal values between 00 and FF). For example :</p>
-<pre><code>#define BLYNK_GREEN     "#23C48E"
-#define BLYNK_BLUE      "#04C0F8"
-#define BLYNK_YELLOW    "#ED9D00"
-#define BLYNK_RED       "#D3435C"
-#define BLYNK_DARK_BLUE "#5F7CD8"</code></pre>
-<br><h2>Widget specific</h2>
-<p>Widget specific properties: </p>
-<p><strong>Button</strong></p>
-<p><code>onLabel</code> is string for ON label of button;</p>
-<p><code>offLabel</code> is string for OFF label of button;</p>
-<p><strong>Menu</strong></p><p><code>labels</code> is list of strings for Menu widget selections (array expected: <code>["Labels 1","Labels 2","Labels 3"]</code>);</p>
-<pre><code>Blynk.setProperty(V0, "labels", "label 1", "label 2", "label 3");</code></pre>
-<p><strong>Music Player</strong></p><p><code>isOnPlay</code> is boolean accepts true/false.</p>
-<pre><code>Blynk.setProperty(V0, "isOnPlay", "true");</code></pre>
-
+    <p><code>label</code> is string for label of all widgets.</p><p><code>color</code> is string in <a href="http://www.w3schools.com/html/html_colors.asp">HEX</a> format (in the form: #RRGGBB, 
+    where RR (red), GG (green) and BB (blue) are hexadecimal values between 00 and FF). For example :</p>
+    <pre><code>#define BLYNK_GREEN     "#23C48E"
+    #define BLYNK_BLUE      "#04C0F8"
+    #define BLYNK_YELLOW    "#ED9D00"
+    #define BLYNK_RED       "#D3435C"
+    #define BLYNK_DARK_BLUE "#5F7CD8"</code></pre>
+    <br><h2>Widget specific</h2>
+    <p>Widget specific properties: </p>
+    <p><strong>Button</strong></p>
+    <p><code>onLabel</code> is string for ON label of button;</p>
+    <p><code>offLabel</code> is string for OFF label of button;</p>
+    <p><strong>Menu</strong></p><p><code>labels</code> is list of strings for Menu widget selections (array expected: <code>["Labels 1","Labels 2","Labels 3"]</code>);</p>
+    <pre><code>Blynk.setProperty(V0, "labels", "label 1", "label 2", "label 3");</code></pre>
+    <p><strong>Music Player</strong></p><p><code>isOnPlay</code> is boolean accepts true/false.</p>
+    <pre><code>Blynk.setProperty(V0, "isOnPlay", "true");</code></pre>
+    <p class="form-tips">
+            Official documentation: 
+            <a href="http://docs.blynk.cc/#blynk-main-operations-change-widget-properties">Change widget properties</a>
+    <p>
 </script>
 
 
@@ -447,6 +490,10 @@ where RR (red), GG (green) and BB (blue) are hexadecimal values between 00 and F
 	    <br />
 	    Remember to add the email widget in your project and that the Blynk server has a setting how many emails per minute to send.
     </p>
+    <p class="form-tips">
+        Official documentation: 
+        <a href="http://docs.blynk.cc/#widgets-notifications-email">Email</a>
+   <p>
 </script>
 
 <!-- Blynk out Node - LCD -->
@@ -476,6 +523,10 @@ where RR (red), GG (green) and BB (blue) are hexadecimal values between 00 and F
    Set <code>msg.x1</code> to x position you want <code>text1</code> it shown on (0,15), default 0.<br/>
    Set <code>msg.clear</code> to <code>true</code> if you want to clear it before write.
    </p>
+   <p class="form-tips">
+        Official documentation: 
+        <a href="http://docs.blynk.cc/#widgets-displays-lcd">LCD</a>
+   <p>
 </script>
 
 <!-- Blynk out Node - Notify -->
@@ -502,6 +553,42 @@ where RR (red), GG (green) and BB (blue) are hexadecimal values between 00 and F
         <li>Only 1 notification per 15 seconds is allowed.</li>
     </ul>
    </p>
+   <p class="form-tips">
+        Official documentation: 
+        <a href="http://docs.blynk.cc/#widgets-notifications-push-notifications">Push Notifications</a>
+   <p>
+</script>
+
+<!-- Blynk out Node - Table -->
+<script type="text/x-red" data-template-name="blynk-ws-out-table">
+    <div class="form-row" id="websocket-client-row">
+        <label for="node-input-client"><i class="fa fa-bookmark"></i> <span>Connection</span></label>
+        <input type="text" id="node-input-client">
+    </div>
+    <div class="form-row">
+        <label for="node-input-pin"><i class="fa fa-dot-circle-o"></i> <span>Virtual Pin</span></label>
+        <input type="number" id="node-input-pin"  min="0" max="127" placeholder="pin">
+   	</div>
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> <span>Name</span></label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="blynk-ws-out-table">
+   <p>Blynk Table node.</p>
+   <p>For use with Blynk app Table Widget.</p>
+   <p>Set <code>msg.add</code> with an array of <code>['name','value']</code> to add row to the table.<br/>
+   Set <code>msg.update</code> with an array of <code>['index','name','value']</code> to update row to the table.<br/>
+   Set <code>msg.pick</code> to the row index you want to highlight.<br/>
+   Set <code>msg.loadtable</code> with an array of arrays <code>['name','value']</code> or <code>['name']</code> depending on how many rows you want to add to the table<br/>
+   Set <code>msg.clear</code> to <code>true</code> if you want to clear all table rows. (Index is reset to 0).
+   </p>
+   <p class="form-tips">
+        Official documentation: 
+        <a href="http://docs.blynk.cc/#widgets-time-input-table">Table</a>
+   <p>
+    
 </script>
 
 <!-- Blynk Server configuration node -->
@@ -516,13 +603,27 @@ where RR (red), GG (green) and BB (blue) are hexadecimal values between 00 and F
     </div>
     <div class="form-row">
         <label for="node-config-input-debug"><i class="fa fa-bug"></i> Protocol Log</label>
-        <input type="checkbox" id="node-config-input-dbg_all" value="all" style="display: inline-block; width: auto; vertical-align: top;"> All</input>
-        <input type="checkbox" id="node-config-input-dbg_read" value="all" style="display: inline-block; width: auto; vertical-align: top;"> Read</input>
-        <input type="checkbox" id="node-config-input-dbg_write" value="all" style="display: inline-block; width: auto; vertical-align: top;"> Write</input>
-        <input type="checkbox" id="node-config-input-dbg_prop" value="all" style="display: inline-block; width: auto; vertical-align: top;"> Property</input>
-        <input type="checkbox" id="node-config-input-dbg_notify" value="all" style="display: inline-block; width: auto; vertical-align: top;"> Notify</input>
-        <input type="checkbox" id="node-config-input-dbg_mail" value="all" style="display: inline-block; width: auto; vertical-align: top;"> Mail</input>
-        <input type="checkbox" id="node-config-input-dbg_low" value="all" style="display: inline-block; width: auto; vertical-align: top;"> Low Level</input>
+        <ul style="width: 70%;display: inline-block;vertical-align: top;list-style-type: none;-webkit-column-count: 3;-moz-column-count: 3;column-count: 3;">
+            <li>
+                <input type="checkbox" id="node-config-input-dbg_all" value="all" style="width: auto; vertical-align: top;"> All</input>
+            </li><li>
+                <input type="checkbox" id="node-config-input-dbg_read" value="all" style="width: auto; vertical-align: top;"> Read</input>
+            </li><li>
+                <input type="checkbox" id="node-config-input-dbg_write" value="all" style="width: auto; vertical-align: top;"> Write</input>
+            </li><li>
+                <input type="checkbox" id="node-config-input-dbg_prop" value="all" style="width: auto; vertical-align: top;"> Property</input>
+            </li><li>
+                <input type="checkbox" id="node-config-input-dbg_notify" value="all" style="width: auto; vertical-align: top;"> Notify</input>
+            </li><li>
+                <input type="checkbox" id="node-config-input-dbg_mail" value="all" style="width: auto; vertical-align: top;"> Mail</input>
+            </li><li>
+                <input type="checkbox" id="node-config-input-dbg_low" value="all" style="width: auto; vertical-align: top;"> Low Level</input>
+            </li>
+        </ul>
+        <div style="left: 110px;position: relative;width: 75%;">
+            <span for="node-config-input-dbg_pins" style="margin-right: 10px;"> <span>Pins to log</span></span>
+            <input id="node-config-input-dbg_pins" placeholder="ex: 1,15,22" style="width: 70%;" type="text">
+        </div>
     </div>
     <div class="form-row">
         <label for="node-config-input-name"><i class="fa fa-tag"></i> <span>Name</span></label>
