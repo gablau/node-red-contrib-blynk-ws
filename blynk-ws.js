@@ -999,6 +999,13 @@ module.exports = function(RED) {
                   var rawdata = ['p', x, y, text];
                   node.serverConfig.virtualWrite(node.pin, rawdata);
                 }
+                
+                if(!msg.hasOwnProperty("text") && !msg.hasOwnProperty("text1") && !msg.hasOwnProperty("clear") && msg.hasOwnProperty("payload")){
+                    var payload = Buffer.isBuffer(msg.payload) ? msg.payload : RED.util.ensureString(msg.payload);
+                    if(payload != '' && payload.length > 1 ){
+                        node.warn("## Blynk LCD node does not use the msg.payload property! ##   You must use the property msg.text or msg.text1 to write to the first or second line.");
+                    }
+                }
             }
         });
     }
