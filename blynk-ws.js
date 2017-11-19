@@ -733,7 +733,7 @@ module.exports = function(RED) {
                 node.status({
                     fill: "green",
                     shape: "dot",
-                    text: "connected to pin V" + node.pin
+                    text: "connected"
                 });
             });
             this.serverConfig.on('erro', function() {
