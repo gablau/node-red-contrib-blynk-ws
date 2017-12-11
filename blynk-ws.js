@@ -733,7 +733,7 @@ module.exports = function(RED) {
                 node.status({
                     fill: "green",
                     shape: "dot",
-                    text: "connected to pin V" + node.pin
+                    text: "connected"
                 });
             });
             this.serverConfig.on('erro', function() {
@@ -755,7 +755,8 @@ module.exports = function(RED) {
             if (msg.hasOwnProperty("payload") && node.serverConfig && node.serverConfig.logged) {
                 var payload = Buffer.isBuffer(msg.payload) ? msg.payload : RED.util.ensureString(msg.payload);
                 var subject = msg.topic ? msg.topic : payload;
-                node.serverConfig.virtualWrite(node.pin, payload);
+                var pin = msg.pin ? msg.pin : node.pin;
+                node.serverConfig.virtualWrite(pin, payload);
             }
         });
     }
