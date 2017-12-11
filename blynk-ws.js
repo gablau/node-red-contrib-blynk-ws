@@ -1013,8 +1013,17 @@ module.exports = function(RED) {
     
     function BlynkOutNotifyNode(n) {
         RED.nodes.createNode(this, n);
-        var node = this;
+        
         this.server = n.client;
+        this.queue = n.queue;
+        this.rate = 1000 * (n.rate > 0 ? n.rate : 1);
+        this.buffer = [];
+        this.intervalID = -1;
+        
+        
+        
+        var node = this;
+        node.log(this);
 
         this.serverConfig = RED.nodes.getNode(this.server);
         if (!this.serverConfig) {
@@ -1029,10 +1038,14 @@ module.exports = function(RED) {
                 });
             });
             this.serverConfig.on('connected', function(n) {
+                var queuestr = "";
+                if (node.queue) {
+                  queuestr = " - queue: 0";
+                }
                 node.status({
                     fill: "green",
                     shape: "dot",
-                    text: "connected" + n
+                    text: "connected" + queuestr
                 });
             });
             this.serverConfig.on('erro', function() {
@@ -1051,10 +1064,69 @@ module.exports = function(RED) {
             });
         }
         this.on("input", function(msg) {
-            if (msg.hasOwnProperty("payload") && node.serverConfig && node.serverConfig.logged) {
+            
+            node.reportDepth = function() {
+                if (!node.busy) {
+                    node.busy = setTimeout(function() {
+                        if (node.buffer.length > 0) {
+                            node.status({ 
+                                fill:  "green",
+                                shape: "dot",
+                                text:  "connected - queue: " + node.buffer.length,
+                            });
+                        } else {
+                            node.status({
+                                fill:  "green",
+                                shape: "dot",
+                                text:  "connected - queue: 0", 
+                            });
+                        }
+                        node.busy = null;
+                    },500);
+                }
+            };
+            if (node.queue) {
+                node.log("queue");
+                if ( node.intervalID !== -1) {
+                    node.buffer.push(msg);
+                    node.reportDepth();
+                }
+                else {
+                    //node.send(msg);
+                    if (msg.hasOwnProperty("payload") && node.serverConfig && node.serverConfig.logged) {
+                        var payload = Buffer.isBuffer(msg.payload) ? msg.payload : RED.util.ensureString(msg.payload);
+                        node.serverConfig.sendNotify(payload);
+                    }
+                    node.reportDepth();
+
+                    node.intervalID = setInterval(function() {
+                        if (node.buffer.length === 0) {
+                            clearInterval(node.intervalID);
+                            node.intervalID = -1;
+                        }
+                        if (node.buffer.length > 0) {
+                            //node.send(node.buffer.shift());
+                            var tempmsg = node.buffer.shift()
+                            if (tempmsg.hasOwnProperty("payload") && node.serverConfig && node.serverConfig.logged) {
+                                var payload = Buffer.isBuffer(tempmsg.payload) ? tempmsg.payload : RED.util.ensureString(tempmsg.payload);
+                                node.serverConfig.sendNotify(payload);
+                            }
+                        }
+                        node.reportDepth();
+                    },node.rate);
+                }               
+                
+            }
+            else if (msg.hasOwnProperty("payload") && node.serverConfig && node.serverConfig.logged) {
                 var payload = Buffer.isBuffer(msg.payload) ? msg.payload : RED.util.ensureString(msg.payload);
                 node.serverConfig.sendNotify(payload);
             }
+        });
+        this.on("close", function() {
+                clearInterval(node.intervalID);
+                clearTimeout(node.busy);
+                node.buffer = [];
+                node.status({});
         });
     }
     RED.nodes.registerType("blynk-ws-out-notify", BlynkOutNotifyNode);

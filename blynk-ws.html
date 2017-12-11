@@ -249,7 +249,9 @@
         paletteLabel: 'notify',
         defaults: {
             name: {value: ''},
-            client: {type: "blynk-ws-client", validate: ws_validateclient}
+            client: {type: "blynk-ws-client", validate: ws_validateclient},
+            queue: {value:false},
+            rate: {value:1},
         },
         color:"#1BC17C",
         icon:'notify.png',     
@@ -261,7 +263,16 @@
         },
         label: ws_label,
         oneditsave: ws_oneditsave,
-        oneditprepare: ws_oneditprepare
+        oneditprepare: function() {
+             $("#node-input-queue").on("change",function() {
+                 console.log(this.checked);
+                if (this.checked) {
+                    $("#queue-details").show();
+                } else {
+                    $("#queue-details").hide();
+                }
+            }).change();
+        },
     });
     
     RED.nodes.registerType('blynk-ws-out-table',{
@@ -536,21 +547,36 @@
         <input type="text" id="node-input-client">
     </div>
     <div class="form-row">
+        <label for="node-input-queue"><i class="fa fa-clock-o"></i> <span>Queue</span></label>
+        <input type="checkbox" id="node-input-queue" style="width: 30px;" >
+        <label style="width: 250px; opacity: 1;" for="node-input-queue">Enable queue messages with delay</label>
+    </div>
+    <div id="queue-details">
+        <div class="form-row">
+            <label for="node-input-rate"></label>
+            <label for="node-input-rate" style="width: 80px;margin-left: 30px;"><span>1 msg every</span></label>
+            <input type="text" id="node-input-rate" placeholder="1" style="text-align:end; width:40px !important">
+            <label for="node-input-rate" style="margin-left: 5px;"><span>seconds</span></label>
+        </div>
+    </div>
+    <div class="form-row">
         <label for="node-input-name"><i class="fa fa-tag"></i> <span>Name</span></label>
         <input type="text" id="node-input-name" placeholder="Name">
     </div>
+    
 </script>
 
 <script type="text/x-red" data-help-name="blynk-ws-out-notify">
    <p>Blynk Notify node.</p>
    <p>For use with Blynk app Push Notifications Widget.</p>
    <p>Notify node allows you to send push notification to your device.</p> 
-   <p>Set <code>msg.payload</code> with the text of you want to notificate.<br/>
-   <br/>
+   <p>Set <code>msg.payload</code> with the text of you want to notificate.</p>
+   <p>Set the "Queue" property to save messages in a queue. Message delivery is distributed over the configured period of time. The status shows the number of messages currently in the queue. Especially useful with Blynk Cloud server</p>
+   <p>
    Limitations :
     <ul>
         <li>Maximum allowed body length is 120 symbols.</li>
-        <li>Only 1 notification per 15 seconds is allowed.</li>
+        <li>Only 1 notification per 15 seconds is allowed on Blynk Cloud.</li>
     </ul>
    </p>
    <p class="form-tips">

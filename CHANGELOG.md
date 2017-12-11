@@ -5,6 +5,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+- Node - *Notify* - Implemented queue messages 
+
+### Changed
+- Node - *LCD* - Warning on incorrect use of msg.payload property
 
 ## [0.2.0] - 2017-09-18
 ### Added
@@ -21,7 +26,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Added Other Messages Type and Status Messages
 - Debug option in the configuration node
 - Display the number of pins on the status of the nodes,
-- Node - * Notification * to send push notifications on the smartphone
+- Node - * Notify * to send push notifications on the smartphone
 - Node - * Set Property * to set the property of any widget
 - Node - * App Event * for the connection and disconnect event of the app
 - Node - * LCD Widgets * to simplify the use of this widget
