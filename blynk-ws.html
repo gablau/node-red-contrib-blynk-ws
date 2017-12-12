@@ -33,39 +33,53 @@
     function ws_label() {
         _pin = 'no pin';
         _type = '';
-        if(this.type === 'blynk-ws-in-read') {
-	        _type = 'Read Event';
-        } 
-        if(this.type === 'blynk-ws-in-write') {
-	        _type = 'Write Event';
-        } 
-        if(this.type === 'blynk-ws-out-write') {
-	        _type = 'Write';
-        } 
-        if(this.type === 'blynk-ws-out-set-property') {
-	        _type = 'Set Property';
-        } 
-        if(this.type === 'blynk-ws-out-lcd') {
-	        _type = 'LCD';
-        } 
-        if(this.type === 'blynk-ws-out-table') {
-	        _type = 'Table';
-        } 
+        _dynamic = false;
+        switch(this.type){
+            case 'blynk-ws-in-read':
+                _type = 'Read Event';
+                break;  
+            case 'blynk-ws-in-write':
+                _type = 'Write Event';
+                break;  
+            case 'blynk-ws-out-write':
+                _type = 'Write';
+                if (this.pinmode == 1) {
+                    _dynamic = true;
+                } 
+                break;  
+            case 'blynk-ws-out-set-property':
+                _type = 'Set Property';
+                if (this.pinmode == 1) {
+                    _dynamic = true;
+                } 
+                break;  
+            case 'blynk-ws-out-lcd':
+                _type = 'LCD';
+                break;  
+            case 'blynk-ws-out-table':
+                _type = 'Table';
+                break;    
+            case 'blynk-ws-out-email':
+                return this.name||this.email||'email';
+                break;
+            case 'blynk-ws-out-notify':
+                return this.name||'notify';
+                break;
+            case 'blynk-ws-client':
+                return this.name||this.key||'n/a';
+                break;
+            case 'blynk-ws-in-app':
+                return this.name||'App Event';
+                break; 
+        }
+
         if(this.pin) {
-	        _pin ='Pin V'+ this.pin + ' - ' +  _type;
+	    _pin = 'Pin V'+ this.pin + ' - ' +  _type;
         }
-        if(this.type === "blynk-ws-out-email") {
-	        return this.name||this.email||'email';
+        if(_dynamic) {
+            _pin = 'Pin Dynamic - ' +  _type;
         }
-        if(this.type === "blynk-ws-out-notify") {
-	        return this.name||'notify';
-        }
-        if(this.type === "blynk-ws-client") {
-	        return this.name||this.key||'n/a';
-        }
-        if(this.type === 'blynk-ws-in-app') {
-	        return this.name||'App Event';
-        } 
+
         return this.name||_pin;
     }
        
@@ -165,6 +179,7 @@
         defaults: {
             name: {value: ''},
             pin: {value: 0},
+            pinmode: {value: 0},
             client: {type: "blynk-ws-client", validate: ws_validateclient}
         },
         color:"#1BC17C",
@@ -177,7 +192,16 @@
         },
         label: ws_label,
         oneditsave: ws_oneditsave,
-        oneditprepare: ws_oneditprepare
+        oneditprepare: function() {
+             $("#node-input-pinmode").on("change",function() {
+                console.log($(this).val());
+                if ($(this).val() == 0) {
+                    $("#div-write-pin").show();
+                } else {
+                    $("#div-write-pin").hide();
+                }
+            }).change();
+        },
     });
     
     RED.nodes.registerType('blynk-ws-out-set-property',{
@@ -186,6 +210,7 @@
         defaults: {
             name: {value: ''},
             pin: {value: 0},
+            pinmode: {value: 0},
             prop: {value: ''},
             client: {type: "blynk-ws-client", validate: ws_validateclient}
         },
@@ -199,7 +224,16 @@
         },
         label: ws_label,
         oneditsave: ws_oneditsave,
-        oneditprepare: ws_oneditprepare
+        oneditprepare: function() {
+             $("#node-input-pinmode").on("change",function() {
+                console.log($(this).val());
+                if ($(this).val() == 0) {
+                    $("#div-set-property-pin").show();
+                } else {
+                    $("#div-set-property-pin").hide();
+                }
+            }).change();
+        },
     });
     
     RED.nodes.registerType('blynk-ws-out-email',{
@@ -382,6 +416,13 @@
         <input type="text" id="node-input-client">
     </div>
     <div class="form-row">
+        <label for="node-input-pinmode"><i class="fa fa-cogs"></i> <span>Pin Mode</span></label>
+        <select id="node-input-pinmode" style="width:70%">
+            <option value="0">Fixed</option>
+            <option value="1">Dynamic</option>
+        </select>
+   	</div>
+    <div class="form-row" id="div-write-pin">
         <label for="node-input-pin"><i class="fa fa-dot-circle-o"></i> <span>Virtual Pin</span></label>
         <input type="number" id="node-input-pin"  min="0" max="127" placeholder="pin">
    	</div>
@@ -393,7 +434,10 @@
 
 <script type="text/x-red" data-help-name="blynk-ws-out-write">
     <p>Blynk write node.</p>
-    <p>This node will write the value in <code>msg.payload</code> to the specified pin number.</p>.
+    <p>This node will write the value in <code>msg.payload</code> to the specified pin number.</p><br>
+    <p>"Pin mode" selects whether the pin number is fixed or dynamic<br>
+    &nbsp;&nbsp; Fixed, select the pin number in the interface<br>
+    &nbsp;&nbsp; Dynamic, the pin number is passed through <code> msg.pin</code> property</p>
     <p class="form-tips">
         Official documentation: 
         <a href="http://docs.blynk.cc/#blynk-main-operations-get-data-from-hardware-pushing-data-from-hardware">Push data</a>
@@ -407,6 +451,13 @@
         <input type="text" id="node-input-client">
     </div>
     <div class="form-row">
+        <label for="node-input-pinmode"><i class="fa fa-cogs"></i> <span>Pin Mode</span></label>
+        <select id="node-input-pinmode" style="width:70%">
+            <option value="0">Fixed</option>
+            <option value="1">Dynamic</option>
+        </select>
+   	</div>
+    <div class="form-row" id="div-set-property-pin">
         <label for="node-input-pin"><i class="fa fa-dot-circle-o"></i> <span>Virtual Pin</span></label>
         <input type="number" id="node-input-pin"  min="0" max="127" placeholder="pin">
    	</div>
@@ -440,7 +491,10 @@
 
 <script type="text/x-red" data-help-name="blynk-ws-out-set-property">
     <p>Blynk set property node.</p>
-    <p>This node will write the value in payload to specified property at the specified pin number.</p><br>
+    <p>This node will write the value in payload to specified property at the specified pin number.</p>
+    <p>"Pin mode" selects whether the pin number is fixed or dynamic<br>
+    &nbsp;&nbsp; Fixed, select the pin number in the interface<br>
+    &nbsp;&nbsp; Dynamic, the pin number is passed through <code> msg.pin</code> property</p>
     <p>Use the node property by select on menu or override using <code>msg.prop</code></p><br>
     <p>To set multiple properties use this syntax: <br>
     <code>msg.label</code> to set the Label property<br>
@@ -454,11 +508,12 @@
     </p><br>  
     
     <br>
-    <h2>All WIDGETS</h2>
+    <h2>ALL WIDGETS</h2>
     <p>Four widget properties are supported - <code>color</code>, <code>label</code>, <code>min</code>, <code>max</code> for all widgets : </p>
     <p><code>label</code> is string for label of all widgets.</p><p><code>color</code> is string in <a href="http://www.w3schools.com/html/html_colors.asp">HEX</a> format (in the form: #RRGGBB, 
     where RR (red), GG (green) and BB (blue) are hexadecimal values between 00 and FF). For example :</p>
-    <pre><code>#define BLYNK_GREEN     "#23C48E"
+    <pre><code>
+    #define BLYNK_GREEN     "#23C48E"
     #define BLYNK_BLUE      "#04C0F8"
     #define BLYNK_YELLOW    "#ED9D00"
     #define BLYNK_RED       "#D3435C"

@@ -405,12 +405,20 @@ module.exports = function(RED) {
     RED.nodes.registerType("blynk-ws-client", BlynkClientNode);
 
     BlynkClientNode.prototype.registerInputNode = function (handler) {
-        this.log("Register input node" + " - type: " + handler.nodeType + " pin: " + handler.pin);
+        var pinlog = '';
+        if(handler.pin != undefined) {
+            pinlog = " pin: " + handler.pin;
+        }
+        this.log("Register input node" + " - type: " + handler.nodeType + pinlog);
         this._inputNodes.push(handler);
     };
 
     BlynkClientNode.prototype.removeInputNode = function (handler) {
-        this.log("Remove input node" + " - type: " + handler.nodeType + " pin: " + handler.pin);
+        var pinlog = '';
+        if(handler.pin != undefined) {
+            pinlog = " pin: " + handler.pin;
+        }
+        this.log("Remove input node" + " - type: " + handler.nodeType + pinlog);
         this._inputNodes.forEach(function (node, i, inputNodes) {
             if (node === handler) {
                 inputNodes.splice(i, 1);
@@ -716,6 +724,13 @@ module.exports = function(RED) {
         var node = this;
         this.server = n.client;
         this.pin = n.pin;
+        this.pinmode = n.pinmode; 
+        
+        if(this.pinmode == 1) 
+            this.connected_label = "connected to dynamic pin";
+        else
+            this.connected_label = "connected to pin V" + this.pin;
+             
 
         this.serverConfig = RED.nodes.getNode(this.server);
         if (!this.serverConfig) {
@@ -733,7 +748,7 @@ module.exports = function(RED) {
                 node.status({
                     fill: "green",
                     shape: "dot",
-                    text: "connected"
+                    text: node.connected_label
                 });
             });
             this.serverConfig.on('erro', function() {
@@ -755,7 +770,18 @@ module.exports = function(RED) {
             if (msg.hasOwnProperty("payload") && node.serverConfig && node.serverConfig.logged) {
                 var payload = Buffer.isBuffer(msg.payload) ? msg.payload : RED.util.ensureString(msg.payload);
                 var subject = msg.topic ? msg.topic : payload;
-                var pin = msg.pin ? msg.pin : node.pin;
+                var pin = node.pin;
+                if(node.pinmode == 1) {
+                    if (!msg.hasOwnProperty("pin")) {
+                        node.warn("Write node - Setting \"pin mode\" to \"dynamic\" but no msg.pin found.");
+                        return;
+                    }
+                    if(msg.pin<0 || msg.pin>127) {
+                        node.warn("Write node - The msg.pin must be between 0 and 127.");
+                        return;
+                    }
+                    pin = msg.pin;
+                }
                 node.serverConfig.virtualWrite(pin, payload);
             }
         });
@@ -818,6 +844,12 @@ module.exports = function(RED) {
         this.server = n.client;
         this.pin = n.pin;
         this.prop = n.prop;
+        this.pinmode = n.pinmode; 
+        
+        if(this.pinmode == 1) 
+            this.connected_label = "connected to dynamic pin";
+        else
+            this.connected_label = "connected to pin V" + this.pin;
         
         this.serverConfig = RED.nodes.getNode(this.server);
         if (!this.serverConfig) {
@@ -835,7 +867,7 @@ module.exports = function(RED) {
                 node.status({
                     fill: "green",
                     shape: "dot",
-                    text: "connected to pin V" + node.pin
+                    text: node.connected_label
                 });
             });
             this.serverConfig.on('erro', function() {
@@ -858,53 +890,69 @@ module.exports = function(RED) {
                 var payload = msg.payload; //dont check if is a string
                 var subject = msg.topic ? msg.topic : payload;
                 var prop = node.prop;
+                var pin = node.pin;
+                if(node.pinmode == 1) {
+                    if (!msg.hasOwnProperty("pin")) {
+                        node.warn("Set Property node - Setting \"pin mode\" to \"dynamic\" but no msg.pin found.");
+                        return;
+                    }
+                    if(msg.pin<0 || msg.pin>127) {
+                        node.warn("Set Property node - The msg.pin must be between 0 and 127.");
+                        return;
+                    }
+                    pin = msg.pin;
+                }
+                
                 if (msg.hasOwnProperty("prop") && node.serverConfig && node.serverConfig.logged) {
                     prop = Buffer.isBuffer(msg.prop) ? msg.prop : RED.util.ensureString(msg.prop);
                 }
                 if(prop!=='bycode'){ //single propery
-                  node.serverConfig.setProperty(node.pin, prop, payload); 
+                    if(prop == ''){
+                        node.warn("Set Property node - Please select a property.");
+                        return;
+                    }
+                    node.serverConfig.setProperty(pin, prop, payload); 
                 }
                 else { //multiple property
                     //all widget
                     if (msg.hasOwnProperty("label") && node.serverConfig && node.serverConfig.logged) {
                         var label = Buffer.isBuffer(msg.label) ? msg.label : RED.util.ensureString(msg.label);
-                        node.serverConfig.setProperty(node.pin, 'label', label);
+                        node.serverConfig.setProperty(pin, 'label', label);
                     }
                     if (msg.hasOwnProperty("color") && node.serverConfig && node.serverConfig.logged) {
                         var color = Buffer.isBuffer(msg.color) ? msg.color : RED.util.ensureString(msg.color);
-                        node.serverConfig.setProperty(node.pin, 'color', color);
+                        node.serverConfig.setProperty(pin, 'color', color);
                     }
                     if (msg.hasOwnProperty("min") && node.serverConfig && node.serverConfig.logged) {
                         var min = Buffer.isBuffer(msg.min) ? msg.min : RED.util.ensureString(msg.min);
-                        node.serverConfig.setProperty(node.pin, 'min', min);
+                        node.serverConfig.setProperty(pin, 'min', min);
                     }
                     if (msg.hasOwnProperty("max") && node.serverConfig && node.serverConfig.logged) {
                         var max = Buffer.isBuffer(msg.max) ? msg.max : RED.util.ensureString(msg.max);
-                        node.serverConfig.setProperty(node.pin, 'max', max);
+                        node.serverConfig.setProperty(pin, 'max', max);
                     }
                     //buttons
                     if ((msg.hasOwnProperty("onlabel") || msg.hasOwnProperty("offlabel")) && node.serverConfig && node.serverConfig.logged) {
                         if (msg.hasOwnProperty("onlabel")){
                             var onlabel = Buffer.isBuffer(msg.onlabel) ? msg.onlabel : RED.util.ensureString(msg.onlabel);
-                            node.serverConfig.setProperty(node.pin, 'onLabel', onlabel);
+                            node.serverConfig.setProperty(pin, 'onLabel', onlabel);
                         }
                         if (msg.hasOwnProperty("offlabel")){
                             var offlabel = Buffer.isBuffer(msg.offlabel) ? msg.offlabel : RED.util.ensureString(msg.offlabel);
-                            node.serverConfig.setProperty(node.pin, 'offLabel', offlabel);
+                            node.serverConfig.setProperty(pin, 'offLabel', offlabel);
                         }
                     }
                     //menu
                     else if (msg.hasOwnProperty("labels") && node.serverConfig && node.serverConfig.logged) {
-                        node.serverConfig.setProperty(node.pin, 'labels', msg.labels);
+                        node.serverConfig.setProperty(pin, 'labels', msg.labels);
                     }
                     //music player
                     else if (msg.hasOwnProperty("isOnPlay") && node.serverConfig && node.serverConfig.logged) {
                         var isonplay = false;
                         if (msg.isonplay) isonplay = true;
-                        node.serverConfig.setProperty(node.pin, 'isonplay', isonplay);
+                        node.serverConfig.setProperty(pin, 'isonplay', isonplay);
                     }
-            
-                  
+
                 }
             }
         });
@@ -1024,13 +1072,15 @@ module.exports = function(RED) {
         
         
         var node = this;
-        node.log(this);
+        //node.log(this);
 
         this.serverConfig = RED.nodes.getNode(this.server);
         if (!this.serverConfig) {
             this.error(RED._("websocket.errors.missing-conf"));
         } else {
             // TODO: nls
+            this.log("Register notify node" + " - on client: " + this.serverConfig.name);
+            
             this.serverConfig.on('opened', function(n) {
                 node.status({
                     fill: "yellow",

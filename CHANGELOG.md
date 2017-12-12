@@ -7,9 +7,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 ### Added
 - Node - *Notify* - Implemented queue messages 
+- Node - *Write* - Pin mode (Fixed / Dynamic) pass pin number in msg.pin variable
+- Node - *Set Property* - Pin mode (Fixed / Dynamic) pass pin number in msg.pin variable
 
 ### Changed
 - Node - *LCD* - Warning on incorrect use of msg.payload property
+- Fixed some log messages
 
 ## [0.2.0] - 2017-09-18
 ### Added
