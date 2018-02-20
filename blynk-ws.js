@@ -325,6 +325,9 @@ module.exports = function(RED) {
                                 case 'vr':
                                     node.handleReadEvent(cmd);
                                     break;
+				case 'pm':
+                                    // skip message "pin mode"
+                                    break;	    
                                 default:
                                     node.warn(RED._("Invalid HW cmd: ") + messageToDebugString(data));
                                     node.sendRsp(MsgType.RSP, node.msg_id, MsgStatus.ILLEGAL_COMMAND);
