@@ -676,7 +676,7 @@
 <script type="text/x-red" data-template-name="blynk-ws-client">
     <div class="form-row">
         <label for="node-config-input-path"><i class="fa fa-bookmark"></i> Url</label>
-        <input type="text" id="node-config-input-path" placeholder="ws://blynk-cloud.com:8080/websockets">
+        <input type="text" id="node-config-input-path" placeholder="ws://blynk-cloud.com/websockets">
     </div>
     <div class="form-row">
         <label for="node-config-input-key"><i class="fa fa-key"></i> Project key</label>
@@ -713,16 +713,23 @@
 
     <div class="form-tips">
         <p>The url of Blynk Cloud Server is:<br>
-        <b>ws://blynk-cloud.com:8080/websockets</b><br>
+        <b>ws://blynk-cloud.com/websockets</b><br>
         or with secure SSL:<br>
-        <b>wss://blynk-cloud.com:9443/websockets</b></p>
+        <b>wss://blynk-cloud.com/websockets</b><br>
+	Url for Local server is:<br>
+        <b>ws://<your-local-ip>:8080/websockets</b>
+	or with secure SSL:<br>
+        <b>wss://<your-local-ip>:9443/websockets</b></p>
     </div>
 </script>
 
 <script type="text/x-red" data-help-name="blynk-ws-client">
    <p>This configuration node connects to a Blynk WebSocket Server on the specified URL.
    <br /><br />
-	    To connect to Blynk Cloud Server use di address:<br>
-      Websocket: <b>ws://blynk-cloud.com:8080/websockets</b><br>
-      Websocket SSL: <b>wss://blynk-cloud.com:9443/websockets</b></p>
+	    To connect to Blynk Cloud Server use this url:<br>
+      Websocket: <b>ws://blynk-cloud.com/websockets</b><br>
+      Websocket SSL: <b>wss://blynk-cloud.com/websockets</b><br><br>
+	To connect to Local Server use this url:<br>
+      Websocket: <b>ws://<your-local-ip>:8080/websockets</b><br>
+      Websocket SSL: <b>wss://<your-local-ip>:9443/websockets</b></p>
 </script>
