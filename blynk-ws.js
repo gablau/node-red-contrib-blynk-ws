@@ -22,7 +22,7 @@ module.exports = function(RED) {
     //BLYNK STUFF
     function messageToDebugString(bufArray) {
         var cmd = decodeCommand(bufArray);
-        if (cmd.type === MsgType.HW || cmd.type === MsgType.INTERNAL) {
+        if (cmd.type !== MsgType.RSP) {
             return "Cmd: " + cmd.typeString + ", Id: " + cmd.msgId + ", len: " + cmd.len + ", data: " + printData(cmd.body);
         }
         else
