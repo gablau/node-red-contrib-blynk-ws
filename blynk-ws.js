@@ -38,7 +38,8 @@ module.exports = function(RED) {
         cmd.msgId = dataview.getUint16(1);
         cmd.len = dataview.getUint16(3);
 
-        if (cmd.type === MsgType.HW) {
+        switch(cmd.type) {
+          case MsgType.HW:
             cmd.len = dataview.getUint16(3);
 
             cmd.body = '';
@@ -58,13 +59,16 @@ module.exports = function(RED) {
 
                 }
             }
-        } else if (cmd.type === MsgType.INTERNAL) {
+            break;
+          case MsgType.RSP:
+             cmd.status = dataview.getUint16(3);
+            break;
+          default:
             cmd.body = '';
             for (var i = 0, offset = 5; i < cmd.len; i++, offset++) {
                 cmd.body += String.fromCharCode(dataview.getInt8(offset));
             }
-        } else {
-            cmd.status = dataview.getUint16(3);
+            break;
         }
 
         return cmd;
