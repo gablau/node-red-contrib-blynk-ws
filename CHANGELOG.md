@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [0.4.0] - 2018-03-09
+### Added
+- Handle CONNECT_REDIRECT command see [iusse #5](https://github.com/gablau/node-red-contrib-blynk-ws/issues/5) and [this](https://community.blynk.cc/t/correct-websocket-address-for-blynk-server/22496) 
+
+### Changed
+- Server port configuration and help message see [Blynk Library 0.5.1](https://community.blynk.cc/t/new-blynk-library-v0-5-1-is-released-important-for-local-server-owners/22449)
+
+### Fixed
+- Invalid HW cmd: "pm" see [iusse #3](https://github.com/gablau/node-red-contrib-blynk-ws/issues/3)
+- Protocol Log on message received and retrive right command body
+
 ## [0.3.0] - 2017-12-12
 ### Added
 - Node - *Notify* - Implemented queue messages 
@@ -43,7 +54,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Heartbeat once 10 seconds
 - Max virtual pin allowed 128
 
-[Unreleased]: https://github.com/gablau/node-red-contrib-blynk-ws/compare/0.3.0...HEAD
+[Unreleased]: https://github.com/gablau/node-red-contrib-blynk-ws/compare/0.4.0...HEAD
+[0.4.0]: https://github.com/gablau/node-red-contrib-blynk-ws/compare/0.3.0...0.4.0
 [0.3.0]: https://github.com/gablau/node-red-contrib-blynk-ws/compare/0.2.0...0.3.0
 [0.2.0]: https://github.com/gablau/node-red-contrib-blynk-ws/compare/0.1.0...0.2.0
 
