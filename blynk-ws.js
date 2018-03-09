@@ -317,6 +317,21 @@ module.exports = function(RED) {
                             node.sendMsg(MsgType.INTERNAL, ['ver', BLYNK_VERSION, 'h-beat', BLYNK_HEARTBEAT, 'dev', 'node-red', 'conn', 'Socket']);
                         }
                     }
+		    if(cmd.type === MsgType.CONNECT_REDIRECT) {
+                            //handle server redirect 
+                            var schema = "ws://";
+                            var port = 80;
+                            if (node.path.startsWith("wss://")) {
+                              schema = "wss://";
+                              port = 443;
+                            }
+                            var values = cmd.body.split('\0');
+                            var serverip =  values[0];
+                            if(values[1]>0) port = values[1];
+                            var newpath = schema + serverip + ':' + port + '/websockets';
+                            node.path = newpath; 
+                            node.warn(RED._("Connection redirecting to:  ") + newpath);
+                    }
                 } else {
                     switch (cmd.type) {
                         case MsgType.HW:
