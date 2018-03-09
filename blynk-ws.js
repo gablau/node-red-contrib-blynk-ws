@@ -58,6 +58,9 @@ module.exports = function(RED) {
                     }
 
                 }
+		else if (values.length == 1)  { ///handle "pm" single message
+			cmd.operation = values[0];
+		}
             }
             break;
           case MsgType.RSP:
