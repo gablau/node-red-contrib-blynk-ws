@@ -1,0 +1,65 @@
+<script type="text/javascript">
+
+    (function() {
+    
+        function ws_oneditprepare() {
+        }
+        
+        function ws_oneditsave() {
+        }
+        
+        function ws_label() {
+            return this.name||this.email||'email';
+        }
+           
+    RED.nodes.registerType('blynk-ws-out-email',{
+        category: 'Blynk_ws',
+        paletteLabel: 'email',
+        defaults: {
+            name: {value: ''},
+            email: {},
+            client: {type: "blynk-ws-client", required:true }
+        },
+        color:"#1BC17C",
+        inputs:1,
+        outputs:0,
+        icon: "email.png",
+        align: "right",
+        labelStyle: function() {
+            return this.name?"node_label_italic":"";
+        },
+        label: ws_label,
+        oneditsave: ws_oneditsave,
+        oneditprepare: ws_oneditprepare
+    });
+
+})();
+</script>  
+
+<!-- Blynk out Node - Email -->
+<script type="text/x-red" data-template-name="blynk-ws-out-email">
+    <div class="form-row" id="websocket-client-row">
+        <label for="node-input-client"><i class="fa fa-bookmark"></i> <span>Connection</span></label>
+        <input type="text" id="node-input-client">
+    </div>
+   	<div class="form-row">
+        <label for="node-input-email"><i class="fa fa-envelope-o"></i> <span>Email</span></label>
+        <input type="text" id="node-input-email" placeholder="Email address">
+    </div>
+   	<div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> <span>Name</span></label>
+        <input type="text" id="node-input-name" data-i18n="[placeholder]node-red:common.label.name">
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="blynk-ws-out-email">
+    <p>Blynk email node.</p>
+    <p>This node will send an email using your <code>msg.topic</code> for subject and <code>msg.payload</code> for content.
+	    <br />
+	    Remember to add the email widget in your project and that the Blynk server has a setting how many emails per minute to send.
+    </p>
+    <p class="form-tips">
+        Official documentation: 
+        <a href="http://docs.blynk.cc/#widgets-notifications-email">Email</a>
+   <p>
+</script>

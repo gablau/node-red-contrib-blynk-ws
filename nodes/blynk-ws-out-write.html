@@ -1,0 +1,93 @@
+<script type="text/javascript">
+
+    (function() {
+        
+        function ws_oneditsave() {
+        }
+        
+        function ws_label() {
+            _pin = 'no pin';
+            _type = 'Write';
+            _dynamic = false;
+            if (this.pinmode == 1) {
+                _dynamic = true;
+            } 
+            
+            if(this.pin) {
+            _pin = 'Pin V'+ this.pin + ' - ' +  _type;
+            }
+            if(_dynamic) {
+                _pin = 'Pin Dynamic - ' +  _type;
+            }
+    
+            return this.name||_pin;
+        }
+           
+    RED.nodes.registerType('blynk-ws-out-write',{
+        category: 'Blynk_ws',
+        paletteLabel: 'write',
+        defaults: {
+            name: {value: ''},
+            pin: {value: 0},
+            pinmode: {value: 0},
+            client: {type: "blynk-ws-client", required:true }
+        },
+        color:"#1BC17C",
+        inputs:1,
+        outputs:0,
+        icon: "white-globe.png",
+        align: "right",
+        labelStyle: function() {
+            return this.name?"node_label_italic":"";
+        },
+        label: ws_label,
+        oneditsave: ws_oneditsave,
+        oneditprepare: function() {
+             $("#node-input-pinmode").on("change",function() {
+                console.log($(this).val());
+                if ($(this).val() == 0) {
+                    $("#div-write-pin").show();
+                } else {
+                    $("#div-write-pin").hide();
+                }
+            }).change();
+        },
+    });
+
+})();
+</script>  
+
+<!-- Blynk out Node - Write -->
+<script type="text/x-red" data-template-name="blynk-ws-out-write">
+    <div class="form-row" id="websocket-client-row">
+        <label for="node-input-client"><i class="fa fa-bookmark"></i> <span>Connection</span></label>
+        <input type="text" id="node-input-client">
+    </div>
+    <div class="form-row">
+        <label for="node-input-pinmode"><i class="fa fa-cogs"></i> <span>Pin Mode</span></label>
+        <select id="node-input-pinmode" style="width:70%">
+            <option value="0">Fixed</option>
+            <option value="1">Dynamic</option>
+        </select>
+   	</div>
+    <div class="form-row" id="div-write-pin">
+        <label for="node-input-pin"><i class="fa fa-dot-circle-o"></i> <span>Virtual Pin</span></label>
+        <input type="number" id="node-input-pin"  min="0" max="127" placeholder="pin">
+   	</div>
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> <span>Name</span></label>
+        <input type="text" id="node-input-name" data-i18n="[placeholder]node-red:common.label.name">
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="blynk-ws-out-write">
+    <p>Blynk write node.</p>
+    <p>This node will write the value in <code>msg.payload</code> to the specified pin number.</p><br>
+    <p>"Pin mode" selects whether the pin number is fixed or dynamic<br>
+    &nbsp;&nbsp; Fixed, select the pin number in the interface<br>
+    &nbsp;&nbsp; Dynamic, the pin number is passed through <code> msg.pin</code> property</p>
+    <p class="form-tips">
+        Official documentation: 
+        <a href="http://docs.blynk.cc/#blynk-main-operations-get-data-from-hardware-pushing-data-from-hardware">Push data</a>
+    <p>
+</script>

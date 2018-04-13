@@ -1,0 +1,119 @@
+<script type="text/javascript">
+
+    (function() {
+        
+        function ws_oneditsave() {
+        }
+        
+        function ws_label() {
+            _pin = 'no pin';
+            _type = 'Bridge';
+            _dynamic = false;
+            if (this.pinmode == 1) {
+                _dynamic = true;
+            } 
+            
+            if(this.pin) {
+                var type = this.pintype.charAt(0).toUpperCase();
+                _pin = 'Pin '+ type + this.pin + ' - ' +  _type;
+            }
+            if(_dynamic) {
+                _pin = 'Pin Dynamic - ' +  _type;
+            }
+    
+            return this.name||_pin;
+        }
+
+    RED.nodes.registerType('blynk-ws-out-bridge',{
+        category: 'Blynk_ws',
+        paletteLabel: 'bridge',
+        defaults: {
+            name: {value: ''},
+            key: {value: '', required:true, validate:RED.validators.regex(/^[a-fA-F0-9]{32}$/) },
+            bpin: {value: 0, required:true},
+            pin: {value: 0, required:true},
+            pinmode: {value: 0, required:true},
+            pintype: {value: 'vw', required:true},
+            client: {type: "blynk-ws-client", required:true }
+        },
+        color:"#1BC17C",
+        inputs:1,
+        outputs:0,
+        icon: "bridge.png",
+        align: "right",
+        labelStyle: function() {
+            return this.name?"node_label_italic":"";
+        },
+        label: ws_label,
+        oneditsave: ws_oneditsave,
+        oneditprepare: function() {
+             $("#node-input-pinmode").on("change",function() {
+                console.log($(this).val());
+                if ($(this).val() == 0) {
+                    $("#div-bridge-pin").show();
+                } else {
+                    $("#div-bridge-pin").hide();
+                }
+            }).change();
+        },
+    });
+
+})();
+</script>  
+
+<!-- Blynk out Node - Bridge -->
+<script type="text/x-red" data-template-name="blynk-ws-out-bridge">
+    <div class="form-row" id="websocket-client-row">
+        <label for="node-input-client"><i class="fa fa-bookmark"></i> <span>Connection</span></label>
+        <input type="text" id="node-input-client">
+    </div>
+    <div class="form-row" id="div-bridge-bpin">
+        <label for="node-input-bpin"><i class="fa fa-dot-circle-o"></i> <span>Bridge Pin</span></label>
+        <input type="number" id="node-input-bpin"  min="0" max="127" placeholder="pin">
+    </div>
+    <div class="form-row">
+        <label for="node-input-key"><i class="fa fa-key"></i> Auth Token</label>
+        <input type="text" id="node-input-key" placeholder="ex. &quot;f45626c103a94983b469637978b0c78a&quot;">
+    </div>
+    <div class="form-row">
+        <label for="node-input-pinmode"><i class="fa fa-cogs"></i> <span>Pin Mode</span></label>
+        <select id="node-input-pinmode" style="width:70%">
+            <option value="0">Fixed</option>
+            <option value="1">Dynamic</option>
+        </select>
+   	</div>
+    <div class="form-row" id="div-bridge-pin">
+        <label for="node-input-pin"><i class="fa fa-dot-circle-o"></i> <span>Pin Number</span></label>
+        <input type="number" id="node-input-pin"  min="0" max="127" placeholder="pin">
+    </div>
+    <div class="form-row">
+        <label for="node-input-pintype"><i class="fa fa-cogs"></i> <span>Pin Type</span></label>
+        <select id="node-input-pintype" style="width:70%">
+            <option value="vw">Virtual</option>
+            <option value="aw">Analog</option>
+            <option value="dw">Digital</option>
+        </select>
+   	</div>
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> <span>Name</span></label>
+        <input type="text" id="node-input-name" data-i18n="[placeholder]node-red:common.label.name">
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="blynk-ws-out-bridge">
+    <p>Blynk bridge node.</p>
+    <p>This node is used to send commands to another Blynk device, the value in <code> msg.payload </code> is sent to the specified device at the specified pin number.</p><br>
+    <p>"Bridge Pin" the pin number used to send command to remote device</p>
+    <p>"Auth Token" the unique access token of remote blynk device</p>
+    <p>"Pin mode" selects whether the pin number is fixed or dynamic<br>
+    &nbsp;&nbsp; Fixed, select the pin number in the interface<br>
+    &nbsp;&nbsp; Dynamic, the pin number is passed through <code> msg.pin</code> property</p>
+    <p>"Pin type" is used to select the type of message you want to send:<br>
+        &nbsp;&nbsp; Virtual, sends a virtualWrite command to the specified pin<br>
+        &nbsp;&nbsp; Analog, sends a analogWrite command to the specified pin<br>
+        &nbsp;&nbsp; Digital, sends a digitalWrite command to the specified pin</p>
+    <p class="form-tips">
+        Official documentation: 
+        <a href="http://docs.blynk.cc/#widgets-other-bridge">Bridge</a>
+    <p>
+</script>

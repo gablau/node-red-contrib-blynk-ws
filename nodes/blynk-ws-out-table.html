@@ -1,0 +1,77 @@
+<script type="text/javascript">
+
+    (function() {
+    
+        function ws_oneditprepare() {
+        }
+        
+        function ws_oneditsave() {
+        }
+        
+        function ws_label() {
+            _pin = 'no pin';
+            _type = 'Table';
+                
+            if(this.pin) {
+            _pin = 'Pin V'+ this.pin + ' - ' +  _type;
+            }
+    
+            return this.name||_pin;
+        }
+
+    RED.nodes.registerType('blynk-ws-out-table',{
+        category: 'Blynk_ws',
+        paletteLabel: 'table',
+        defaults: {
+            name: {value: ''},
+            pin: {value: 0},
+            client: {type: "blynk-ws-client", required:true }
+        },
+        color:"#1BC17C",
+        icon:'table.png',     
+        align: 	'right',
+        inputs:	1,
+        outputs:0,
+        labelStyle: function() {
+            return this.name?"node_label_italic":"";
+        },
+        label: ws_label,
+        oneditsave: ws_oneditsave,
+        oneditprepare: ws_oneditprepare
+    });
+
+
+})();
+</script>  
+
+<!-- Blynk out Node - Table -->
+<script type="text/x-red" data-template-name="blynk-ws-out-table">
+    <div class="form-row" id="websocket-client-row">
+        <label for="node-input-client"><i class="fa fa-bookmark"></i> <span>Connection</span></label>
+        <input type="text" id="node-input-client">
+    </div>
+    <div class="form-row">
+        <label for="node-input-pin"><i class="fa fa-dot-circle-o"></i> <span>Virtual Pin</span></label>
+        <input type="number" id="node-input-pin"  min="0" max="127" placeholder="pin">
+   	</div>
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> <span>Name</span></label>
+        <input type="text" id="node-input-name" data-i18n="[placeholder]node-red:common.label.name">
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="blynk-ws-out-table">
+   <p>Blynk Table node.</p>
+   <p>For use with Blynk app Table Widget.</p>
+   <p>Set <code>msg.add</code> with an array of <code>['name','value']</code> to add row to the table.<br/>
+   Set <code>msg.update</code> with an array of <code>['index','name','value']</code> to update row to the table.<br/>
+   Set <code>msg.pick</code> to the row index you want to highlight.<br/>
+   Set <code>msg.loadtable</code> with an array of arrays <code>['name','value']</code> or <code>['name']</code> depending on how many rows you want to add to the table<br/>
+   Set <code>msg.clear</code> to <code>true</code> if you want to clear all table rows. (Index is reset to 0).
+   </p>
+   <p class="form-tips">
+        Official documentation: 
+        <a href="http://docs.blynk.cc/#widgets-time-input-table">Table</a>
+   <p>
+    
+</script>

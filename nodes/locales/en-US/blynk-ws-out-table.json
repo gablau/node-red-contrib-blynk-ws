@@ -1,0 +1,16 @@
+{
+    "blynk-ws-out-table": {
+        "status": {
+            "error": "error",
+            "connecting": "connecting ",
+            "connected-fixed": "connected to pin V",
+            "disconnected": "disconnected"
+        },
+        "warn": {
+            "pin-value":"Table node - The msg.pin must be between 0 and 127."
+        },
+        "errors": {
+            "missing-conf":"Missing configuration"
+        }
+    }
+}

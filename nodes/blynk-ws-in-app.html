@@ -1,0 +1,58 @@
+<script type="text/javascript">
+
+    (function() {
+    
+        function ws_oneditprepare() {
+        }
+        
+        function ws_oneditsave() {
+        }
+        
+        function ws_label() {
+            return this.name||'App Event';
+        }
+           
+    RED.nodes.registerType('blynk-ws-in-app', {
+        category: 'Blynk_ws',
+        paletteLabel: 'app event',
+        defaults: {
+            name: {value: ''},
+            client: {type:"blynk-ws-client", required:true }
+        },
+        color:"#1BC17C",
+        inputs:0,
+        outputs:1,
+        icon: "white-globe.png",
+        labelStyle: function() {
+            return this.name?"node_label_italic":"";
+        },
+        label: ws_label,
+        oneditsave: ws_oneditsave,
+        oneditprepare: ws_oneditprepare
+    });
+
+})();
+</script>  
+
+<!-- Blynk Input Node - App -->
+<script type="text/x-red" data-template-name="blynk-ws-in-app">
+    <div class="form-row" id="websocket-client-row">
+        <label for="node-input-client"><i class="fa fa-bookmark"></i> <span>Connection</span></label>
+        <input type="text" id="node-input-client">
+    </div>
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> <span>Name</span></label>
+        <input type="text" id="node-input-name" data-i18n="[placeholder]node-red:common.label.name">
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="blynk-ws-in-app">
+    <p>Blynk app event node.</p>
+    <p><code>msg.payload</code> will contain the the value app send.</p>
+    <p><code>'acon'</code> App connected.</p>
+    <p><code>'adis'</code> App disconnected.</p>
+    <p class="form-tips">
+        Official documentation: 
+        none
+    <p>
+</script>

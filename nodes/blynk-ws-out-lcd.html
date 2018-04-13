@@ -1,0 +1,77 @@
+<script type="text/javascript">
+
+    (function() {
+    
+        function ws_oneditprepare() {
+        }
+        
+        function ws_oneditsave() {
+        }
+        
+        function ws_label() {
+            _pin = 'no pin';
+            _type = 'LCD';
+                
+            if(this.pin) {
+            _pin = 'Pin V'+ this.pin + ' - ' +  _type;
+            }
+    
+            return this.name||_pin;
+        }
+
+    RED.nodes.registerType('blynk-ws-out-lcd',{
+        category: 'Blynk_ws',
+        paletteLabel: 'lcd',
+        defaults: {
+            name: {value: ''},
+            pin: {value: 0},
+            client: {type: "blynk-ws-client", required:true }
+        },
+        color:"#1BC17C",
+        icon:'lcd.png',     
+        align: 	'right',
+        inputs:	1,
+        outputs:0,
+        labelStyle: function() {
+            return this.name?"node_label_italic":"";
+        },
+        label: ws_label,
+        oneditsave: ws_oneditsave,
+        oneditprepare: ws_oneditprepare
+    });
+
+})();
+</script>
+
+<!-- Blynk out Node - LCD -->
+<script type="text/x-red" data-template-name="blynk-ws-out-lcd">
+    <div class="form-row" id="websocket-client-row">
+        <label for="node-input-client"><i class="fa fa-bookmark"></i> <span>Connection</span></label>
+        <input type="text" id="node-input-client">
+    </div>
+    <div class="form-row">
+        <label for="node-input-pin"><i class="fa fa-dot-circle-o"></i> <span>Virtual Pin</span></label>
+        <input type="number" id="node-input-pin"  min="0" max="127" placeholder="pin">
+   	</div>
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> <span>Name</span></label>
+        <input type="text" id="node-input-name" data-i18n="[placeholder]node-red:common.label.name">
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="blynk-ws-out-lcd">
+   <p>Blynk LCD node.</p>
+   <p>For use with Blynk app LCD Widget in advanced mode.</p>
+   <p>Set <code>msg.text</code> to the text you want displayed.<br/>
+   Set <code>msg.y</code> to the line you want <code>text</code> it shown on (0,1), default 0.<br/>
+   Set <code>msg.x</code> to x position you want <code>text</code> it shown on (0,15), default 0.<br/>
+   Set <code>msg.text1</code> to the text you want displayed on second line.<br/>
+   Set <code>msg.y1</code> to the line you want <code>text1</code> it shown on (0,1), default 1.<br/>
+   Set <code>msg.x1</code> to x position you want <code>text1</code> it shown on (0,15), default 0.<br/>
+   Set <code>msg.clear</code> to <code>true</code> if you want to clear it before write.
+   </p>
+   <p class="form-tips">
+        Official documentation: 
+        <a href="http://docs.blynk.cc/#widgets-displays-lcd">LCD</a>
+   <p>
+</script>

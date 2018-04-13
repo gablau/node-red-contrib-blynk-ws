@@ -1,0 +1,84 @@
+<script type="text/javascript">
+
+    (function() {
+    
+        function ws_oneditprepare() {
+        }
+        
+        function ws_oneditsave() {
+        }
+        
+        function ws_label() {
+            _pin = 'no pin';
+            _type = _type = 'Read Event';
+
+            if(this.pin) {
+            _pin = 'Pin V'+ this.pin + ' - ' +  _type;
+            }
+            if(this.pin_all) {
+                _pin = 'All Pins' + ' - ' +  _type;
+            }
+    
+            return this.name||_pin;
+        }
+           
+    RED.nodes.registerType('blynk-ws-in-read', {
+        category: 'Blynk_ws',
+        paletteLabel: 'read event',
+        defaults: {
+            name: {value: ''},
+            pin: {value: 0},
+            pin_all: {value: 0},
+            client: {type:"blynk-ws-client", required:true }
+        },
+        color:"#1BC17C",
+        inputs:0,
+        outputs:1,
+        icon: "white-globe.png",
+        labelStyle: function() {
+            return this.name?"node_label_italic":"";
+        },
+        label: ws_label,
+        oneditsave: ws_oneditsave,
+        oneditprepare: function() {
+             $("#node-input-pin_all").on("change",function() {
+                if ($(this).is(":checked")) {
+                    $("#div-input-pin").hide();
+                } else {
+                    $("#div-input-pin").show();
+                }
+            }).change();
+        }
+    });
+
+})();
+</script>  
+
+<!-- Blynk Input Node - Read -->
+<script type="text/x-red" data-template-name="blynk-ws-in-read">
+    <div class="form-row" id="websocket-client-row">
+        <label for="node-input-client"><i class="fa fa-bookmark"></i> <span>Connection</span></label>
+        <input type="text" id="node-input-client">
+    </div>
+    <div class="form-row">
+        <label for="node-input-pin_all"><i class="fa fa-cogs"></i> <span>Virtual Pin</span></label>
+        <input type="checkbox" id="node-input-pin_all"  value="1" style="width: auto; vertical-align: top;"> All Pins</span></input>
+    </div>
+    <div id="div-input-pin" class="form-row">
+        <label for="node-input-pin"><i class="fa fa-dot-circle-o"></i> <span>Virtual Pin</span></label>
+        <input type="number" id="node-input-pin"  min="0" max="127" placeholder="pin">
+    </div>
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> <span>Name</span></label>
+        <input type="text" id="node-input-name" data-i18n="[placeholder]node-red:common.label.name">
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="blynk-ws-in-read">
+    <p>Blynk read event node.</p>
+    <p><code>msg.payload</code> will contain the virtual pin number that triggered the read event.</p>
+    <p class="form-tips">
+        Official documentation: 
+        <a href="http://docs.blynk.cc/#blynk-main-operations-get-data-from-hardware-perform-requests-by-widget">Read</a>
+    <p>
+</script>

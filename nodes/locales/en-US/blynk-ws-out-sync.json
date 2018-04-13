@@ -1,0 +1,18 @@
+{
+    "blynk-ws-out-sync": {
+        "status": {
+            "error": "error",
+            "connecting": "connecting ",
+            "connected-all": "connected to all pin",
+            "connected-fixed": "connected to pin V",
+            "disconnected": "disconnected"
+        },
+        "warn": {
+            "pin-dinamic":"Sync node - Setting \"pin mode\" to \"dynamic\" but no msg.pin found.",
+            "pin-value":"Sync node - The msg.pin must be between 0 and 127."
+       },
+        "errors": {
+            "missing-conf":"Missing configuration"
+        }
+    }
+}

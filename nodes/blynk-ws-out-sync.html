@@ -1,0 +1,95 @@
+<script type="text/javascript">
+
+    (function() {
+        
+        function ws_oneditsave() {
+        }
+        
+        function ws_label() {
+            _pin = 'no pin';
+            _type = 'Sync';
+            _dynamic = false;
+            if (this.pinmode == 1) {
+                _dynamic = true;
+            } 
+            
+            if(this.pin) {
+            _pin = 'Pin V'+ this.pin + ' - ' +  _type;
+            }
+            if(_dynamic) {
+                _pin = 'Pin All - ' +  _type;
+            }
+    
+            return this.name||_pin;
+        }
+           
+    RED.nodes.registerType('blynk-ws-out-sync',{
+        category: 'Blynk_ws',
+        paletteLabel: 'sync',
+        defaults: {
+            name: {value: ''},
+            pin: {value: 0},
+            pinmode: {value: 0},
+            client: {type: "blynk-ws-client", required:true }
+        },
+        color:"#1BC17C",
+        inputs:1,
+        outputs:0,
+        icon: "sync.png",
+        align: "right",
+        labelStyle: function() {
+            return this.name?"node_label_italic":"";
+        },
+        label: ws_label,
+        oneditsave: ws_oneditsave,
+        oneditprepare: function() {
+             $("#node-input-pinmode").on("change",function() {
+                console.log($(this).val());
+                if ($(this).val() == 0) {
+                    $("#div-sync-pin").show();
+                } else {
+                    $("#div-sync-pin").hide();
+                }
+            }).change();
+        },
+    });
+
+})();
+</script>  
+
+<!-- Blynk out Node - sync -->
+<script type="text/x-red" data-template-name="blynk-ws-out-sync">
+    <div class="form-row" id="websocket-client-row">
+        <label for="node-input-client"><i class="fa fa-bookmark"></i> <span>Connection</span></label>
+        <input type="text" id="node-input-client">
+    </div>
+    <div class="form-row">
+        <label for="node-input-pinmode"><i class="fa fa-cogs"></i> <span>Sync Mode</span></label>
+        <select id="node-input-pinmode" style="width:70%">
+            <option value="0">syncVirtual</option>
+            <option value="1">syncAll</option>
+        </select>
+   	</div>
+    <div class="form-row" id="div-sync-pin">
+        <label for="node-input-pin"><i class="fa fa-dot-circle-o"></i> <span>Virtual Pin</span></label>
+        <input type="number" id="node-input-pin"  min="0" max="127" placeholder="pin">
+   	</div>
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> <span>Name</span></label>
+        <input type="text" id="node-input-name" data-i18n="[placeholder]node-red:common.label.name">
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="blynk-ws-out-sync">
+    <p>Blynk sync node.</p>
+    <p>This node will request server to send the most recent value of all pins or a single pin. Every virtual pin will generate a write event.</p><br>
+    <p>"Sync mode" choose if you want to sync all the pins or just a specific pin<br>
+    &nbsp;&nbsp; syncVirtual, select the pin number in the interface<br>
+    &nbsp;&nbsp; syncAll, request the sync of all pins</p>
+    <p class="form-tips">
+        Official documentation: 
+        <a href="http://docs.blynk.cc/#blynk-main-operations-state-syncing-for-hardware">State syncing</a>
+        <a href="http://docs.blynk.cc/#blynk-firmware-virtual-pins-control-blynksyncall">Blynk.syncAll()</a>
+        <a href="http://docs.blynk.cc/#blynk-firmware-virtual-pins-control-blynksyncvirtualvpin">Blynk.syncVirtual()</a>
+    <p>
+</script>

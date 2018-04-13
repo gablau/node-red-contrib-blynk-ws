@@ -1,0 +1,14 @@
+{
+    "blynk-ws-out-notify": {
+        "status": {
+            "error": "error",
+            "connecting": "connecting ",
+            "connected": "connected",
+            "connected-queue": "connected - queue: ",
+            "disconnected": "disconnected"
+        },
+        "errors": {
+            "missing-conf":"Missing configuration"
+        }
+    }
+}

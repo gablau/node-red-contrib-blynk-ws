@@ -1,0 +1,13 @@
+{
+    "blynk-ws-in-app": {
+        "status": {
+            "error": "error",
+            "connecting": "connecting ",
+            "connected": "connected",
+            "disconnected": "disconnected"
+        },
+        "errors": {
+            "missing-conf":"Missing configuration"
+        }
+    }
+}

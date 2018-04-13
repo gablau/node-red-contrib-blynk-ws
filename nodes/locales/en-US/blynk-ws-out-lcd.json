@@ -1,0 +1,17 @@
+{
+    "blynk-ws-out-lcd": {
+        "status": {
+            "error": "error",
+            "connecting": "connecting ",
+            "connected-fixed": "connected to pin V",
+            "disconnected": "disconnected"
+        },
+        "warn": {
+            "payload":"## Blynk LCD node does not use the msg.payload property! ##   You must use the property msg.text or msg.text1 to write to the first or second line.",
+            "pin-value":"LCD node - The msg.pin must be between 0 and 127."
+        },
+        "errors": {
+            "missing-conf":"Missing configuration"
+        }
+    }
+}

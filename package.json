@@ -1,8 +1,7 @@
 {
   "name": "node-red-contrib-blynk-ws",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "Node Red integration with Blynk App and Server through websockets",
-  "main": "blynk-ws.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -23,12 +22,25 @@
   },
   "homepage": "https://github.com/gablau/node-red-contrib-blynk-ws",
   "dependencies": {
-    "buffer-dataview": ">=0.0.2",
-    "ws": ">=1.0.1"
+    "ws": ">=1.0.1",
+    "https-proxy-agent": ">=2.0.0",
+    "secure-random-string": ">=1.1.0",
+    "compare-versions": ">=3.1.0"
   },
   "node-red": {
     "nodes": {
-      "blynk": "blynk-ws.js"
+      "blynk-ws-client": "nodes/blynk-ws-client.js",
+      "blynk-ws-in-app": "nodes/blynk-ws-in-app.js",
+      "blynk-ws-in-read": "nodes/blynk-ws-in-read.js",
+      "blynk-ws-in-write": "nodes/blynk-ws-in-write.js",
+      "blynk-ws-out-write": "nodes/blynk-ws-out-write.js",
+      "blynk-ws-out-set-property": "nodes/blynk-ws-out-set-property.js",
+      "blynk-ws-out-sync": "nodes/blynk-ws-out-sync.js",
+      "blynk-ws-out-bridge": "nodes/blynk-ws-out-bridge.js",
+      "blynk-ws-out-email": "nodes/blynk-ws-out-email.js",
+      "blynk-ws-out-lcd": "nodes/blynk-ws-out-lcd.js",
+      "blynk-ws-out-notify": "nodes/blynk-ws-out-notify.js",
+      "blynk-ws-out-table": "nodes/blynk-ws-out-table.js"
     }
   }
 }

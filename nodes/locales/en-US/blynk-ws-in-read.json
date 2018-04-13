@@ -1,0 +1,14 @@
+{
+    "blynk-ws-in-read": {
+        "status": {
+            "error": "error",
+            "connecting": "connecting ",
+            "connected-all": "connected to all pins",
+            "connected-fixed": "connected to pin V",
+            "disconnected": "disconnected"
+        },
+        "errors": {
+            "missing-conf":"Missing configuration"
+        }
+    }
+}
