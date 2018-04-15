@@ -60,12 +60,14 @@ Use Raspberry PI as hardware to access 128 virtual pins or Generic Board for 32.
 ### How to use
 
 See information panel on every nodes
+
 ![Information Panel](./docs/img/readme-info-panel.png)
 
 ### Debug
 
 Use the verbose `-v` flag when starting Node-RED to get more information
 or use `node-red-log` and enable log on Configuration Node as needed
+
 ![Log settings](./docs/img/readme-log-settings.png)
 
 

@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [0.5.1] - 2018-04-15
+### Fixed
+- Fix regular expression for validate server url on configuration node
+- Fix display readme
+
 ## [0.5.0] - 2018-04-14
 ### Added
 - Blynk protocol - Handle any number of Blynk commands (virtualWrite(), setProperty(), etc.) in a row see [Blynk Library 0.5.0](https://community.blynk.cc/t/beta-blynk-library-v0-5-0/19841)
@@ -85,7 +90,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Heartbeat once 10 seconds
 - Max virtual pin allowed 128
 
-[Unreleased]: https://github.com/gablau/node-red-contrib-blynk-ws/compare/0.5.0...HEAD
+[Unreleased]: https://github.com/gablau/node-red-contrib-blynk-ws/compare/0.5.1...HEAD
+[0.5.1]: https://github.com/gablau/node-red-contrib-blynk-ws/compare/0.5.0...0.5.1
 [0.5.0]: https://github.com/gablau/node-red-contrib-blynk-ws/compare/0.4.0...0.5.0
 [0.4.0]: https://github.com/gablau/node-red-contrib-blynk-ws/compare/0.3.0...0.4.0
 [0.3.0]: https://github.com/gablau/node-red-contrib-blynk-ws/compare/0.2.0...0.3.0
