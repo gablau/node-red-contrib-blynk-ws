@@ -4,7 +4,7 @@ module.exports = function(RED) {
 	var ws = require("ws");
 	var srs = require("secure-random-string");
 
-	var LIBRARY_INFO = "0.5.0 2018-04-14";
+	var LIBRARY_INFO = "0.5.2 2018-04-27";
 
 	/* ##### BLYNK STUFF ###### */
 
@@ -822,7 +822,7 @@ module.exports = function(RED) {
 
 	BlynkClientNode.prototype.handleReadEvent = function(command) {
 		if(this.dbg_all || this.dbg_read || this.isLogPin(command.pin)){
-			this.log("readEvent: -> cmd " + JSON.stringify(command.replace(new RegExp("\u0000", "g"),"|")));
+			this.log("readEvent: -> cmd " + JSON.stringify(command));
 		}
 		for (var i = 0; i < this._inputNodes.length; i++) {
 			if (this._inputNodes[i].nodeType == "read"  && (this._inputNodes[i].pin == command.pin || this._inputNodes[i].pin_all ) ) {

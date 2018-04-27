@@ -69,3 +69,5 @@ typings/
 
 # custom rules
 docs/
+package-lock.json
+.npmignore
