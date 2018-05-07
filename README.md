@@ -44,6 +44,7 @@ If you installed Node Red globally use this command to install
 - notify widget
 - LCD widget
 - Table widget
+- zeRGBa widget
 
 ### Changelog
 

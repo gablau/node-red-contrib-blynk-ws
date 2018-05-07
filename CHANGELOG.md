@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [0.6.0] - 2018-05-07
+### Added
+- Node - *zeRGBa* -  New node to simplify the use of this widget in merge mode
+
 ## [0.5.2] - 2018-04-27
 ### Fixed
 - Fix Crash on log Read Event
@@ -94,7 +98,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Heartbeat once 10 seconds
 - Max virtual pin allowed 128
 
-[Unreleased]: https://github.com/gablau/node-red-contrib-blynk-ws/compare/0.5.2...HEAD
+[Unreleased]: https://github.com/gablau/node-red-contrib-blynk-ws/compare/0.6.0...HEAD
+[0.6.0]: https://github.com/gablau/node-red-contrib-blynk-ws/compare/0.5.2...0.6.0
 [0.5.1]: https://github.com/gablau/node-red-contrib-blynk-ws/compare/0.5.1...0.5.2
 [0.5.1]: https://github.com/gablau/node-red-contrib-blynk-ws/compare/0.5.0...0.5.1
 [0.5.0]: https://github.com/gablau/node-red-contrib-blynk-ws/compare/0.4.0...0.5.0

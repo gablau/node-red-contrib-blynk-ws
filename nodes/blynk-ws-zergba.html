@@ -1,0 +1,88 @@
+<script type="text/javascript">
+
+    (function() {
+        
+        function ws_oneditsave() {
+        }
+
+        function ws_oneditprepare() {
+        }
+        
+        function ws_label() {
+            _pin = 'no pin';
+            _type = 'zeRGBa';
+            _pin = 'Pin V'+ this.pin + ' - ' +  _type;
+            return this.name||_pin;
+        }
+           
+    RED.nodes.registerType('blynk-ws-zergba',{
+        category: 'Blynk_ws',
+        paletteLabel: 'zergba',
+        defaults: {
+            name: {value: ''},
+            pin: {value: 0},
+            client: {type: "blynk-ws-client", required:true }
+        },
+        color:"#1BC17C",
+        inputs:1,
+        outputs:1,
+        icon: "zergba.png",
+        align: "right",
+        labelStyle: function() {
+            return this.name?"node_label_italic":"";
+        },
+        label: ws_label,
+        oneditsave: ws_oneditsave,
+        oneditprepare: ws_oneditprepare,
+    });
+
+})();
+</script>  
+
+<!-- Blynk out Node - Write -->
+<script type="text/x-red" data-template-name="blynk-ws-zergba">
+    <div class="form-row" id="websocket-client-row">
+        <label for="node-input-client"><i class="fa fa-bookmark"></i> <span>Connection</span></label>
+        <input type="text" id="node-input-client">
+    </div>
+    <div class="form-row" id="div-write-pin">
+        <label for="node-input-pin"><i class="fa fa-dot-circle-o"></i> <span>Virtual Pin</span></label>
+        <input type="number" id="node-input-pin"  min="0" max="127" placeholder="pin">
+   	</div>
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> <span>Name</span></label>
+        <input type="text" id="node-input-name" data-i18n="[placeholder]node-red:common.label.name">
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="blynk-ws-zergba">
+    <p>Blynk zeRGBa node.</p>
+    <p>For use with Blynk app zeRGBa Widget in merge mode.</p>
+    <p>To select the color you can use the following methods:<p>
+    <p>Set <code>msg.hex</code> with hex notation color. (ex. <code>#ff0000</code> for red)<br/>
+     Set <code>msg.r</code> <code>msg.g</code> <code>msg.b</code> with the relative integer value. (ex. <code>msg.r = 255; msg.g = 0; msg.b = 0; </code> for red)<br/>
+     Set <code>msg.payload</code> to string with rgb values separated by semicolons or "\0". (ex. <code>255;0;0</code> for red)<br/>
+    </p>
+    <p><b>This node also captures write events!</b></p>
+    <p>Example output:<br>
+        <pre>
+<code>{
+    "payload":[
+        0,
+        178,
+        77
+    ],
+    "pin":"0",
+    "hex":"#00b24d",
+    "r":0,
+    "g":178,
+    "b":77,
+    "rgb":"0;178;77"
+}</code>
+        </pre>
+    <p>
+    <p class="form-tips">
+        Official documentation: 
+        <a href="http://docs.blynk.cc/#widgets-controllers-zergba">zeRGBa</a>
+    <p>
+</script>

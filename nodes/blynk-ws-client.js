@@ -4,7 +4,7 @@ module.exports = function(RED) {
 	var ws = require("ws");
 	var srs = require("secure-random-string");
 
-	var LIBRARY_INFO = "0.5.2 2018-04-27";
+	var LIBRARY_INFO = "0.6.0 2018-05-07";
 
 	/* ##### BLYNK STUFF ###### */
 
@@ -798,19 +798,68 @@ module.exports = function(RED) {
 		if(this.dbg_all || this.dbg_write || this.isLogPin(command.pin)){
 			this.log("writeEvent: -> cmd " + JSON.stringify(command));
 		}
+		//const util = require('util');
 		for (var i = 0; i < this._inputNodes.length; i++) {
-			if (this._inputNodes[i].nodeType == "write" && (this._inputNodes[i].pin == command.pin || this._inputNodes[i].pin_all ) ) {
+			//this.log(util.inspect(this._inputNodes[i], false, 1))
+			if ((this._inputNodes[i].nodeType == "write" || this._inputNodes[i].nodeType == "zergba") && 
+			(this._inputNodes[i].pin == command.pin || this._inputNodes[i].pin_all ) ) {
 				var msg;
 
-				msg = {
-					payload: command.value,
-					pin: command.pin,
-				};
+				switch (this._inputNodes[i].nodeType){
+					case 'write':
 
-				if (command.array) {
-					msg.arrayOfValues = command.array;
+						msg = {
+							payload: command.value,
+							pin: command.pin,
+						};
+
+						if (command.array) {
+							msg.arrayOfValues = command.array;
+						}
+						break;
+					case 'zergba':
+
+						function rgbToHex(r, g, b) {
+							return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+						}
+
+						function hexToRgb(hex) {
+							// Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
+							var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+							hex = hex.replace(shorthandRegex, function(m, r, g, b) {
+								return r + r + g + g + b + b;
+							});
+						
+							var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+							return result ? {
+								r: parseInt(result[1], 16),
+								g: parseInt(result[2], 16),
+								b: parseInt(result[3], 16)
+							} : null;
+						}
+
+						msg = {
+							payload: command.value,
+							pin: command.pin,
+						};
+
+						msg.hex = rgbToHex(parseInt(command.array[0]), parseInt(command.array[1]), parseInt(command.array[2]));
+						var color = hexToRgb(msg.hex);
+						msg.r = color.r;
+						msg.g = color.g;
+						msg.b = color.b;
+						msg.rgb = color.r+";"+color.g+";"+color.b;
+						msg.payload = [color.r, color.g, color.b];
+
+						this._inputNodes[i].status({
+							fill: "green",
+							shape: "dot",
+							text: this._inputNodes[i].connected_label + " ["+color.r+", "+color.g+", "+color.b+"]",
+						});
+						break;
+
 				}
-                
+
 				if(this.dbg_all || this.dbg_write || this.isLogPin(command.pin)){
 					this.log("writeEvent: -> output " + JSON.stringify(msg));
 				}
