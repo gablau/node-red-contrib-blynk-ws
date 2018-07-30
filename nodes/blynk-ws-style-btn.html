@@ -1,0 +1,162 @@
+<script type="text/javascript">
+
+    (function() {
+        
+        function ws_oneditsave() {
+        }
+
+        function ws_oneditprepare() {
+            if (this.prop === undefined) {
+                 $("#node-input-prop").val("0");
+            }
+            /*
+            if (this.prop === undefined || this.prop == '') {
+                $("#node-input-prop").val("bycode");
+            }*/
+
+            $("#node-input-prop").on("change",function() {
+                console.log($(this).val());
+                if ($(this).val() == 0) {
+                    $("#div-set-prop").show();
+                } else {
+                    $("#div-set-prop").hide();
+                }
+            }).change();
+        }
+        
+        function ws_label() {
+            _pin = 'no pin';
+            _type = 'Styled Button';
+            _pin = 'Pin V'+ this.pin + ' - ' +  _type;
+            return this.name||_pin;
+        }
+           
+    RED.nodes.registerType('blynk-ws-style-btn',{
+        category: 'Blynk_ws',
+        paletteLabel: 'style-btn',
+        defaults: {
+            name: {value: ''},
+            pin: {value: 0},
+            prop: {value: 0},
+            onlabel: {value: 'ON'},
+            offlabel: {value: 'OFF'},
+            oncolor: {value: '#000000'},
+            onbackcolor: {value: '#ffffff'},
+            offcolor: {value: '#ffffff'},
+            offbackcolor: {value: '#000000'},
+            client: {type: "blynk-ws-client", required:true }
+        },
+        color:"#1BC17C",
+        inputs:1,
+        outputs:1,
+        icon: "style-btn.png",
+        align: "right",
+        labelStyle: function() {
+            return this.name?"node_label_italic":"";
+        },
+        label: ws_label,
+        oneditsave: ws_oneditsave,
+        oneditprepare: ws_oneditprepare,
+    });
+
+})();
+</script>  
+
+<!-- Blynk out Node - Write -->
+<script type="text/x-red" data-template-name="blynk-ws-style-btn">
+    <div class="form-row" id="websocket-client-row">
+        <label for="node-input-client"><i class="fa fa-bookmark"></i> <span>Connection</span></label>
+        <input type="text" id="node-input-client">
+    </div>
+    <div class="form-row">
+        <label for="node-input-pin"><i class="fa fa-dot-circle-o"></i> <span>Virtual Pin</span></label>
+        <input type="number" id="node-input-pin"  min="0" max="127" placeholder="pin">
+    </div>
+    <div class="form-row">
+        <label for="node-input-prop"><i class="fa fa-list"></i> <span>Property</span></label>
+        <select id="node-input-prop" style="width:70%">
+            <option value="0" >Fixed</option>
+            <option value="1" >By code</option>
+        </select>
+       </div>
+    <div id="div-set-prop">
+        <div class="form-row">
+            Button ON Property
+        </div>
+        <div class="form-row">
+            <label for="node-input-onlabel"><i class="fa fa-tag"></i> <span>Label</span></label>
+            <input type="text" id="node-input-onlabel" placeholder="ON">
+        </div>
+        <div class="form-row">
+            <label for="node-input-oncolor"><i class="fa fa-paint-brush"></i> <span>Text Color</span></label>
+            <input type="color" id="node-input-oncolor">
+        </div>
+        <div class="form-row">
+            <label for="node-input-onbackcolor"><i class="fa fa-paint-brush"></i> <span>Button Color</span></label>
+            <input type="color" id="node-input-onbackcolor">
+        </div>
+        <div class="form-row">
+            Button ON Property
+        </div>
+        <div class="form-row">
+            <label for="node-input-offlabel"><i class="fa fa-tag"></i> <span>Label</span></label>
+            <input type="text" id="node-input-offlabel"  placeholder="OFF">
+        </div>
+        <div class="form-row">
+            <label for="node-input-offcolor"><i class="fa fa-paint-brush"></i> <span>Text Color</span></label>
+            <input type="color" id="node-input-offcolor">
+        </div>
+        <div class="form-row">
+            <label for="node-input-offbackcolor"><i class="fa fa-paint-brush"></i> <span>Button Color</span></label>
+            <input type="color" id="node-input-offbackcolor">
+        </div>
+    </div>
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> <span>Name</span></label>
+        <input type="text" id="node-input-name" data-i18n="[placeholder]node-red:common.label.name">
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="blynk-ws-style-btn">
+    <p>Blynk Styled Button node.</p>
+    <p>This node makes it easy to use the Style Button widget, you can write a value on the node or set a property, and it also captures writing events</p>
+    
+    <p>If <code>msg.topic</code> is <code>write-property</code> this node will set the properties to node.</p>
+    <p>In the node settings there is the property "Property" which can be "Fixed" or "By code". "Fixed" takes the values to be set directly from the settings module, while "By body" takes the values from the message.</p>
+
+    <p>To set properties "By code" use this syntax: <br>
+    <code>msg.onlabel</code> to set the onLabel property<br>
+    <code>msg.offlabel</code> to set the offLabel property<br>
+    <code>msg.onColor</code> to set the onColor property<br>
+    <code>msg.offColor</code> to set the offColor property<br>
+    <code>msg.onBackColor</code> to set the onBackColor property<br>
+    <code>msg.offBackColor</code> to set the offBackColor property<br>
+    </p><br> 
+    <p><b>This node also captures write events!</b></p> 
+    
+    <br>
+    <h2>NOTES</h2>
+    <p><code>color</code> is string in <a href="http://www.w3schools.com/html/html_colors.asp">HEX</a> format (in the form: #RRGGBB, 
+    where RR (red), GG (green) and BB (blue) are hexadecimal values between 00 and FF). For example :</p>
+    <pre><code>
+    #define BLYNK_GREEN     "#23C48E"
+    #define BLYNK_BLUE      "#04C0F8"
+    #define BLYNK_YELLOW    "#ED9D00"
+    #define BLYNK_RED       "#D3435C"
+    #define BLYNK_DARK_BLUE "#5F7CD8"</code></pre>
+    <br>
+    <h2>Styled Button Property</h2>
+    <p><code>onLabel</code> is string for ON label;</p>
+    <p><code>offLabel</code> is string for OFF label;</p>
+    <p><code>onColor</code> is color for ON label text;</p>
+    <p><code>offColor</code> is color for OFF label text;</p>
+    <p><code>onBackColor</code> is button color for ON state;</p>
+    <p><code>offBackColor</code> is button color for OFF state;</p>
+  
+    <!-- 
+    <p class="form-tips">
+            Official documentation: 
+            <a href="http://docs.blynk.cc/#blynk-main-operations-change-widget-properties">Change widget properties</a>
+    <p>
+        -->
+</script>
