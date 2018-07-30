@@ -33,18 +33,24 @@ If you installed Node Red globally use this command to install
 
 ### Supported events, commands and widgets
 
-- read event
-- write event
-- app event
-- write command
-- bridge command
-- sync command
-- set property command
-- emails widget
-- notify widget
-- LCD widget
-- Table widget
-- zeRGBa widget
+**Events:**
+- read
+- write
+- app (connected/disconected)
+
+**Commands:**
+- write
+- bridge
+- sync (virtual/all)
+- set property
+
+**Widgets:**
+- emails
+- notify
+- LCD
+- table
+- zeRGBa
+- styled button
 
 ### Changelog
 
@@ -85,7 +91,7 @@ To do this:
 __________
 
 ### Implementations for other platforms
-* [Arduino](https://github.com/blynkkk/blynk-library)
+* [C++, Arduino](https://github.com/blynkkk/blynk-library)
 * [Node.js, Espruino, Browsers](https://github.com/vshymanskyy/blynk-library-js)
 * [Particle](https://github.com/vshymanskyy/blynk-library-spark)
 * [Python, MicroPython](https://github.com/vshymanskyy/blynk-library-python)

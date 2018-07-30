@@ -1,6 +1,6 @@
 {
   "name": "node-red-contrib-blynk-ws",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "Node Red integration with Blynk App and Server through websockets",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -41,7 +41,8 @@
       "blynk-ws-out-lcd": "nodes/blynk-ws-out-lcd.js",
       "blynk-ws-out-notify": "nodes/blynk-ws-out-notify.js",
       "blynk-ws-out-table": "nodes/blynk-ws-out-table.js",
-      "blynk-ws-zergba": "nodes/blynk-ws-zergba.js"
+      "blynk-ws-zergba": "nodes/blynk-ws-zergba.js",
+      "blynk-ws-style-btn": "nodes/blynk-ws-style-btn.js"
     }
   }
 }

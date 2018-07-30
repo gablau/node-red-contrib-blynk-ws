@@ -6,6 +6,23 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [0.7.0] - 2018-07-30
+### Added
+- Node - *Styled Button* -  New node to simplify the use of this new button
+- Node - *Set Property* - Implemented "onColor, offColor, onBackColor, offBackColor" property for Styled Button widget (blynk cloud or local server >= v0.36.2)
+- Node - *Set Property* - Implemented "fraction" property for Slide widget (blynk cloud or local server >= v0.33.3)
+- Node - *Table* - Implemented "select, deselcet and order" commands
+
+### Changed
+- Code refactor - Extract blynk method and variable to files in "libs" directory
+- Node - *Notify* - Rate limit increased to 5 msg/s (Blynk Library 0.5.3)
+
+### Fixed
+- Node - *zeRGBa* - Check if the widget is configured in merge mode, otherwise it will generate an alert
+- Missing log on respond illegal command
+- Message ID overflow - see Blynk Library JS [PR #44](https://github.com/vshymanskyy/blynk-library-js/pull/44)
+- Show protocol warning in debug panel
+
 ## [0.6.0] - 2018-05-07
 ### Added
 - Node - *zeRGBa* -  New node to simplify the use of this widget in merge mode
@@ -98,7 +115,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Heartbeat once 10 seconds
 - Max virtual pin allowed 128
 
-[Unreleased]: https://github.com/gablau/node-red-contrib-blynk-ws/compare/0.6.0...HEAD
+[Unreleased]: https://github.com/gablau/node-red-contrib-blynk-ws/compare/0.7.0...HEAD
+[0.7.0]: https://github.com/gablau/node-red-contrib-blynk-ws/compare/0.6.0...0.7.0
 [0.6.0]: https://github.com/gablau/node-red-contrib-blynk-ws/compare/0.5.2...0.6.0
 [0.5.1]: https://github.com/gablau/node-red-contrib-blynk-ws/compare/0.5.1...0.5.2
 [0.5.1]: https://github.com/gablau/node-red-contrib-blynk-ws/compare/0.5.0...0.5.1
