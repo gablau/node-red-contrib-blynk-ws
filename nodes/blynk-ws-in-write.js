@@ -17,12 +17,12 @@ module.exports = function(RED) {
 
 		if (this.blynkClient) {
 			this.blynkClient.registerInputNode(this);
-			// TODO: nls
+
 			this.blynkClient.on("opened", function(n) {
 				node.status({
 					fill: "yellow",
 					shape: "dot",
-					text: "blynk-ws-in-write.status.connecting" + n
+					text: RED._("blynk-ws-in-write.status.connecting") + n
 				});
 			});
 			this.blynkClient.on("connected", function() {

@@ -10,7 +10,8 @@
         "warn": {
             "pin-dinamic":"Set Property node - Setting \"pin mode\" to \"dynamic\" but no msg.pin found.",
             "pin-value":"Set Property node - The msg.pin must be between 0 and 127.",
-            "property":"Set Property node - Please select a property."
+            "property":"Set Property node - Please select a property.",
+            "zergba":"Warning - zeRGBa not configured in merge mode."
         },
         "errors": {
             "missing-conf":"Missing configuration"

@@ -10,19 +10,20 @@ module.exports = function(RED) {
 
 		this.blynkClient = RED.nodes.getNode(this.client);
 		if (this.blynkClient) {
-			// TODO: nls
+			this.blynkClient.registerGenericNode(this, 'LCD');
+			
 			this.blynkClient.on("opened", function(n) {
 				node.status({
 					fill: "yellow",
 					shape: "dot",
-					text: "blynk-ws-out-lcd.status.connecting" + n
+					text: RED._("blynk-ws-out-lcd.status.connecting") + n
 				});
 			});
 			this.blynkClient.on("connected", function() {
 				node.status({
 					fill: "green",
 					shape: "dot",
-					text: "blynk-ws-out-lcd.status.connected-fixed" + node.pin
+					text: RED._("blynk-ws-out-lcd.status.connected-fixed") + node.pin
 				});
 			});
 			this.blynkClient.on("error", function() {

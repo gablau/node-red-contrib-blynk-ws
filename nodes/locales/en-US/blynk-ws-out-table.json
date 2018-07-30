@@ -3,7 +3,7 @@
         "status": {
             "error": "error",
             "connecting": "connecting ",
-            "connected-fixed": "connected to pin V",
+            "connected": "connected to pin V",
             "disconnected": "disconnected"
         },
         "warn": {

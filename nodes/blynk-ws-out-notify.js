@@ -12,13 +12,14 @@ module.exports = function(RED) {
         
 		this.blynkClient = RED.nodes.getNode(this.client);
 		if (this.blynkClient) {
-			this.log("Register notify node - on client: " + this.blynkClient.name);
+			//this.log("Register notify node - on client: " + this.blynkClient.name);
+			this.blynkClient.registerGenericNode(this, 'notify');
             
 			this.blynkClient.on("opened", function(n) {
 				node.status({
 					fill: "yellow",
 					shape: "dot",
-					text: "blynk-ws-out-notify.status.connecting" + n
+					text: RED._("blynk-ws-out-notify.status.connecting") + n
 				});
 			});
 			this.blynkClient.on("connected", function() {
@@ -29,7 +30,7 @@ module.exports = function(RED) {
 				node.status({
 					fill: "green",
 					shape: "dot",
-					text: "blynk-ws-out-notify.status.connected" + queuestr
+					text: RED._("blynk-ws-out-notify.status.connected") + queuestr
 				});
 			});
 			this.blynkClient.on("error", function() {

@@ -9,19 +9,20 @@ module.exports = function(RED) {
 
 		this.blynkClient = RED.nodes.getNode(this.client);
 		if (this.blynkClient) {
-			// TODO: nls
+			this.blynkClient.registerGenericNode(this, 'email');
+
 			this.blynkClient.on("opened", function(n) {
 				node.status({
 					fill: "yellow",
 					shape: "dot",
-					text: "blynk-ws-out-email.status.connecting" + n
+					text: RED._("blynk-ws-out-email.status.connecting") + n
 				});
 			});
 			this.blynkClient.on("connected", function(n) {
 				node.status({
 					fill: "green",
 					shape: "dot",
-					text: "blynk-ws-out-email.status.connected" + n
+					text: RED._("blynk-ws-out-email.status.connected") + n
 				});
 			});
 			this.blynkClient.on("error", function() {

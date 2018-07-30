@@ -26,7 +26,7 @@ module.exports = function(RED) {
 				node.status({
 					fill: "yellow",
 					shape: "dot",
-					text: "blynk-ws-out-bridge.status.connecting" + n
+					text: RED._("blynk-ws-out-bridge.status.connecting") + n
 				});
 			});
 			this.blynkClient.on("connected", function() {

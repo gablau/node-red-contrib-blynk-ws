@@ -1,6 +1,8 @@
 module.exports = function(RED) {
 	"use strict";
 
+	var blynkUtil = require('./../libs/blynk-util.js');
+
 	function BlynkZergbaNode(n) {
 		RED.nodes.createNode(this, n);
 		var node = this;
@@ -10,26 +12,6 @@ module.exports = function(RED) {
         
 		this.connected_label = RED._("blynk-ws-zergba.status.connected-fixed") + this.pin; 
 
-		function rgbToHex(r, g, b) {
-			return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
-		}
-
-		function hexToRgb(hex) {
-			// Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
-			var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
-			hex = hex.replace(shorthandRegex, function(m, r, g, b) {
-				return r + r + g + g + b + b;
-			});
-		
-			var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-			return result ? {
-				r: parseInt(result[1], 16),
-				g: parseInt(result[2], 16),
-				b: parseInt(result[3], 16)
-			} : null;
-		}
-             
-
 		this.blynkClient = RED.nodes.getNode(this.client);
 		if (this.blynkClient) {
 			this.blynkClient.registerInputNode(this);
@@ -37,7 +19,7 @@ module.exports = function(RED) {
 				node.status({
 					fill: "yellow",
 					shape: "dot",
-					text: "blynk-ws-zergba.status.connecting" + n
+					text: RED._("blynk-ws-zergba.status.connecting") + n
 				});
 			});
 			this.blynkClient.on("connected", function() {
@@ -73,7 +55,7 @@ module.exports = function(RED) {
 
 				if (msg.hasOwnProperty("hex")) {
 					var hex = Buffer.isBuffer(msg.hex) ? msg.hex : RED.util.ensureString(msg.hex);
-					var color = hexToRgb(hex);
+					var color = blynkUtil.hexToRgb(hex);
 					newmsg.hex = hex;
 					newmsg.r = color.r;
 					newmsg.g = color.g;
@@ -86,7 +68,7 @@ module.exports = function(RED) {
 					var r = Buffer.isBuffer(msg.r) ? msg.r : RED.util.ensureString(msg.r);
 					var g = Buffer.isBuffer(msg.g) ? msg.g : RED.util.ensureString(msg.g);
 					var b = Buffer.isBuffer(msg.b) ? msg.b : RED.util.ensureString(msg.b);
-					newmsg.hex = rgbToHex(parseInt(r), parseInt(g), parseInt(b));
+					newmsg.hex = blynkUtil.rgbToHex(parseInt(r), parseInt(g), parseInt(b));
 					newmsg.r = msg.r;
 					newmsg.g = msg.g;
 					newmsg.b = msg.b;
@@ -96,8 +78,8 @@ module.exports = function(RED) {
 				else {
 					var tmpcolor = payload.split("\0");
 					if(tmpcolor.length == 3){
-						newmsg.hex = rgbToHex(parseInt(tmpcolor[0]), parseInt(tmpcolor[1]), parseInt(tmpcolor[2]));
-						var color = hexToRgb(newmsg.hex);
+						newmsg.hex = blynkUtil.rgbToHex(parseInt(tmpcolor[0]), parseInt(tmpcolor[1]), parseInt(tmpcolor[2]));
+						var color = blynkUtil.hexToRgb(newmsg.hex);
 						newmsg.r = color.r;
 						newmsg.g = color.g;
 						newmsg.b = color.b;
@@ -107,8 +89,8 @@ module.exports = function(RED) {
 					}
 					tmpcolor = payload.split(";");
 					if(tmpcolor.length ==3){
-						newmsg.hex = rgbToHex(parseInt(tmpcolor[0]), parseInt(tmpcolor[1]), parseInt(tmpcolor[2]));
-						var color = hexToRgb(newmsg.hex);
+						newmsg.hex = blynkUtil.rgbToHex(parseInt(tmpcolor[0]), parseInt(tmpcolor[1]), parseInt(tmpcolor[2]));
+						var color = blynkUtil.hexToRgb(newmsg.hex);
 						newmsg.r = color.r;
 						newmsg.g = color.g;
 						newmsg.b = color.b;

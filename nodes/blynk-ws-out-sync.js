@@ -20,7 +20,7 @@ module.exports = function(RED) {
 				node.status({
 					fill: "yellow",
 					shape: "dot",
-					text: "blynk-ws-out-sync.status.connecting" + n
+					text: RED._("blynk-ws-out-sync.status.connecting") + n
 				});
 			});
 			this.blynkClient.on("connected", function() {

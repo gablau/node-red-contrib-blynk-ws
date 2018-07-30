@@ -16,7 +16,7 @@
             name: {value: ''},
             client: {type: "blynk-ws-client", required:true },
             queue: {value:false},
-            rate: {value:15},
+            rate: {value:5},
         },
         color:"#1BC17C",
         icon:'notify.png',     
@@ -58,7 +58,7 @@
         <div class="form-row">
             <label for="node-input-rate"></label>
             <label for="node-input-rate" style="width: 80px;margin-left: 30px;"><span>1 msg every</span></label>
-            <input type="text" id="node-input-rate" placeholder="15" style="text-align:end; width:40px !important">
+            <input type="text" id="node-input-rate" placeholder="5" style="text-align:end; width:40px !important">
             <label for="node-input-rate" style="margin-left: 5px;"><span>seconds</span></label>
         </div>
     </div>
@@ -79,9 +79,10 @@
    Limitations :
     <ul>
         <li>Maximum allowed body length is 120 symbols.</li>
-        <li>Only 1 notification per 15 seconds is allowed on Blynk Cloud.</li>
+        <li>Only 1 notification per 5 seconds is allowed on Blynk Cloud.</li>
     </ul>
    </p>
+   <p>You can also use <code>{DEVICE_NAME}</code> placeholder for device name, that will be replaced by your device name on the server side.</p>
    <p class="form-tips">
         Official documentation: 
         <a href="http://docs.blynk.cc/#widgets-notifications-push-notifications">Push Notifications</a>

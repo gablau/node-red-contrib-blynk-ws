@@ -1,5 +1,5 @@
 {
-    "blynk-ws-out-mail": {
+    "blynk-ws-out-email": {
         "status": {
             "error": "error",
             "connecting": "connecting ",
