@@ -23,7 +23,7 @@ module.exports = function(RED) {
 				node.status({
 					fill: "yellow",
 					shape: "dot",
-					text: "blynk-ws-out-set-property.status.connecting" + n
+					text: RED._("blynk-ws-out-set-property.status.connecting") + n
 				});
 			});
 			this.blynkClient.on("connected", function() {
@@ -99,15 +99,36 @@ module.exports = function(RED) {
 							var max = Buffer.isBuffer(msg.max) ? msg.max : RED.util.ensureString(msg.max);
 							node.blynkClient.setProperty(pin, "max", max, msgkey);
 						}
-						//buttons
+						//buttons and styled buttons label
 						if ((msg.hasOwnProperty("onlabel") || msg.hasOwnProperty("offlabel")) && node.blynkClient && node.blynkClient.logged) {
-							if (msg.hasOwnProperty("onlabel")){
+							if (msg.hasOwnProperty("onlabel")) {
 								var onlabel = Buffer.isBuffer(msg.onlabel) ? msg.onlabel : RED.util.ensureString(msg.onlabel);
 								node.blynkClient.setProperty(pin, "onLabel", onlabel, msgkey);
 							}
-							if (msg.hasOwnProperty("offlabel")){
+							if (msg.hasOwnProperty("offlabel")) {
 								var offlabel = Buffer.isBuffer(msg.offlabel) ? msg.offlabel : RED.util.ensureString(msg.offlabel);
 								node.blynkClient.setProperty(pin, "offLabel", offlabel, msgkey);
+							}
+						}
+						//styled buttons color (need server v0.36.2)
+						if ((msg.hasOwnProperty("onColor") || msg.hasOwnProperty("offColor") || 
+							 msg.hasOwnProperty("onBackColor") || msg.hasOwnProperty("offBackColor"))
+							 && node.blynkClient && node.blynkClient.logged) {
+							if (msg.hasOwnProperty("onColor")) {
+								var onColor = Buffer.isBuffer(msg.onColor) ? msg.onColor : RED.util.ensureString(msg.onColor);
+								node.blynkClient.setProperty(pin, "onColor", onColor, msgkey);
+							}
+							if (msg.hasOwnProperty("offColor")) {
+								var offColor = Buffer.isBuffer(msg.offColor) ? msg.offColor : RED.util.ensureString(msg.offColor);
+								node.blynkClient.setProperty(pin, "offColor", offColor, msgkey);
+							}
+							if (msg.hasOwnProperty("onBackColor")) {
+								var onBackColor = Buffer.isBuffer(msg.onBackColor) ? msg.onBackColor : RED.util.ensureString(msg.onBackColor);
+								node.blynkClient.setProperty(pin, "onBackColor", onBackColor, msgkey);
+							}
+							if (msg.hasOwnProperty("offBackColor")) {
+								var offBackColor = Buffer.isBuffer(msg.offBackColor) ? msg.offBackColor : RED.util.ensureString(msg.offBackColor);
+								node.blynkClient.setProperty(pin, "offBackColor", offBackColor, msgkey);
 							}
 						}
 						//menu
@@ -129,6 +150,11 @@ module.exports = function(RED) {
 						else if (msg.hasOwnProperty("step") && node.blynkClient && node.blynkClient.logged) {
 							var step = Buffer.isBuffer(msg.step) ? msg.step : RED.util.ensureString(msg.step);
 							node.blynkClient.setProperty(pin, "step", step, msgkey);
+						}
+						//fraction on slider widget (need server v0.33.3)
+						else if (msg.hasOwnProperty("maximumFractionDigits") && node.blynkClient && node.blynkClient.logged) {
+							var fraction = Buffer.isBuffer(msg.maximumFractionDigits) ? msg.maximumFractionDigits : RED.util.ensureString(msg.maximumFractionDigits);
+							node.blynkClient.setProperty(pin, "maximumFractionDigits", fraction, msgkey);
 						}
 					
 						if(node.blynkClient.multi_cmd) {

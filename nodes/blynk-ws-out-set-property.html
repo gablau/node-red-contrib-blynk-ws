@@ -36,8 +36,8 @@
         }
 
         function ws_oneditprepare() {
-            if (this.pinmode === undefined) {
-                $("#node-input-pinmode").val("0");
+           if (this.pinmode === undefined) {
+                 $("#node-input-pinmode").val("0");
             }
             if (this.prop === undefined || this.prop == '') {
                 $("#node-input-prop").val("bycode");
@@ -100,7 +100,7 @@
     <div class="form-row">
         <label for="node-input-prop"><i class="fa fa-list"></i> <span>Property</span></label>
         <select id="node-input-prop" style="width:70%">
-            <option value="bycode" >Set mutliple properties (by code)</option>
+            <option value="bycode" >Set multiple properties (by code)</option>
             <optgroup label="All Widgets">
                 <option value="color" >Color</option>
                 <option value="label" >Label</option>
@@ -110,6 +110,14 @@
             <optgroup label="Button">
                 <option value="onLabel" >On label</option>
                 <option value="offLabel" >Off label</option>
+            </optgroup>
+            <optgroup label="Styled Button">
+                <option value="onLabel" >On label</option>
+                <option value="offLabel" >Off label</option>
+                <option value="onColor" >On color</option>
+                <option value="offColor" >Off color</option>
+                <option value="onBackColor" >On background color</option>
+                <option value="offBackColor" >Off background color</option>
             </optgroup>
             <optgroup label="Menu">
                 <option value="labels">Labels</option>
@@ -122,6 +130,9 @@
             </optgroup>
             <optgroup label="Step Control">
                 <option value="step" >Step</option>
+            </optgroup>
+			<optgroup label="Slider">
+                <option value="maximumFractionDigits" >Maximum Fraction Digits</option>
             </optgroup>
         </select>
    	</div>
@@ -143,12 +154,18 @@
     <code>msg.color</code> to set the color property<br>
     <code>msg.min</code> to set the Min property<br>
     <code>msg.max</code> to set the Max property<br>
-    <code>msg.onlabel</code> to set the onLabel property (only Button widget)<br>
-    <code>msg.offlabel</code> to set the offLabel property (only Button widget)<br>
+    <code>msg.onlabel</code> to set the onLabel property (only Button and Styled Button widget)<br>
+    <code>msg.offlabel</code> to set the offLabel property (only Button and Styled Button widget)<br>
+    <code>msg.onColor</code> to set the onColor property (only Styled Button widget)<br>
+    <code>msg.offColor</code> to set the offColor property (only Styled Button widget)<br>
+    <code>msg.onBackColor</code> to set the onBackColor property (only Styled Button widget)<br>
+    <code>msg.offBackColor</code> to set the offBackColor property (only Styled Button widget)<br>
     <code>msg.labels</code> to set the Labels property (only Menu widget)<br>
     <code>msg.isonplay</code> to set the isOnPlay property (only Media Player widget)<br>
     <code>msg.url</code> to set the url property (only Video Straming widget)<br>
     <code>msg.step</code> to set the step property (only Step Control widget)<br>
+    <code>msg.maximumFractionDigits</code> to set the maximumFractionDigits property (only Slider widget)<br>
+
     </p><br>  
     
     <br>
@@ -164,9 +181,14 @@
     #define BLYNK_DARK_BLUE "#5F7CD8"</code></pre>
     <br><h2>Widget specific</h2>
     <p>Widget specific properties: </p>
-    <p><strong>Button</strong></p>
+    <p><strong>Button and Styled Button</strong></p>
     <p><code>onLabel</code> is string for ON label of button;</p>
     <p><code>offLabel</code> is string for OFF label of button;</p>
+    <p><strong>Styled Button</strong></p>
+    <p><code>onColor</code> is the color of label for ON state of styled button;</p>
+    <p><code>offColor</code>is the color of label for OFF state of styled button;</p>
+    <p><code>onBackColor</code> is the background color for ON state of styled button;</p>
+    <p><code>offBackColor</code>is the background color for OFF state of styled button;</p>
     <p><strong>Menu</strong></p><p><code>labels</code> is list of strings for Menu widget selections (array expected: <code>["Labels 1","Labels 2","Labels 3"]</code>);</p>
     <pre><code>Blynk.setProperty(V0, "labels", "label 1", "label 2", "label 3");</code></pre>
     <p><strong>Music Player</strong></p><p><code>isOnPlay</code> is boolean accepts true/false.</p>
@@ -175,6 +197,7 @@
     <pre><code>Blynk.setProperty(V0, "url", "http://my_new_video_url");</code></pre>
     <p><strong>Step Control</strong></p><p><code>step</code> is a integer value of step.</p>
     <pre><code>Blynk.setProperty(V0, "step", "5");</code></pre>
+    <p><strong>Slider</strong></p><p><code>maximumFractionDigits</code> is a integer value of decimals digits.</p>
     <p class="form-tips">
             Official documentation: 
             <a href="http://docs.blynk.cc/#blynk-main-operations-change-widget-properties">Change widget properties</a>
