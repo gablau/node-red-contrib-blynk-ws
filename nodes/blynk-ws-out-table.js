@@ -11,19 +11,20 @@ module.exports = function(RED) {
     
 		this.blynkClient = RED.nodes.getNode(this.client);
 		if (this.blynkClient) {
-			// TODO: nls
+			this.blynkClient.registerGenericNode(this, 'table');
+			
 			this.blynkClient.on("opened", function(n) {
 				node.status({
 					fill: "yellow",
 					shape: "dot",
-					text: "blynk-ws-out-table.status.connecting" + n
+					text: RED._("blynk-ws-out-table.status.connecting") + n
 				});
 			});
 			this.blynkClient.on("connected", function() {
 				node.status({
 					fill: "green",
 					shape: "dot",
-					text: "blynk-ws-out-table.status.connected-fixed" + node.pin
+					text: RED._("blynk-ws-out-table.status.connected") + node.pin
 				});
 			});
 			this.blynkClient.on("error", function() {
@@ -89,6 +90,24 @@ module.exports = function(RED) {
 				if (msg.hasOwnProperty("pick")) {
 					if(Number.isInteger(msg.pick) && msg.pick>=0) {
 						node.blynkClient.virtualWrite(node.pin, ["pick", msg.pick.toString()], msgkey);
+					}
+				}
+				if (msg.hasOwnProperty("select")) {
+					if(Number.isInteger(msg.select) && msg.select>=0) {
+						node.blynkClient.virtualWrite(node.pin, ["select", msg.select.toString()], msgkey);
+					}
+				}
+				if (msg.hasOwnProperty("deselect")) {
+					if(Number.isInteger(msg.deselect) && msg.deselect>=0) {
+						node.blynkClient.virtualWrite(node.pin, ["deselect", msg.deselect.toString()], msgkey);
+					}
+				}
+
+				if (msg.hasOwnProperty("order")) {
+					var args = Array.isArray(msg.order) ? msg.order : [];
+					if(args.length==2) {
+						var cmd = ["order"];
+						node.blynkClient.virtualWrite(node.pin, cmd.concat(args), msgkey);
 					}
 				}
 
