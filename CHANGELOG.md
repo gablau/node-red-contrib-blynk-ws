@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [0.7.1] - 2018-08-04
+### Fixed
+ Node - *Sync* - Missing "syncAll" commands
+
 ## [0.7.0] - 2018-07-30
 ### Added
 - Node - *Styled Button* -  New node to simplify the use of this new button
@@ -115,7 +119,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Heartbeat once 10 seconds
 - Max virtual pin allowed 128
 
-[Unreleased]: https://github.com/gablau/node-red-contrib-blynk-ws/compare/0.7.0...HEAD
+[Unreleased]: https://github.com/gablau/node-red-contrib-blynk-ws/compare/0.7.1...HEAD
+[0.7.1]: https://github.com/gablau/node-red-contrib-blynk-ws/compare/0.7.0...0.7.1
 [0.7.0]: https://github.com/gablau/node-red-contrib-blynk-ws/compare/0.6.0...0.7.0
 [0.6.0]: https://github.com/gablau/node-red-contrib-blynk-ws/compare/0.5.2...0.6.0
 [0.5.1]: https://github.com/gablau/node-red-contrib-blynk-ws/compare/0.5.1...0.5.2

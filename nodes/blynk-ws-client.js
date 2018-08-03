@@ -5,7 +5,7 @@ module.exports = function(RED) {
 
 	var ws = require("ws");
 
-	var LIBRARY_INFO = "0.7.0 2018-07-30"; //node-red lib version
+	var LIBRARY_INFO = "0.7.1 2018-08-04"; //node-red lib version
 
     
 	//blynk util
@@ -272,7 +272,7 @@ module.exports = function(RED) {
 	BlynkClientNode.prototype.sendInfo = blynkLib.sendInfo;
 
 	/* send syncAll message */
-	BlynkClientNode.prototype.syncAll = blynkLib.ping;
+	BlynkClientNode.prototype.syncAll = blynkLib.syncAll;
 
 	/* send syncVirtual message */
 	BlynkClientNode.prototype.syncVirtual = blynkLib.syncVirtual;
