@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [0.7.1] - 2018-08-04
 ### Fixed
- Node - *Sync* - Missing "syncAll" commands
+- Node - *Sync* - Missing "syncAll" commands
 
 ## [0.7.0] - 2018-07-30
 ### Added
