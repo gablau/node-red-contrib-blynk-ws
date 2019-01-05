@@ -51,12 +51,25 @@ module.exports = function(RED) {
 					text: "blynk-ws-out-bridge.status.disconnected"
 				});
 			});
+			this.blynkClient.on("disabled", function() {
+				node.status({
+					fill: "red",
+					shape: "dot",
+					text: "blynk-ws-out-bridge.status.disabled"
+				});
+			});
 		} else {
 			this.error(RED._("blynk-ws-out-bridge.errors.missing-conf"));
 		}
 		this.on("input", function(msg) {
-			if (msg.hasOwnProperty("payload") && node.blynkClient && node.blynkClient.logged) {
-				var payload = Buffer.isBuffer(msg.payload) ? msg.payload : RED.util.ensureString(msg.payload);
+
+			//no input operation if client not connected or disabled
+			if(!node.blynkClient || !node.blynkClient.logged) {
+				return; 
+			}
+				
+			if (msg.hasOwnProperty("payload")) {
+				var payload = Array.isArray(msg.payload) ? msg.payload : RED.util.ensureString(msg.payload);
 				var pin = node.pin;
 				if(node.pinmode == 1) {
 					if (!msg.hasOwnProperty("pin")) {

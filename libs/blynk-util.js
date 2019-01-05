@@ -132,6 +132,19 @@ function hexToRgb(hex) {
         b: parseInt(result[3], 16)
     } : null;
 }
+
+function checkRangeInt(i, min, max) {
+	var n = parseFloat(i);
+	return (!isNaN(n) && n >= min && n <= max && n == parseInt(i));
+}
+
+function checkByte(b){
+	return checkRangeInt(b, 0, 255);
+}
+
+function check01(i){
+	return checkRangeInt(i, 0, 1);
+}
 /* ### END OTHER FUNCTION ### */
 
 exports.messageToDebugString = messageToDebugString;
@@ -144,3 +157,6 @@ exports.getStatusByCode = getStatusByCode;
 
 exports.rgbToHex = rgbToHex;
 exports.hexToRgb = hexToRgb;
+exports.checkRangeInt = checkRangeInt;
+exports.checkByte = checkByte;
+exports.check01 = check01;

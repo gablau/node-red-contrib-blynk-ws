@@ -1,9 +1,8 @@
 {
-    "blynk-ws-in-read": {
+    "blynk-ws-image-gallery": {
         "status": {
             "error": "error",
             "connecting": "connecting ",
-            "connected-all": "connected to all pins",
             "connected-fixed": "connected to pin V",
             "disconnected": "disconnected",
             "disabled": "disabled"

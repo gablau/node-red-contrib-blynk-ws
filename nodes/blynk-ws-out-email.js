@@ -39,13 +39,26 @@ module.exports = function(RED) {
 					text: "blynk-ws-out-email.status.disconnected"
 				});
 			});
+			this.blynkClient.on("disabled", function() {
+				node.status({
+					fill: "red",
+					shape: "dot",
+					text: "blynk-ws-out-email.status.disabled"
+				});
+			});
 		} else {
 			this.error(RED._("blynk-ws-out-email.errors.missing-conf"));
 		}
 		this.on("input", function(msg) {
-			if (msg.hasOwnProperty("payload") && node.blynkClient && node.blynkClient.logged) {
-				var payload = Buffer.isBuffer(msg.payload) ? msg.payload : RED.util.ensureString(msg.payload);
-				var subject = msg.topic ? msg.topic : payload;
+
+			//no input operation if client not connected or disabled
+			if(!node.blynkClient || !node.blynkClient.logged) {
+				return; 
+			}
+				
+			if (msg.hasOwnProperty("payload")) {
+				var payload = RED.util.ensureString(msg.payload);
+				var subject = msg.topic ? RED.util.ensureString(msg.topic) : payload;
 				node.blynkClient.sendEmail(node.email, subject, payload);
 			}
 		});

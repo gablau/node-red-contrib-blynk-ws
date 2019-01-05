@@ -47,9 +47,22 @@ module.exports = function(RED) {
 					text: "blynk-ws-out-set-property.status.disconnected"
 				});
 			});
+			this.blynkClient.on("disabled", function() {
+				node.status({
+					fill: "red",
+					shape: "dot",
+					text: "blynk-ws-out-set-property.status.disabled"
+				});
+			});
 		
 			this.on("input", function(msg) {
-				if (msg.hasOwnProperty("payload") && node.blynkClient && node.blynkClient.logged) {
+
+				//no input operation if client not connected or disabled
+				if(!node.blynkClient || !node.blynkClient.logged) {
+					return; 
+				}
+				
+				if (msg.hasOwnProperty("payload")) {
 					var payload = msg.payload; //dont check if is a string
 					//var subject = msg.topic ? msg.topic : payload;
 					var prop = node.prop;
@@ -66,10 +79,10 @@ module.exports = function(RED) {
 						pin = msg.pin;
 					}
                 
-					if (msg.hasOwnProperty("prop") && node.blynkClient && node.blynkClient.logged) {
-						prop = Buffer.isBuffer(msg.prop) ? msg.prop : RED.util.ensureString(msg.prop);
+					if (msg.hasOwnProperty("prop")) {
+						prop = RED.util.ensureString(msg.prop);
 					}
-					if(prop!=="bycode"){ //single propery
+					if(prop!=="bycode"){ //single property
 						if(prop == ""){
 							node.warn(RED._("blynk-ws-out-set-property.warn.bycode"));
 							return;
@@ -83,79 +96,88 @@ module.exports = function(RED) {
 						} 
 
 						//all widget
-						if (msg.hasOwnProperty("label") && node.blynkClient && node.blynkClient.logged) {
-							var label = Buffer.isBuffer(msg.label) ? msg.label : RED.util.ensureString(msg.label);
-							node.blynkClient.setProperty(pin, "label", label, msgkey);
+						if (msg.hasOwnProperty("label")) {
+							node.blynkClient.setProperty(pin, "label", RED.util.ensureString(msg.label), msgkey);
 						}
-						if (msg.hasOwnProperty("color") && node.blynkClient && node.blynkClient.logged) {
-							var color = Buffer.isBuffer(msg.color) ? msg.color : RED.util.ensureString(msg.color);
-							node.blynkClient.setProperty(pin, "color", color, msgkey);
+						if (msg.hasOwnProperty("color")) {
+							node.blynkClient.setProperty(pin, "color", RED.util.ensureString(msg.color), msgkey);
 						}
-						if (msg.hasOwnProperty("min") && node.blynkClient && node.blynkClient.logged) {
-							var min = Buffer.isBuffer(msg.min) ? msg.min : RED.util.ensureString(msg.min);
-							node.blynkClient.setProperty(pin, "min", min, msgkey);
+						if (msg.hasOwnProperty("min")) {
+							node.blynkClient.setProperty(pin, "min", RED.util.ensureString(msg.min), msgkey);
 						}
-						if (msg.hasOwnProperty("max") && node.blynkClient && node.blynkClient.logged) {
-							var max = Buffer.isBuffer(msg.max) ? msg.max : RED.util.ensureString(msg.max);
-							node.blynkClient.setProperty(pin, "max", max, msgkey);
+						if (msg.hasOwnProperty("max")) {
+							node.blynkClient.setProperty(pin, "max", RED.util.ensureString(msg.max), msgkey);
 						}
 						//buttons and styled buttons label
-						if ((msg.hasOwnProperty("onlabel") || msg.hasOwnProperty("offlabel")) && node.blynkClient && node.blynkClient.logged) {
+						if ((msg.hasOwnProperty("onlabel") || msg.hasOwnProperty("offlabel"))) {
 							if (msg.hasOwnProperty("onlabel")) {
-								var onlabel = Buffer.isBuffer(msg.onlabel) ? msg.onlabel : RED.util.ensureString(msg.onlabel);
-								node.blynkClient.setProperty(pin, "onLabel", onlabel, msgkey);
+								node.blynkClient.setProperty(pin, "onLabel", RED.util.ensureString(msg.onlabel), msgkey);
 							}
 							if (msg.hasOwnProperty("offlabel")) {
-								var offlabel = Buffer.isBuffer(msg.offlabel) ? msg.offlabel : RED.util.ensureString(msg.offlabel);
-								node.blynkClient.setProperty(pin, "offLabel", offlabel, msgkey);
+								node.blynkClient.setProperty(pin, "offLabel", RED.util.ensureString(msg.offlabel), msgkey);
 							}
 						}
 						//styled buttons color (need server v0.36.2)
 						if ((msg.hasOwnProperty("onColor") || msg.hasOwnProperty("offColor") || 
 							 msg.hasOwnProperty("onBackColor") || msg.hasOwnProperty("offBackColor"))
-							 && node.blynkClient && node.blynkClient.logged) {
+							) {
 							if (msg.hasOwnProperty("onColor")) {
-								var onColor = Buffer.isBuffer(msg.onColor) ? msg.onColor : RED.util.ensureString(msg.onColor);
-								node.blynkClient.setProperty(pin, "onColor", onColor, msgkey);
+								node.blynkClient.setProperty(pin, "onColor", RED.util.ensureString(msg.onColor), msgkey);
 							}
 							if (msg.hasOwnProperty("offColor")) {
-								var offColor = Buffer.isBuffer(msg.offColor) ? msg.offColor : RED.util.ensureString(msg.offColor);
-								node.blynkClient.setProperty(pin, "offColor", offColor, msgkey);
+								node.blynkClient.setProperty(pin, "offColor", RED.util.ensureString(msg.offColor), msgkey);
 							}
 							if (msg.hasOwnProperty("onBackColor")) {
-								var onBackColor = Buffer.isBuffer(msg.onBackColor) ? msg.onBackColor : RED.util.ensureString(msg.onBackColor);
-								node.blynkClient.setProperty(pin, "onBackColor", onBackColor, msgkey);
+								node.blynkClient.setProperty(pin, "onBackColor", RED.util.ensureString(msg.onBackColor), msgkey);
 							}
 							if (msg.hasOwnProperty("offBackColor")) {
-								var offBackColor = Buffer.isBuffer(msg.offBackColor) ? msg.offBackColor : RED.util.ensureString(msg.offBackColor);
-								node.blynkClient.setProperty(pin, "offBackColor", offBackColor, msgkey);
+								node.blynkClient.setProperty(pin, "offBackColor", RED.util.ensureString(msg.offBackColor), msgkey);
 							}
 						}
 						//menu
-						else if (msg.hasOwnProperty("labels") && node.blynkClient && node.blynkClient.logged) {
+						else if (msg.hasOwnProperty("labels")) {
+							//todo check is array and count > 0
 							node.blynkClient.setProperty(pin, "labels", msg.labels, msgkey);
 						}
 						//music player
-						else if (msg.hasOwnProperty("isOnPlay") && node.blynkClient && node.blynkClient.logged) {
+						else if (msg.hasOwnProperty("isOnPlay")) {
 							var isonplay = false;
 							if (msg.isonplay) isonplay = true;
 							node.blynkClient.setProperty(pin, "isonplay", isonplay, msgkey);
 						}
 						//video streaming widget
-						else if (msg.hasOwnProperty("url") && node.blynkClient && node.blynkClient.logged) {
-							var url = Buffer.isBuffer(msg.url) ? msg.url : RED.util.ensureString(msg.url);
-							node.blynkClient.setProperty(pin, "url", url, msgkey);
+						else if (msg.hasOwnProperty("url") && !msg.hasOwnProperty("imgid")) {
+							node.blynkClient.setProperty(pin, "url", RED.util.ensureString(msg.url), msgkey);
 						}
 						//step (need server v0.32.2)
-						else if (msg.hasOwnProperty("step") && node.blynkClient && node.blynkClient.logged) {
-							var step = Buffer.isBuffer(msg.step) ? msg.step : RED.util.ensureString(msg.step);
+						else if (msg.hasOwnProperty("step")) {
+							var step = RED.util.ensureString(msg.step);
 							node.blynkClient.setProperty(pin, "step", step, msgkey);
 						}
 						//fraction on slider widget (need server v0.33.3)
-						else if (msg.hasOwnProperty("maximumFractionDigits") && node.blynkClient && node.blynkClient.logged) {
-							var fraction = Buffer.isBuffer(msg.maximumFractionDigits) ? msg.maximumFractionDigits : RED.util.ensureString(msg.maximumFractionDigits);
+						else if (msg.hasOwnProperty("maximumFractionDigits")) {
+							var fraction = RED.util.ensureString(msg.maximumFractionDigits);
 							node.blynkClient.setProperty(pin, "maximumFractionDigits", fraction, msgkey);
 						}
+						//image gallery widget (need server v0.40.x ??)
+						else if (msg.hasOwnProperty("imgid") && msg.hasOwnProperty("url")) {
+							var imgid = RED.util.ensureString(msg.imgid);
+							var url = RED.util.ensureString(msg.url);
+							node.blynkClient.setProperty(pin, "url", [imgid, url], msgkey);
+						}
+						else if (msg.hasOwnProperty("opacity")) {
+							var opacity = RED.util.ensureString(msg.opacity);
+							node.blynkClient.setProperty(pin, "opacity", opacity, msgkey);
+						}
+						else if (msg.hasOwnProperty("scale")) {
+							var scale = RED.util.ensureString(msg.scale);
+							node.blynkClient.setProperty(pin, "scale", scale, msgkey);
+						}
+						else if (msg.hasOwnProperty("rotation")) {
+							var rotation = RED.util.ensureString(msg.rotation);
+							node.blynkClient.setProperty(pin, "rotation", rotation, msgkey);
+						}
+
 					
 						if(node.blynkClient.multi_cmd) {
 							node.blynkClient.sendMsgMulti(msgkey);

@@ -40,13 +40,25 @@ module.exports = function(RED) {
 					text: "blynk-ws-out-lcd.status.disconnected"
 				});
 			});
+			this.blynkClient.on("disabled", function() {
+				node.status({
+					fill: "red",
+					shape: "dot",
+					text: "blynk-ws-out-lcd.status.disabled"
+				});
+			});
 		}
 		else {
 			this.error(RED._("blynk-ws-out-lcd.errors.missing-conf"));
 		}
 		this.on("input", function(msg) {
-			if (msg.hasOwnProperty("payload") && node.blynkClient && node.blynkClient.logged) {
-				var payload = Buffer.isBuffer(msg.payload) ? msg.payload : RED.util.ensureString(msg.payload);
+
+			//no input operation if client not connected or disabled
+			if(!node.blynkClient || !node.blynkClient.logged) {
+				return; 
+			}
+				
+			if (msg.hasOwnProperty("payload")) {
 				
 				if(node.pin<0 || node.pin>127) {
 					node.warn(RED._("blynk-ws-out-lcd.warn.pin-value"));
@@ -62,7 +74,7 @@ module.exports = function(RED) {
 					node.blynkClient.virtualWrite(node.pin, "clr", msgkey);
 				}
 				if (msg.hasOwnProperty("text")) {
-					var text = Buffer.isBuffer(msg.text) ? msg.text : RED.util.ensureString(msg.text);
+					var text = RED.util.ensureString(msg.text);
                   
 					var x=0;
 					if (msg.hasOwnProperty("x")) {
@@ -83,7 +95,7 @@ module.exports = function(RED) {
 				}
                 
 				if (msg.hasOwnProperty("text1")) {
-					var text1 = Buffer.isBuffer(msg.text1) ? msg.text : RED.util.ensureString(msg.text1);
+					var text1 = RED.util.ensureString(msg.text1);
                   
 					var x1=0;
 					if (msg.hasOwnProperty("x1")) {
@@ -108,7 +120,7 @@ module.exports = function(RED) {
 				} 
                 
 				if(!msg.hasOwnProperty("text") && !msg.hasOwnProperty("text1") && !msg.hasOwnProperty("clear") && msg.hasOwnProperty("payload")){
-					var payload = Buffer.isBuffer(msg.payload) ? msg.payload : RED.util.ensureString(msg.payload);
+					var payload = RED.util.ensureString(msg.payload);
 					if(payload != "" && payload.length > 1 ){
 						node.warn(RED._("blynk-ws-out-lcd.warn.payload"));
 					}

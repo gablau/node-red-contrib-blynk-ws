@@ -43,19 +43,64 @@ module.exports = function(RED) {
 					text: "blynk-ws-zergba.status.disconnected"
 				});
 			});
+			this.blynkClient.on("disabled", function() {
+				node.status({
+					fill: "red",
+					shape: "dot",
+					text: "blynk-ws-zergba.status.disabled"
+				});
+			});
 		} else {
 			this.error(RED._("blynk-ws-zergba.errors.missing-conf"));
 		}
 
 		this.on("input", function(msg) {
-			if (msg.hasOwnProperty("payload") && node.blynkClient && node.blynkClient.logged) {
-				var payload = Buffer.isBuffer(msg.payload) ? msg.payload : RED.util.ensureString(msg.payload);
+
+			//no input operation if client not connected or disabled
+			if(!node.blynkClient || !node.blynkClient.logged) {
+				return; 
+			}
+
+			function checkRGB(r, g, b){
+				var ret = "";
+				if(!blynkUtil.checkByte(r)){
+					ret = "R";
+				}
+				if(!blynkUtil.checkByte(g)){
+					ret = (ret == "") ? "G" : ret + ", G";
+				}
+				if(!blynkUtil.checkByte(b)){
+					ret = (ret == "") ? "B" : ret + ", B";
+				}
+
+				if(ret == "") return true;
+				ret = "zergba receive [" + r + "," + g + ", " + b + "] but " + ret + " value is not a valid byte (0-255)";
+				node.warn(ret);
+				return  ret;
+			}
+
+			if (msg.hasOwnProperty("payload")) {
+				var payload = Array.isArray(msg.payload) ? msg.payload : RED.util.ensureString(msg.payload);
 				var pin = node.pin;
 				var newmsg = {};
 
-				if (msg.hasOwnProperty("hex")) {
-					var hex = Buffer.isBuffer(msg.hex) ? msg.hex : RED.util.ensureString(msg.hex);
+				if(Array.isArray(payload) && payload.length == 3){
+					if(checkRGB(payload[0], payload[1], payload[2]) !== true) return;
+					newmsg.hex = blynkUtil.rgbToHex(parseInt(payload[0]), parseInt(payload[1]), parseInt(payload[2]));
+					var color = blynkUtil.hexToRgb(newmsg.hex);
+					newmsg.r = color.r;
+					newmsg.g = color.g;
+					newmsg.b = color.b;
+					newmsg.rgb = color.r+";"+color.g+";"+color.b;
+					newmsg.payload = [color.r, color.g, color.b];
+				}
+				else if (msg.hasOwnProperty("hex")) {
+					var hex = RED.util.ensureString(msg.hex);
 					var color = blynkUtil.hexToRgb(hex);
+					if(color === null) {
+						node.warn("zergba receive [" + hex + "] but cannot convert to RGB value");
+						return;
+					}
 					newmsg.hex = hex;
 					newmsg.r = color.r;
 					newmsg.g = color.g;
@@ -65,19 +110,21 @@ module.exports = function(RED) {
 					
 				}
 				else if (msg.hasOwnProperty("r") && msg.hasOwnProperty("g") && msg.hasOwnProperty("b")) {
-					var r = Buffer.isBuffer(msg.r) ? msg.r : RED.util.ensureString(msg.r);
-					var g = Buffer.isBuffer(msg.g) ? msg.g : RED.util.ensureString(msg.g);
-					var b = Buffer.isBuffer(msg.b) ? msg.b : RED.util.ensureString(msg.b);
+					var r = RED.util.ensureString(msg.r);
+					var g = RED.util.ensureString(msg.g);
+					var b = RED.util.ensureString(msg.b);
+					if(checkRGB(r,g,b) !== true) return;
 					newmsg.hex = blynkUtil.rgbToHex(parseInt(r), parseInt(g), parseInt(b));
-					newmsg.r = msg.r;
-					newmsg.g = msg.g;
-					newmsg.b = msg.b;
-					newmsg.rgb = msg.r+";"+msg.g+";"+msg.b;
-					newmsg.payload = [msg.r, msg.g, msg.b];
+					newmsg.r = r;
+					newmsg.g = g;
+					newmsg.b = b;
+					newmsg.rgb = r+";"+g+";"+b;
+					newmsg.payload = [r, g, b];
 				}
 				else {
 					var tmpcolor = payload.split("\0");
 					if(tmpcolor.length == 3){
+						if(checkRGB(tmpcolor[0], tmpcolor[1], tmpcolor[2]) !== true) return;
 						newmsg.hex = blynkUtil.rgbToHex(parseInt(tmpcolor[0]), parseInt(tmpcolor[1]), parseInt(tmpcolor[2]));
 						var color = blynkUtil.hexToRgb(newmsg.hex);
 						newmsg.r = color.r;
@@ -85,10 +132,10 @@ module.exports = function(RED) {
 						newmsg.b = color.b;
 						newmsg.rgb = color.r+";"+color.g+";"+color.b;
 						newmsg.payload = [color.r, color.g, color.b];
-
 					}
 					tmpcolor = payload.split(";");
 					if(tmpcolor.length ==3){
+						if(checkRGB(tmpcolor[0], tmpcolor[1], tmpcolor[2]) !== true) return;
 						newmsg.hex = blynkUtil.rgbToHex(parseInt(tmpcolor[0]), parseInt(tmpcolor[1]), parseInt(tmpcolor[2]));
 						var color = blynkUtil.hexToRgb(newmsg.hex);
 						newmsg.r = color.r;
@@ -97,9 +144,7 @@ module.exports = function(RED) {
 						newmsg.rgb = color.r+";"+color.g+";"+color.b;
 						newmsg.payload = [color.r, color.g, color.b];
 					}
-					
 				}
-				//todo valida valori
 
 				this.status({
 					fill: "green",
@@ -113,7 +158,9 @@ module.exports = function(RED) {
 		});
 
 		this.on("close", function() {
-			node.blynkClient.removeInputNode(node);
+			if(node.blynkClient) {
+				node.blynkClient.removeInputNode(node);
+			}
 		});
 	}
 	

@@ -1,6 +1,6 @@
 {
   "name": "node-red-contrib-blynk-ws",
-  "version": "0.7.1",
+  "version": "0.8.0",
   "description": "Node Red integration with Blynk App and Server through websockets",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -15,7 +15,7 @@
     "iot",
     "websockets"
   ],
-  "author": "Gabriele Lauricella <gab.lau@gmail.com.com> (https://github.com/gablau)",
+  "author": "Gabriele Lauricella <gab.lau@gmail.com> (https://github.com/gablau)",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/gablau/node-red-contrib-blynk-ws/issues"
@@ -42,7 +42,8 @@
       "blynk-ws-out-notify": "nodes/blynk-ws-out-notify.js",
       "blynk-ws-out-table": "nodes/blynk-ws-out-table.js",
       "blynk-ws-zergba": "nodes/blynk-ws-zergba.js",
-      "blynk-ws-style-btn": "nodes/blynk-ws-style-btn.js"
+      "blynk-ws-style-btn": "nodes/blynk-ws-style-btn.js",
+      "blynk-ws-image-gallery": "nodes/blynk-ws-image-gallery.js"
     }
   }
 }

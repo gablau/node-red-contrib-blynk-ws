@@ -1,6 +1,7 @@
 module.exports = function(RED) {
 	"use strict";
 
+
 	function BlynkStyleBtnNode(n) {
 		RED.nodes.createNode(this, n);
 		var node = this;
@@ -48,18 +49,33 @@ module.exports = function(RED) {
 					text: "blynk-ws-style-btn.status.disconnected"
 				});
 			});
+			this.blynkClient.on("disabled", function() {
+				node.status({
+					fill: "red",
+					shape: "dot",
+					text: "blynk-ws-style-btn.status.disabled"
+				});
+			});
 		} else {
 			this.error(RED._("blynk-ws-style-btn.errors.missing-conf"));
 		}
 
 		this.on("input", function(msg) {
-			if (msg.hasOwnProperty("payload") && msg.hasOwnProperty("topic") && node.blynkClient && node.blynkClient.logged) {
-				var payload = msg.payload; //dont check if is a string
-				var topic = msg.topic;
+
+			//no input operation if client not connected or disabled
+			if(!node.blynkClient || !node.blynkClient.logged) {
+				return; 
+			}
+				
+			if (msg.hasOwnProperty("payload") && msg.hasOwnProperty("topic")) {
+				var topic = RED.util.ensureString(msg.topic);
 
 				//virtualwrite to node
 				if (topic != 'write-property' ) {
-					payload = Buffer.isBuffer(msg.payload) ? msg.payload : RED.util.ensureString(msg.payload);
+					var payload = RED.util.ensureString(msg.payload);
+					if(payload === "true")  payload = "1";
+					if(payload === "false") payload = "0";
+
 					node.blynkClient.virtualWrite(node.pin, payload);
 					return;
 				}
@@ -68,8 +84,8 @@ module.exports = function(RED) {
 				var prop = node.prop;
 				var pin = node.pin;
 			
-				if (msg.hasOwnProperty("prop") && node.blynkClient && node.blynkClient.logged) {
-					prop = Buffer.isBuffer(msg.prop) ? msg.prop : RED.util.ensureString(msg.prop);
+				if (msg.hasOwnProperty("prop")) {
+					prop = RED.util.ensureString(msg.prop);
 				}
 				if(prop!=="1"){ //fixed multiple property 
 					if(prop == ""){
@@ -100,35 +116,28 @@ module.exports = function(RED) {
 					} 
 
 					//buttons and styled buttons label
-					if ((msg.hasOwnProperty("onlabel") || msg.hasOwnProperty("offlabel")) && node.blynkClient && node.blynkClient.logged) {
+					if (msg.hasOwnProperty("onlabel") || msg.hasOwnProperty("offlabel")) {
 						if (msg.hasOwnProperty("onlabel")) {
-							var onlabel = Buffer.isBuffer(msg.onlabel) ? msg.onlabel : RED.util.ensureString(msg.onlabel);
-							node.blynkClient.setProperty(pin, "onLabel", onlabel, msgkey);
+							node.blynkClient.setProperty(pin, "onLabel", RED.util.ensureString(msg.onlabel), msgkey);
 						}
 						if (msg.hasOwnProperty("offlabel")) {
-							var offlabel = Buffer.isBuffer(msg.offlabel) ? msg.offlabel : RED.util.ensureString(msg.offlabel);
-							node.blynkClient.setProperty(pin, "offLabel", offlabel, msgkey);
+							node.blynkClient.setProperty(pin, "offLabel", RED.util.ensureString(msg.offlabel), msgkey);
 						}
 					}
 					//styled buttons color (need server v0.36.2)
-					if ((msg.hasOwnProperty("onColor") || msg.hasOwnProperty("offColor") || 
-						 msg.hasOwnProperty("onBackColor") || msg.hasOwnProperty("offBackColor"))
-						 && node.blynkClient && node.blynkClient.logged) {
+					if (msg.hasOwnProperty("onColor") || msg.hasOwnProperty("offColor") || 
+						 msg.hasOwnProperty("onBackColor") || msg.hasOwnProperty("offBackColor")) {
 						if (msg.hasOwnProperty("onColor")) {
-							var onColor = Buffer.isBuffer(msg.onColor) ? msg.onColor : RED.util.ensureString(msg.onColor);
-							node.blynkClient.setProperty(pin, "onColor", onColor, msgkey);
+							node.blynkClient.setProperty(pin, "onColor", RED.util.ensureString(msg.onColor), msgkey);
 						}
 						if (msg.hasOwnProperty("offColor")) {
-							var offColor = Buffer.isBuffer(msg.offColor) ? msg.offColor : RED.util.ensureString(msg.offColor);
-							node.blynkClient.setProperty(pin, "offColor", offColor, msgkey);
+							node.blynkClient.setProperty(pin, "offColor", RED.util.ensureString(msg.offColor), msgkey);
 						}
 						if (msg.hasOwnProperty("onBackColor")) {
-							var onBackColor = Buffer.isBuffer(msg.onBackColor) ? msg.onBackColor : RED.util.ensureString(msg.onBackColor);
-							node.blynkClient.setProperty(pin, "onBackColor", onBackColor, msgkey);
+							node.blynkClient.setProperty(pin, "onBackColor", RED.util.ensureString(msg.onBackColor), msgkey);
 						}
 						if (msg.hasOwnProperty("offBackColor")) {
-							var offBackColor = Buffer.isBuffer(msg.offBackColor) ? msg.offBackColor : RED.util.ensureString(msg.offBackColor);
-							node.blynkClient.setProperty(pin, "offBackColor", offBackColor, msgkey);
+							node.blynkClient.setProperty(pin, "offBackColor", RED.util.ensureString(msg.offBackColor), msgkey);
 						}
 					}
 				
@@ -141,7 +150,9 @@ module.exports = function(RED) {
 		});
 
 		this.on("close", function() {
-			node.blynkClient.removeInputNode(node);
+			if(node.blynkClient) {
+				node.blynkClient.removeInputNode(node);
+			}
 		});
 	}
 	

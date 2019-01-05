@@ -47,10 +47,23 @@ module.exports = function(RED) {
 					text: "blynk-ws-out-notify.status.disconnected"
 				});
 			});
+			this.blynkClient.on("disabled", function() {
+				node.status({
+					fill: "red",
+					shape: "dot",
+					text: "blynk-ws-out-notify.status.disabled"
+				});
+			});
 		} else {
 			this.error(RED._("blynk-ws-out-notify.errors.missing-conf"));
 		}
 		this.on("input", function(msg) {
+
+			//no input operation if client not connected or disabled
+			if(!node.blynkClient || !node.blynkClient.logged) {
+				return; 
+			}
+
 			node.reportDepth = function() {
 				if (!node.busy) {
 					node.busy = setTimeout(function() {
@@ -71,6 +84,7 @@ module.exports = function(RED) {
 					},500);
 				}
 			};
+
 			if (node.queue) {
 				node.log("queue");
 				if ( node.intervalID !== -1) {
@@ -78,8 +92,8 @@ module.exports = function(RED) {
 					node.reportDepth();
 				}
 				else {
-					if (msg.hasOwnProperty("payload") && node.blynkClient && node.blynkClient.logged) {
-						var payload = Buffer.isBuffer(msg.payload) ? msg.payload : RED.util.ensureString(msg.payload);
+					if (msg.hasOwnProperty("payload")) {
+						var payload = RED.util.ensureString(msg.payload);
 						node.blynkClient.sendNotify(payload);
 					}
 					node.reportDepth();
@@ -91,8 +105,8 @@ module.exports = function(RED) {
 						}
 						if (node.buffer.length > 0) {
 							var tempmsg = node.buffer.shift();
-							if (tempmsg.hasOwnProperty("payload") && node.blynkClient && node.blynkClient.logged) {
-								var payload = Buffer.isBuffer(tempmsg.payload) ? tempmsg.payload : RED.util.ensureString(tempmsg.payload);
+							if (tempmsg.hasOwnProperty("payload")) {
+								var payload = RED.util.ensureString(tempmsg.payload);
 								node.blynkClient.sendNotify(payload);
 							}
 						}
@@ -101,11 +115,12 @@ module.exports = function(RED) {
 				}               
                 
 			}
-			else if (msg.hasOwnProperty("payload") && node.blynkClient && node.blynkClient.logged) {
-				var payload = Buffer.isBuffer(msg.payload) ? msg.payload : RED.util.ensureString(msg.payload);
+			else if (msg.hasOwnProperty("payload")) {
+				var payload = RED.util.ensureString(msg.payload);
 				node.blynkClient.sendNotify(payload);
 			}
 		});
+		
 		this.on("close", function() {
 			clearInterval(node.intervalID);
 			clearTimeout(node.busy);

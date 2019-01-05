@@ -134,6 +134,11 @@
 			<optgroup label="Slider">
                 <option value="maximumFractionDigits" >Maximum Fraction Digits</option>
             </optgroup>
+            <optgroup label="Image Gallery">
+                <option value="opacity" >Opacity</option>
+                <option value="rotation" >Rotation</option>
+                <option value="scale" >Scale</option>
+            </optgroup>
         </select>
    	</div>
    	<div class="form-row">
@@ -165,6 +170,9 @@
     <code>msg.url</code> to set the url property (only Video Straming widget)<br>
     <code>msg.step</code> to set the step property (only Step Control widget)<br>
     <code>msg.maximumFractionDigits</code> to set the maximumFractionDigits property (only Slider widget)<br>
+    <code>msg.opacity</code> to set opacity in range 0-100% (only Image Gallery widget)<br>
+    <code>msg.scale</code> to set scale in range 0-100% (only Image Gallery widget)<br>
+    <code>msg.rotation</code> to set rotation in range 0-360 degree (only Image Gallery widget)<br>
 
     </p><br>  
     
@@ -198,6 +206,11 @@
     <p><strong>Step Control</strong></p><p><code>step</code> is a integer value of step.</p>
     <pre><code>Blynk.setProperty(V0, "step", "5");</code></pre>
     <p><strong>Slider</strong></p><p><code>maximumFractionDigits</code> is a integer value of decimals digits.</p>
+    <p><strong>Image Gallery</strong></p>
+    <p><code>opacity</code> to set opacity in range 0-100%</p>
+    <p><code>scale</code> to set scale in range 0-100%</p>
+    <p><code>rotation</code> to set rotation in range 0-360 degree</p>
+    <br>
     <p class="form-tips">
             Official documentation: 
             <a href="http://docs.blynk.cc/#blynk-main-operations-change-widget-properties">Change widget properties</a>

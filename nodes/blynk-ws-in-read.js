@@ -46,12 +46,21 @@ module.exports = function(RED) {
 					text: "blynk-ws-in-read.status.disconnected"
 				});
 			});
+			this.blynkClient.on("disabled", function() {
+				node.status({
+					fill: "red",
+					shape: "dot",
+					text: "blynk-ws-in-read.status.disabled"
+				});
+			});
 		} else {
 			this.error(RED._("blynk-ws-in-read.errors.missing-conf"));
 		}
 
 		this.on("close", function() {
-			node.blynkClient.removeInputNode(node);
+			if(node.blynkClient) {
+				node.blynkClient.removeInputNode(node);
+			}
 		});
 	}
 

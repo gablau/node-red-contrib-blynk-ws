@@ -5,7 +5,8 @@
             "connecting": "connecting ",
             "connected-dynamic": "connected to dynamic pin",
             "connected-fixed": "connected to pin ",
-            "disconnected": "disconnected"
+            "disconnected": "disconnected",
+            "disabled": "disabled"
         },
         "warn": {
             "pin-dinamic":"Bridge node - Setting \"pin mode\" to \"dynamic\" but no msg.pin found.",

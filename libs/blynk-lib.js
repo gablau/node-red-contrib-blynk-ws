@@ -2,7 +2,6 @@
 var blynkEnum = require('./../libs/blynk-enum.js');
 var MsgStatus = blynkEnum.MsgStatus;
 var MsgType = blynkEnum.MsgType;
-//console.log(MsgType);
 
 //blynk util
 var blynkUtil = require('./../libs/blynk-util.js');
@@ -22,10 +21,12 @@ function getTimestamp(){
 
 /* ##### BLYNK STUFF ###### */
 
-//library 0.4.7 - 2017-04-09
-//library 0.5.1 - 2018-02-20
-//library 0.5.2 - 2018-03-04
-//library 0.5.3 - 2018-06-11
+//C++ Library Version
+// 0.4.7 - 2017-04-09
+// 0.5.1 - 2018-02-20
+// 0.5.2 - 2018-03-04
+// 0.5.3 - 2018-06-11
+// 0.5.4 - 2018-09-05
 
 //Server Version
 // 0.23.5 - 2017-04-07
@@ -33,10 +34,11 @@ function getTimestamp(){
 // 0.33.3 - 2018-03-20
 // 0.34.0 - 2018-04-06
 // 0.36.2 - 2018-05-11
+// 0.39.4 - 2018-07-29
 
 // Blynk library constant 
-var BLYNK_VERSION = "0.5.3"; //blynk library version
-var BLYNK_HEARTBEAT = 10; //seconds
+var BLYNK_VERSION = "0.5.4"; //blynk library version
+var BLYNK_HEARTBEAT = 15; //seconds
 var BLYNK_PROTOCOL_MAX_LENGTH = 32767; //java Short.MAX_VALUE
 var BLYNK_MAX_CMD_IN_MESSAGE = 1024; //max command in a single message 
 

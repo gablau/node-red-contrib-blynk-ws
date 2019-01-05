@@ -2,10 +2,9 @@ module.exports = function(RED) {
 	"use strict";
 
 	
-
 	var ws = require("ws");
 
-	var LIBRARY_INFO = "0.7.1 2018-08-04"; //node-red lib version
+	var LIBRARY_INFO = "0.8.0 2019-01-05"; //node-red lib version
 
     
 	//blynk util
@@ -38,6 +37,10 @@ module.exports = function(RED) {
 		this.multi_cmd = n.multi_cmd;
 		this.proxy_type = n.proxy_type;
 		this.proxy_url = n.proxy_url;
+		if(n.enabled === undefined) { 
+			n.enabled = true; //compatibility: enable config node from old version < 0.8.0 library
+		}
+		this.enabled = n.enabled;
 
 		this.log_pins = [];
 		if (typeof this.dbg_pins === "string" ) {
@@ -94,11 +97,28 @@ module.exports = function(RED) {
 			var ws_args = {};
 			var ws_log_secure = "";
 			if (node.path.startsWith("wss://")) {
+
 				ws_args = {
 					rejectUnauthorized: false,
-					//ecdhCurve: "auto", //not work < 8.6.0
+					key: null, 
+					cert: null, 
+					ca: null, 
 				};
-				//check if node >= 8.6.0 and apply curve parameter for ssl 
+
+				
+				//valid cert for blynk cloud
+				if (node.path.startsWith("wss://blynk-cloud.com")) {
+					var fs = require("fs");
+					var path = require("path");
+					var certs_path = path.join(__dirname, "../cert");
+					//node.log("crt path " + certs_path);
+					ws_args.rejectUnauthorized = true;
+					ws_args.ca =  fs.readFileSync(path.join(certs_path, "server.crt"));
+				}
+				
+
+				
+				//check if node >= 8.6.4 and apply curve parameter for ssl 
 				var compVer = require("compare-versions");
 				if(compVer(process.version, "8.6.4")>=0){
 					ws_args.ecdhCurve = "auto";
@@ -120,7 +140,8 @@ module.exports = function(RED) {
 				var agent = new HttpsProxyAgent(options);
 				ws_args.agent = agent;
 			}
-			node.log(RED._("Start "+ws_log_secure+"connection: ") + node.path);
+
+			node.log("Start "+ws_log_secure+"connection: "+node.path);
 			var websocket = new ws(node.path, ws_args);
 			node.websocket = websocket; // keep for closing
 			websocket.setMaxListeners(100);
@@ -133,7 +154,7 @@ module.exports = function(RED) {
 			});
 
 			websocket.on("close", function() {
-				node.log(RED._("Connection closed: ") + node.path);
+				node.log("Connection closed: "+node.path);
 				node.emit("closed");
 				node.logged = false;
 				if (!node.closing) {
@@ -147,7 +168,7 @@ module.exports = function(RED) {
 			websocket.on("message", function (data, flags) {
 				data = data.toString("binary"); //convert to string
 				if(data.length > blynkLib.BLYNK_PROTOCOL_MAX_LENGTH){
-					node.warn(RED._("Message too long: "+data.length+"bytes"));
+					node.warn("Message too long: "+data.length+"bytes");
 					node.sendRspIllegalCmd(node.msg_id);
 					return;	
 				}
@@ -159,7 +180,7 @@ module.exports = function(RED) {
 				while(data.length>0) {
 					msgcount++;
 					if(msgcount > blynkLib.BLYNK_MAX_CMD_IN_MESSAGE) {
-						node.warn(RED._("Too Blynk commands in a single message: "+msgcount));
+						node.warn("Too Blynk commands in a single message: "+msgcount);
 						node.sendRspIllegalCmd(node.msg_id);
 						break;
 					}
@@ -172,7 +193,7 @@ module.exports = function(RED) {
 			});
 
 			websocket.on("error", function(err) {
-				node.error(RED._("Websocket error: ") + err);
+				node.error("Websocket error: " + err);
 				node.emit("error");
 				node.logged = false;
 				if (!node.closing) {
@@ -187,6 +208,7 @@ module.exports = function(RED) {
 		node.on("close", function() {
 			// Workaround https://github.com/einaros/ws/pull/253
 			// Remove listeners from RED.server
+			node.log("Client Close")
 			node.closing = true;
 			node.logged = false;
 			node.websocket.close();
@@ -195,7 +217,17 @@ module.exports = function(RED) {
 			}
 		});
 
-		startconn(); // start outbound connection
+		//test enabled check
+		if(this.enabled) {
+			startconn(); // start outbound connection
+		}
+		else {
+			node.emit("disabled");
+			setTimeout(function() {
+				node.emit("disabled");
+				node.log("Connection disabled by configuration");
+			}, 2000);
+		}
 
 	}
 
@@ -309,13 +341,14 @@ module.exports = function(RED) {
 		for (var i = 0; i < this._inputNodes.length; i++) {
 			//this.log(util.inspect(this._inputNodes[i], false, 1))
 			if ((this._inputNodes[i].nodeType == "write" || this._inputNodes[i].nodeType == "zergba" || 
-			     this._inputNodes[i].nodeType == "style-btn") && 
+			     this._inputNodes[i].nodeType == "style-btn" /*|| this._inputNodes[i].nodeType == "image-gallery"*/) && 
 			(this._inputNodes[i].pin == command.pin || this._inputNodes[i].pin_all ) ) {
 				var msg;
 
 				switch (this._inputNodes[i].nodeType){
 					case 'write':
 					case 'style-btn':
+					case 'image-gallery':
 
 						msg = {
 							payload: command.value,

@@ -41,13 +41,25 @@ module.exports = function(RED) {
 					text: "blynk-ws-out-table.status.disconnected"
 				});
 			});
+			this.blynkClient.on("disabled", function() {
+				node.status({
+					fill: "red",
+					shape: "dot",
+					text: "blynk-ws-out-table.status.disabled"
+				});
+			});
 		}
 		else {
 			this.error(RED._("blynk-ws-out-table.errors.missing-conf"));
 		}
 		this.on("input", function(msg) {
-			if (msg.hasOwnProperty("payload") && node.blynkClient && node.blynkClient.logged) {
-				var payload = Buffer.isBuffer(msg.payload) ? msg.payload : RED.util.ensureString(msg.payload);
+
+			//no input operation if client not connected or disabled
+			if(!node.blynkClient || !node.blynkClient.logged) {
+				return; 
+			}
+				
+			if (msg.hasOwnProperty("payload")) {
 				
 				if(node.pin<0 || node.pin>127) {
 					node.warn(RED._("blynk-ws-out-table.warn.pin-value"));
@@ -114,6 +126,15 @@ module.exports = function(RED) {
 				if(node.blynkClient.multi_cmd) {
 					node.blynkClient.sendMsgMulti(msgkey);
 				} 
+
+				if(!msg.hasOwnProperty("clear") && !msg.hasOwnProperty("add") && !msg.hasOwnProperty("loadtable") && !msg.hasOwnProperty("update") &&
+				!msg.hasOwnProperty("pick") && !msg.hasOwnProperty("select") && !msg.hasOwnProperty("deselect") && !msg.hasOwnProperty("order") && 
+				msg.hasOwnProperty("payload")){
+					var payload = RED.util.ensureString(msg.payload);
+					if(payload != "" && payload.length > 1 ){
+						node.warn(RED._("blynk-ws-out-table.warn.payload"));
+					}
+				}
 			}
 		});
 	}

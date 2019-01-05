@@ -4,7 +4,8 @@
             "error": "error",
             "connecting": "connecting ",
             "connected": "connected",
-            "disconnected": "disconnected"
+            "disconnected": "disconnected",
+            "disabled": "disabled"
         },
         "errors": {
             "missing-conf":"Missing configuration"

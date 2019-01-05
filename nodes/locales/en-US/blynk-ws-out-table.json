@@ -4,9 +4,11 @@
             "error": "error",
             "connecting": "connecting ",
             "connected": "connected to pin V",
-            "disconnected": "disconnected"
+            "disconnected": "disconnected",
+            "disabled": "disabled"
         },
         "warn": {
+            "payload":"## Blynk Table node does not use the msg.payload property! ##  See node help.",
             "pin-value":"Table node - The msg.pin must be between 0 and 127."
         },
         "errors": {

@@ -40,12 +40,21 @@ module.exports = function(RED) {
 					text: "blynk-ws-in-app.status.disconnected"
 				});
 			});
+			this.blynkClient.on("disabled", function() {
+				node.status({
+					fill: "red",
+					shape: "dot",
+					text: "blynk-ws-in-app.status.disabled"
+				});
+			});
 		} else {
 			this.error(RED._("blynk-ws-in-app.errors.missing-conf"));
 		}
 
 		this.on("close", function() {
-			node.blynkClient.removeInputNode(node);
+			if(node.blynkClient) {
+				node.blynkClient.removeInputNode(node);
+			}
 		});
 	}
 

@@ -12,13 +12,40 @@
             }
 
             $("#node-config-input-proxy_type").on("change",function() {
-                console.log($(this).val());
+                //console.log($(this).val());
                 if ($(this).val() == 'custom') {
                     $("#node-config-input-proxy_url").show();
                 } else {
                     $("#node-config-input-proxy_url").hide();
                 }
             }).change();
+
+            $("#node-enabled").on("click",function() {
+                if ($("#node-config-input-enabled").is(":checked")) {
+                    $("#node-config-input-enabled").prop('checked', false);
+                    $("#node-enabled").removeClass('fa-toggle-on');
+                    $("#node-enabled").addClass('fa-toggle-off');
+                } else {
+                    $("#node-config-input-enabled").prop('checked', true);
+                    $("#node-enabled").removeClass('fa-toggle-off');
+                    $("#node-enabled").addClass('fa-toggle-on');
+                }
+            }).change();
+
+            if ($("#node-config-input-enabled").is(":checked")) {
+                $("#node-enabled").removeClass('fa-toggle-off');
+                $("#node-enabled").addClass('fa-toggle-on');
+            }
+            else{
+                $("#node-enabled").removeClass('fa-toggle-on');
+                $("#node-enabled").addClass('fa-toggle-off');
+            }
+
+            //compatibility: enable config node from old version < 0.8.0 library
+            if (this.enabled === undefined) {
+                $("#node-enabled").trigger("click");
+            }
+
         }
            
 
@@ -40,7 +67,8 @@
             dbg_pins: {value:''},
             multi_cmd: {value:false},
             proxy_type: {value:'no', required:true },
-            proxy_url: {value: ''}
+            proxy_url: {value: ''},
+            enabled: {value: true}
         },
         inputs:0,
         outputs:0,
@@ -60,6 +88,12 @@
     <div class="form-row">
         <label for="node-config-input-key"><i class="fa fa-key"></i> Auth Token</label>
         <input type="text" id="node-config-input-key" placeholder="ex. &quot;f45626c103a94983b469637978b0c78a&quot;">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-enabled"><i class="fa fa-power-off"></i> Enabled</label>
+        <i id="node-enabled" class="fa fa-lg fa-toggle-on"></i>
+        <input type="checkbox" id="node-config-input-enabled" style="display:none"></input>
+        <span style="font-size: 80%;"> (enable this button for connect to blynk on startup)</span>
     </div>
     <div class="form-row">
         <label for="node-config-input-debug"><i class="fa fa-bug"></i> Protocol Log</label>

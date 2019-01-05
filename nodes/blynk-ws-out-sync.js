@@ -44,11 +44,24 @@ module.exports = function(RED) {
 					text: "blynk-ws-out-sync.status.disconnected"
 				});
 			});
+			this.blynkClient.on("disabled", function() {
+				node.status({
+					fill: "red",
+					shape: "dot",
+					text: "blynk-ws-out-sync.status.disabled"
+				});
+			});
 		} else {
 			this.error(RED._("blynk-ws-out-sync.errors.missing-conf"));
 		}
 		this.on("input", function(msg) {
-			if (msg.hasOwnProperty("payload") && node.blynkClient && node.blynkClient.logged) {
+
+			//no input operation if client not connected or disabled
+			if(!node.blynkClient || !node.blynkClient.logged) {
+				return; 
+			}
+				
+			if (msg.hasOwnProperty("payload")) {
 				var pin = node.pin;
 				if(node.pinmode == 1) {
 					node.blynkClient.syncAll();

@@ -5,7 +5,8 @@
             "connecting": "connecting ",
             "connected-all": "connected to all pins",
             "connected-fixed": "connected to pin V",
-            "disconnected": "disconnected"
+            "disconnected": "disconnected",
+            "disabled": "disabled"
         },
         "errors": {
             "missing-conf":"Missing configuration"

@@ -5,7 +5,8 @@
             "connecting": "connecting ",
             "connected": "connected",
             "connected-queue": "connected - queue: ",
-            "disconnected": "disconnected"
+            "disconnected": "disconnected",
+            "disabled": "disabled"
         },
         "errors": {
             "missing-conf":"Missing configuration"

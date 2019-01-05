@@ -6,6 +6,25 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [0.8.0] - 2019-01-05
+### Added
+- Node - *Configuration* - The configuration node can be "enable" or "disable" now, when disabled no connection is start on boot and all linked node show the red dot "disabled" status.
+- Node - *Image Gallery* - New node to simplify the use of this new widget (set images urls is not yet implemented in app)
+- Node - *Set Property* - Implemented "url, urls, opacity, rotation, scale" property for Image Gallery widget (blynk cloud or local server >= v0.39.4) [NOTE: url and urls property are not yet supported in app]
+- Check SLL certificate on connection for blynk cloud
+
+### Changed
+- All nodes - Conversion, where necessary, of "isBuffer" checks into "isArray" checks
+- All nodes - Avoid input processing on client node disconnected or disabled
+- Node - *zeRGBa* - Check if a valid RGB value is passed, otherwise it will generate an alert and the message will be discarded
+- Node - *Table* - It will generate an alert on a simple payload without other parameters and the message will be discarded
+- Increase heartbeat timeout to 15 seconds - see Blynk Server [Issue #1294](https://github.com/blynkkk/blynk-server/issues/1294)
+- Compatibility with Blynk Library 0.5.4
+
+### Fixed
+- Node - *Write* - Now it accepts multiple values as input via arrays and forwards them to the server correctly - see [this](https://community.blynk.cc/t/sending-location-data-from-node-red-to-map-widget/27897/7)
+- Correct some log messages
+
 ## [0.7.1] - 2018-08-04
 ### Fixed
 - Node - *Sync* - Missing "syncAll" commands
@@ -15,7 +34,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Node - *Styled Button* -  New node to simplify the use of this new button
 - Node - *Set Property* - Implemented "onColor, offColor, onBackColor, offBackColor" property for Styled Button widget (blynk cloud or local server >= v0.36.2)
 - Node - *Set Property* - Implemented "fraction" property for Slide widget (blynk cloud or local server >= v0.33.3)
-- Node - *Table* - Implemented "select, deselcet and order" commands
+- Node - *Table* - Implemented "select, deselect and order" commands
 
 ### Changed
 - Code refactor - Extract blynk method and variable to files in "libs" directory
@@ -119,11 +138,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Heartbeat once 10 seconds
 - Max virtual pin allowed 128
 
-[Unreleased]: https://github.com/gablau/node-red-contrib-blynk-ws/compare/0.7.1...HEAD
+[Unreleased]: https://github.com/gablau/node-red-contrib-blynk-ws/compare/0.8.0...HEAD
+[0.8.0]: https://github.com/gablau/node-red-contrib-blynk-ws/compare/0.7.1...0.8.0
 [0.7.1]: https://github.com/gablau/node-red-contrib-blynk-ws/compare/0.7.0...0.7.1
 [0.7.0]: https://github.com/gablau/node-red-contrib-blynk-ws/compare/0.6.0...0.7.0
 [0.6.0]: https://github.com/gablau/node-red-contrib-blynk-ws/compare/0.5.2...0.6.0
-[0.5.1]: https://github.com/gablau/node-red-contrib-blynk-ws/compare/0.5.1...0.5.2
+[0.5.2]: https://github.com/gablau/node-red-contrib-blynk-ws/compare/0.5.1...0.5.2
 [0.5.1]: https://github.com/gablau/node-red-contrib-blynk-ws/compare/0.5.0...0.5.1
 [0.5.0]: https://github.com/gablau/node-red-contrib-blynk-ws/compare/0.4.0...0.5.0
 [0.4.0]: https://github.com/gablau/node-red-contrib-blynk-ws/compare/0.3.0...0.4.0
