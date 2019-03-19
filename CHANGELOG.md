@@ -6,6 +6,24 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [0.9.0] - 2019-03-19
+### Add
+- Node - *Image Gallery* - Implemented "url" and "urls" property [NOTE: url and urls property are supported only in beta app]
+- Node - *Set Property* - Implemented "url" and "urls" property [NOTE: url and urls property are supported only in beta app]
+
+### Changed
+- Node - *Configuration* - Using tabs for better UI
+- All nodes - Increased the limit of the pins to 255 and better validation checks
+- Improved heartbeat , send PING command only if necessary.
+- Control and blocking of sending too long messages (BLYNK_PROTOCOL_MAX_LENGTH)
+- Compatibility with Blynk C++ Library 0.6.1
+- LOGIN command changed to int 29 (old int 2)
+- Remove unused command and code clean
+
+### Fixed
+- Fix TypeError on node-red restart
+- Crash on websocket "timeout" error
+
 ## [0.8.0] - 2019-01-05
 ### Added
 - Node - *Configuration* - The configuration node can be "enable" or "disable" now, when disabled no connection is start on boot and all linked node show the red dot "disabled" status.
@@ -19,7 +37,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Node - *zeRGBa* - Check if a valid RGB value is passed, otherwise it will generate an alert and the message will be discarded
 - Node - *Table* - It will generate an alert on a simple payload without other parameters and the message will be discarded
 - Increase heartbeat timeout to 15 seconds - see Blynk Server [Issue #1294](https://github.com/blynkkk/blynk-server/issues/1294)
-- Compatibility with Blynk Library 0.5.4
+- Compatibility with Blynk C++ Library 0.5.4
 
 ### Fixed
 - Node - *Write* - Now it accepts multiple values as input via arrays and forwards them to the server correctly - see [this](https://community.blynk.cc/t/sending-location-data-from-node-red-to-map-widget/27897/7)
@@ -38,7 +56,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Changed
 - Code refactor - Extract blynk method and variable to files in "libs" directory
-- Node - *Notify* - Rate limit increased to 5 msg/s (Blynk Library 0.5.3)
+- Node - *Notify* - Rate limit increased to 5 msg/s (Blynk C++ Library 0.5.3)
 
 ### Fixed
 - Node - *zeRGBa* - Check if the widget is configured in merge mode, otherwise it will generate an alert
@@ -61,7 +79,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [0.5.0] - 2018-04-14
 ### Added
-- Blynk protocol - Handle any number of Blynk commands (virtualWrite(), setProperty(), etc.) in a row see [Blynk Library 0.5.0](https://community.blynk.cc/t/beta-blynk-library-v0-5-0/19841)
+- Blynk protocol - Handle any number of Blynk commands (virtualWrite(), setProperty(), etc.) in a row see [Blynk C++ Library 0.5.0](https://community.blynk.cc/t/beta-blynk-library-v0-5-0/19841)
 - Control max lenght of message and max number of commands in a single message 
 - Config node - Option to enable "Multiple blynk command in single message"  (blynk cloud or local server >= v0.34.0) 
 - Config node - Implemented server proxy configuration
@@ -92,10 +110,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [0.4.0] - 2018-03-09
 ### Added
-- Handle CONNECT_REDIRECT command see [iusse #5](https://github.com/gablau/node-red-contrib-blynk-ws/issues/5) and [this](https://community.blynk.cc/t/correct-websocket-address-for-blynk-server/22496) 
+- Handle REDIRECT command see [iusse #5](https://github.com/gablau/node-red-contrib-blynk-ws/issues/5) and [this](https://community.blynk.cc/t/correct-websocket-address-for-blynk-server/22496) 
 
 ### Changed
-- Server port configuration and help message see [Blynk Library 0.5.1](https://community.blynk.cc/t/new-blynk-library-v0-5-1-is-released-important-for-local-server-owners/22449)
+- Server port configuration and help message see [Blynk C++ Library 0.5.1](https://community.blynk.cc/t/new-blynk-library-v0-5-1-is-released-important-for-local-server-owners/22449)
 
 ### Fixed
 - Invalid HW cmd: "pm" see [iusse #3](https://github.com/gablau/node-red-contrib-blynk-ws/issues/3)
@@ -138,7 +156,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Heartbeat once 10 seconds
 - Max virtual pin allowed 128
 
-[Unreleased]: https://github.com/gablau/node-red-contrib-blynk-ws/compare/0.8.0...HEAD
+[Unreleased]: https://github.com/gablau/node-red-contrib-blynk-ws/compare/0.9.0...HEAD
+[0.9.0]: https://github.com/gablau/node-red-contrib-blynk-ws/compare/0.8.0...0.9.0
 [0.8.0]: https://github.com/gablau/node-red-contrib-blynk-ws/compare/0.7.1...0.8.0
 [0.7.1]: https://github.com/gablau/node-red-contrib-blynk-ws/compare/0.7.0...0.7.1
 [0.7.0]: https://github.com/gablau/node-red-contrib-blynk-ws/compare/0.6.0...0.7.0

@@ -60,7 +60,7 @@ module.exports = function(RED) {
 				
 			if (msg.hasOwnProperty("payload")) {
 				
-				if(node.pin<0 || node.pin>127) {
+				if(node.pin<0 || node.pin>255) {
 					node.warn(RED._("blynk-ws-out-lcd.warn.pin-value"));
 					return;
 				}

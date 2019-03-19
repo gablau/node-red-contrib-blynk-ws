@@ -3,16 +3,35 @@
     (function() {
 
         function ws_label() {
-            return this.name||'Blynk device-'+this.key.slice(-5)||'n/a';
+            _dev = 'n/a'
+            if(this.key!= undefined && this.key!='') _dev = this.key.slice(-5);
+            return this.name||'Blynk device-'+_dev;
         }
 
         function ws_oneditprepare() {
+            var tabs = RED.tabs.create({
+                id: "node-config-blynk-ws-client-tabs",
+                onchange: function(tab) {
+                    $("#node-config-blynk-ws-client-tabs-content").children().hide();
+                    $("#" + tab.id).show();
+                }
+            });
+            tabs.addTab({
+                id: "blynk-ws-client-tab-connection",
+                label: 'Connection',
+            });
+            tabs.addTab({
+                id: "blynk-ws-client-tab-advanced",
+                label: 'Advanced',
+            });
+
+            setTimeout(function() { tabs.resize(); },0);
+
             if (this.proxy_type === undefined || this.proxy_type == '') {
                 $("#node-config-input-proxy_type").val("no");
             }
 
             $("#node-config-input-proxy_type").on("change",function() {
-                //console.log($(this).val());
                 if ($(this).val() == 'custom') {
                     $("#node-config-input-proxy_url").show();
                 } else {
@@ -82,12 +101,8 @@
 <!-- Blynk Server configuration node -->
 <script type="text/x-red" data-template-name="blynk-ws-client">
     <div class="form-row">
-        <label for="node-config-input-path"><i class="fa fa-bookmark"></i> Url</label>
-        <input type="text" id="node-config-input-path" placeholder="ex. ws://blynk-cloud.com/websockets">
-    </div>
-    <div class="form-row">
-        <label for="node-config-input-key"><i class="fa fa-key"></i> Auth Token</label>
-        <input type="text" id="node-config-input-key" placeholder="ex. &quot;f45626c103a94983b469637978b0c78a&quot;">
+        <label for="node-config-input-name"><i class="fa fa-tag"></i> <span>Name</span></label>
+        <input type="text" id="node-config-input-name" data-i18n="[placeholder]node-red:common.label.name">
     </div>
     <div class="form-row">
         <label for="node-config-input-enabled"><i class="fa fa-power-off"></i> Enabled</label>
@@ -96,65 +111,76 @@
         <span style="font-size: 80%;"> (enable this button for connect to blynk on startup)</span>
     </div>
     <div class="form-row">
-        <label for="node-config-input-debug"><i class="fa fa-bug"></i> Protocol Log</label>
-        <ul style="width: 70%;display: inline-block;vertical-align: top;list-style-type: none;-webkit-column-count: 3;-moz-column-count: 3;column-count: 3;">
-            <li>
-                <input type="checkbox" id="node-config-input-dbg_all" value="all" style="width: auto; vertical-align: top;"> All</input>
-            </li><li>
-                <input type="checkbox" id="node-config-input-dbg_read" value="all" style="width: auto; vertical-align: top;"> Read</input>
-            </li><li>
-                <input type="checkbox" id="node-config-input-dbg_write" value="all" style="width: auto; vertical-align: top;"> Write</input>
-            </li><li>
-                <input type="checkbox" id="node-config-input-dbg_prop" value="all" style="width: auto; vertical-align: top;"> Property</input>
-            </li><li>
-                <input type="checkbox" id="node-config-input-dbg_sync" value="all" style="width: auto; vertical-align: top;"> Sync</input>
-            </li><li>
-                <input type="checkbox" id="node-config-input-dbg_bridge" value="all" style="width: auto; vertical-align: top;"> Bridge</input>
-            </li><li>
-                <input type="checkbox" id="node-config-input-dbg_notify" value="all" style="width: auto; vertical-align: top;"> Notify</input>
-            </li><li>
-                <input type="checkbox" id="node-config-input-dbg_mail" value="all" style="width: auto; vertical-align: top;"> Mail</input>
-            </li><li>
-                <input type="checkbox" id="node-config-input-dbg_low" value="all" style="width: auto; vertical-align: top;"> Low Level</input>
-            </li>
-        </ul>
-        <div style="left: 110px;position: relative;width: 75%;">
-            <span for="node-config-input-dbg_pins" style="margin-right: 10px;"> <span>Pins to log</span></span>
-            <input id="node-config-input-dbg_pins" placeholder="ex: 1,15,22" style="width: 70%;" type="text">
+        <ul style="background: #fff; min-width: 600px; margin-bottom: 20px;" id="node-config-blynk-ws-client-tabs"></ul>
+    </div>
+    <div id="node-config-blynk-ws-client-tabs-content" style="min-height: 170px;">
+        <div id="blynk-ws-client-tab-connection" style="display:none">
+            <div class="form-row">
+                <label for="node-config-input-path"><i class="fa fa-bookmark"></i> Url</label>
+                <input type="text" id="node-config-input-path" placeholder="ex. ws://blynk-cloud.com/websockets">
+            </div>
+            <div class="form-row">
+                <label for="node-config-input-key"><i class="fa fa-key"></i> Auth Token</label>
+                <input type="text" id="node-config-input-key" placeholder="ex. &quot;f45626c103a94983b469637978b0c78a&quot;">
+            </div>
+            <div class="form-row">
+                <label for="node-config-input-proxy"><i class="fa fa-server"></i> <span>Proxy</span></label>
+                <div style="left: 105px;position: relative;width: 75%;top: -24px;">
+                        <select id="node-config-input-proxy_type" style="width:70%">
+                                <option value="no" >No proxy</option>
+                                <option value="system" >Use default system proxy</option>
+                                <option value="custom" >Use custom server proxy</option>
+                        </select>
+                    <input type="text" id="node-config-input-proxy_url" placeholder="http://192.168.0.1:8080">
+                </div>
+            </div>
+            <div class="form-tips">
+                <p>The url of Blynk Cloud Server is:<br>
+                <b>ws://blynk-cloud.com/websockets</b><br>
+                or with secure SSL:<br>
+                <b>wss://blynk-cloud.com/websockets</b>
+            </div>
+            <div class="form-tips">
+                Url for Local server is:<br>
+                <b>ws://&lt;your-local-ip&gt;:8080/websockets</b><br>
+                or with secure SSL:<br>
+                <b>wss://&lt;your-local-ip&gt;:9443/websockets</b></p>
+            </div>
         </div>
-    </div>
-    <div class="form-row">
-        <label for="node-config-input-multi_cmd"><i class="fa fa-cog"></i> <span>Protocol</span></label>
-        <input type="checkbox" id="node-config-input-multi_cmd" value="all" style="width: auto; vertical-align: top;"> Use multiple command <span style="font-size: 80%;">(blynk cloud or local server >= 0.34.0)</span></input>
-    </div>
-    <div class="form-row">
-        <label for="node-config-input-proxy"><i class="fa fa-server"></i> <span>Proxy</span></label>
-        <div style="left: 105px;position: relative;width: 75%;top: -24px;">
-                <select id="node-config-input-proxy_type" style="width:70%">
-                        <option value="no" >No proxy</option>
-                        <option value="system" >Use default system proxy</option>
-                        <option value="custom" >Use custom server proxy</option>
-                </select>
-            <input type="text" id="node-config-input-proxy_url" placeholder="http://192.168.0.1:8080">
+        <div id="blynk-ws-client-tab-advanced" style="display:none">
+            <div class="form-row">
+                <label for="node-config-input-debug"><i class="fa fa-bug"></i> Protocol Log</label>
+                <ul style="width: 70%;display: inline-block;vertical-align: top;list-style-type: none;-webkit-column-count: 3;-moz-column-count: 3;column-count: 3;">
+                    <li>
+                        <input type="checkbox" id="node-config-input-dbg_all" value="all" style="width: auto; vertical-align: top;"> All</input>
+                    </li><li>
+                        <input type="checkbox" id="node-config-input-dbg_read" value="all" style="width: auto; vertical-align: top;"> Read</input>
+                    </li><li>
+                        <input type="checkbox" id="node-config-input-dbg_write" value="all" style="width: auto; vertical-align: top;"> Write</input>
+                    </li><li>
+                        <input type="checkbox" id="node-config-input-dbg_prop" value="all" style="width: auto; vertical-align: top;"> Property</input>
+                    </li><li>
+                        <input type="checkbox" id="node-config-input-dbg_sync" value="all" style="width: auto; vertical-align: top;"> Sync</input>
+                    </li><li>
+                        <input type="checkbox" id="node-config-input-dbg_bridge" value="all" style="width: auto; vertical-align: top;"> Bridge</input>
+                    </li><li>
+                        <input type="checkbox" id="node-config-input-dbg_notify" value="all" style="width: auto; vertical-align: top;"> Notify</input>
+                    </li><li>
+                        <input type="checkbox" id="node-config-input-dbg_mail" value="all" style="width: auto; vertical-align: top;"> Mail</input>
+                    </li><li>
+                        <input type="checkbox" id="node-config-input-dbg_low" value="all" style="width: auto; vertical-align: top;"> Low Level</input>
+                    </li>
+                </ul>
+                <div style="left: 110px;position: relative;width: 75%;">
+                    <span for="node-config-input-dbg_pins" style="margin-right: 10px;"> <span>Pins to log</span></span>
+                    <input id="node-config-input-dbg_pins" placeholder="ex: 1,15,22" style="width: 70%;" type="text">
+                </div>
+            </div>
+            <div class="form-row">
+                <label for="node-config-input-multi_cmd"><i class="fa fa-cog"></i> <span>Protocol</span></label>
+                <input type="checkbox" id="node-config-input-multi_cmd" value="all" style="width: auto; vertical-align: top;"> Use multiple command <span style="font-size: 80%;">(blynk cloud or local server >= 0.34.0)</span></input>
+            </div>
         </div>
-    </div>
-
-    <div class="form-row">
-        <label for="node-config-input-name"><i class="fa fa-tag"></i> <span>Name</span></label>
-        <input type="text" id="node-config-input-name" data-i18n="[placeholder]node-red:common.label.name">
-    </div>
-
-    <div class="form-tips">
-        <p>The url of Blynk Cloud Server is:<br>
-        <b>ws://blynk-cloud.com/websockets</b><br>
-        or with secure SSL:<br>
-        <b>wss://blynk-cloud.com/websockets</b>
-    </div>
-    <div class="form-tips">
-	    Url for Local server is:<br>
-        <b>ws://&lt;your-local-ip&gt;:8080/websockets</b><br>
-	    or with secure SSL:<br>
-        <b>wss://&lt;your-local-ip&gt;:9443/websockets</b></p>
     </div>
 </script>
 

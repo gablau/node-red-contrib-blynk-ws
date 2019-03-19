@@ -4,7 +4,10 @@ module.exports = function(RED) {
 	
 	var ws = require("ws");
 
-	var LIBRARY_INFO = "0.8.0 2019-01-05"; //node-red lib version
+	var LIBRARY_VERSION = "0.9.0"; //node-red lib version
+	var LIBRARY_DATE = "2019-03-19"; //node-red lib version
+
+	var RECONNECT_TIMEOUT = 5; //number of seconds for reconnection when disconnected or socket error
 
     
 	//blynk util
@@ -47,7 +50,7 @@ module.exports = function(RED) {
 			var tmp_pins = this.dbg_pins.split(",");
 			for(var i=0; i<tmp_pins.length; i++) { 
 				tmp_pins[i] = +tmp_pins[i]; 
-				if(Number.isInteger(tmp_pins[i]) && Number.parseInt(tmp_pins[i])>=0 && Number.parseInt(tmp_pins[i])<=127) {
+				if(Number.isInteger(tmp_pins[i]) && Number.parseInt(tmp_pins[i])>=0 && Number.parseInt(tmp_pins[i])<=255) {
 					this.log_pins.push(tmp_pins[i].toString());
 				}
 			} 
@@ -58,7 +61,9 @@ module.exports = function(RED) {
 		this.logged = false;
 		this.msg_id = 1;
 
-		this.LIBRARY_INFO = LIBRARY_INFO;
+		this.LIBRARY_VERSION = LIBRARY_VERSION;
+		this.LIBRARY_DATE = LIBRARY_DATE;
+		this.RECONNECT_TIMEOUT = RECONNECT_TIMEOUT;
 		this.RED = RED;
 
 		//heartbit
@@ -66,26 +71,20 @@ module.exports = function(RED) {
 		this.last_activity_out = 0;
 		this.last_heart_beat   = 0;
 		
-
-
 		this.setMaxListeners(100);
 
 		this.pinger = setInterval(function() {
 			//only ping if connected and working
 			if (node.logged) {
-				//var t = getTimestamp();
-				//if( t - node.last_heart_beat   > BLYNK_HEARTBEAT ) {
-				node.ping();
-			//	}
-			//	else{
-			//		if (node.dbg_low) {
-			//		node.log("no " + t + " - "+node.last_heart_beat+" "+node.last_activity_in+" "+node.last_activity_out);
-			//		}
-			//	}
+				var now = getTimestamp();
+				var diff= now - node.last_heart_beat; 
+				//node.log("PING " + now + " - " + diff + " - "+node.last_heart_beat+" "+node.last_activity_in+" "+node.last_activity_out);
+				if (diff >= blynkLib.BLYNK_HEARTBEAT){
+					node.ping();
+				}
 			}
-		}, blynkLib.BLYNK_HEARTBEAT * 1000);
+		}, 1000);
 
-		this.closing = false;
 		this.msgList = {};
 		var node = this;
 		
@@ -147,7 +146,6 @@ module.exports = function(RED) {
 			websocket.setMaxListeners(100);
 
 			node.last_heart_beat = node.last_activity_in = node.last_activity_out = getTimestamp();
-			//node.log(node.last_heart_beat+" "+node.last_activity_in+" "+node.last_activity_out);
 
 			websocket.on("open", function() {
 				node.login(node.key);
@@ -161,7 +159,7 @@ module.exports = function(RED) {
 					clearTimeout(node.tout);
 					node.tout = setTimeout(function() {
 						startconn();
-					}, 5000); // try to reconnect every 5 secs... bit fast ?
+					}, node.RECONNECT_TIMEOUT * 1000); // try to reconnect
 				}
 			});
 
@@ -193,14 +191,14 @@ module.exports = function(RED) {
 			});
 
 			websocket.on("error", function(err) {
-				node.error("Websocket error: " + err);
+				node.error("Websocket " + err);
 				node.emit("error");
 				node.logged = false;
 				if (!node.closing) {
 					clearTimeout(node.tout);
 					node.tout = setTimeout(function() {
 						startconn();
-					}, 5000); // try to reconnect every 5 secs... bit fast ?
+					}, node.RECONNECT_TIMEOUT * 1000); // try to reconnect
 				}
 			});
 		}
@@ -211,7 +209,23 @@ module.exports = function(RED) {
 			node.log("Client Close")
 			node.closing = true;
 			node.logged = false;
-			node.websocket.close();
+			if(node.websocket) {
+				node.websocket.close();
+			}
+			if (node.tout) {
+				clearTimeout(node.tout);
+			}
+		});
+
+		node.on("error", function() {
+			// Workaround https://github.com/einaros/ws/pull/253
+			// Remove listeners from RED.server
+			node.log("Client Error")
+			node.closing = true;
+			node.logged = false;
+			if(node.websocket) {
+				node.websocket.close();
+			}
 			if (node.tout) {
 				clearTimeout(node.tout);
 			}

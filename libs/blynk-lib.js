@@ -1,10 +1,10 @@
 //blynk enum
-var blynkEnum = require('./../libs/blynk-enum.js');
+var blynkEnum = require('./blynk-enum.js');
 var MsgStatus = blynkEnum.MsgStatus;
 var MsgType = blynkEnum.MsgType;
 
 //blynk util
-var blynkUtil = require('./../libs/blynk-util.js');
+var blynkUtil = require('./blynk-util.js');
 var messageToDebugString = blynkUtil.messageToDebugString;
 var commandToDebugString = blynkUtil.commandToDebugString;
 //var decodeCommand 		 = blynkUtil.decodeCommand;
@@ -27,6 +27,8 @@ function getTimestamp(){
 // 0.5.2 - 2018-03-04
 // 0.5.3 - 2018-06-11
 // 0.5.4 - 2018-09-05
+// 0.6.0 - 2018-02-01
+// 0.6.1 - 2018-02-19
 
 //Server Version
 // 0.23.5 - 2017-04-07
@@ -37,7 +39,7 @@ function getTimestamp(){
 // 0.39.4 - 2018-07-29
 
 // Blynk library constant 
-var BLYNK_VERSION = "0.5.4"; //blynk library version
+var BLYNK_VERSION = "0.6.1"; //blynk library version
 var BLYNK_HEARTBEAT = 15; //seconds
 var BLYNK_PROTOCOL_MAX_LENGTH = 32767; //java Short.MAX_VALUE
 var BLYNK_MAX_CMD_IN_MESSAGE = 1024; //max command in a single message 
@@ -83,6 +85,11 @@ var sendMsg = function (data) {
 	if(data.length<5 || data == undefined) {
 		this.log("ERROR sendMsg - No data to send");
 		return;
+	}
+
+	if(data.length > BLYNK_PROTOCOL_MAX_LENGTH){
+		this.log("ERROR sendMsg - Message too long: "+data.length+"bytes");
+		return;	
 	}
 	if (this.dbg_low) {
 		this.log("SEND -> " + messageToDebugString(data));
@@ -135,7 +142,7 @@ var processCommand = function (cmd) {
 		if(cmd.type === MsgType.RSP && cmd.len === MsgStatus.NOT_AUTHENTICATED) {
 			this.log("Not autenticated");
 		}
-		if(cmd.type === MsgType.CONNECT_REDIRECT) {
+		if(cmd.type === MsgType.REDIRECT) {
 			//handle server redirect 
 			var schema = "ws://";
 			var port = 80;
@@ -150,8 +157,13 @@ var processCommand = function (cmd) {
 			this.path = newpath; 
 			this.warn(RED._("Connection redirecting to:  " + newpath));
 		}
-	} else { //
-		this.last_activity_in = getTimestamp();
+	} else { //logged
+
+		//update received activity not update heartbeat
+		if(cmd.type !== MsgType.RSP) {
+			this.last_activity_in = getTimestamp();
+		}
+
 		switch (cmd.type) {
 		case MsgType.RSP:
 			if (cmd.status !== MsgStatus.OK) { //handle not ok response message
@@ -206,7 +218,6 @@ var processCommand = function (cmd) {
 				this.sendRspIllegalCmd(this.msg_id);
 			}
 			break;
-        
 		case MsgType.INTERNAL:
 			switch (cmd.body) {
 			//app event node
@@ -219,21 +230,8 @@ var processCommand = function (cmd) {
                 //this.sendRsp(MsgType.RSP, this.msg_id, MsgStatus.ILLEGAL_COMMAND);
 			}
 			break;
-		case MsgType.GET_TOKEN:
-			this.sendRsp(MsgType.GET_TOKEN, this.msg_id, this.key.length, this.key);
-			break;
-		case MsgType.LOAD_PROF:
-			//this.sendRsp(MsgType.LOAD_PROF, this.msg_id, profile.length, self.profile);
-			break;
 		case MsgType.DEBUG_PRINT:
 			this.log("Server: " + cmd.body);
-			break;
-		case MsgType.REGISTER:
-		case MsgType.SAVE_PROF:
-		case MsgType.ACTIVATE:
-		case MsgType.DEACTIVATE:
-		case MsgType.REFRESH:
-			// skip this message types
 			break;
 		default:
 			this.warn(RED._("Invalid header type: " + commandToDebugString(cmd)));
@@ -268,7 +266,8 @@ var sendInfo = function () {
 		"buff-in", BLYNK_PROTOCOL_MAX_LENGTH, 
 		"dev", "node-red", 
 		"con", "Blynk-ws",
-		"build", this.LIBRARY_INFO,
+		"fw", this.LIBRARY_VERSION,
+		"build", this.LIBRARY_DATE,
 	];
 	this.msg_id++;
 	this.sendMsg(this.blynkCmd(MsgType.INTERNAL, info));
@@ -379,12 +378,13 @@ var bridgeDigitalWrite = function(bpin, pin, val) {
 	this.sendMsg(msg);
 };
 
+//constants
 exports.BLYNK_VERSION = BLYNK_VERSION;
 exports.BLYNK_HEARTBEAT = BLYNK_HEARTBEAT;
 exports.BLYNK_PROTOCOL_MAX_LENGTH = BLYNK_PROTOCOL_MAX_LENGTH;
 exports.BLYNK_MAX_CMD_IN_MESSAGE = BLYNK_MAX_CMD_IN_MESSAGE; 
 
-//protocol 
+//protocol functions
 exports.blynkCmd = blynkCmd;
 exports.sendRsp = sendRsp;
 exports.sendMsg = sendMsg;
@@ -393,7 +393,7 @@ exports.startMsgMulti = startMsgMulti;
 exports.processCommand = processCommand;
 
 
-//protocol command
+//protocol commands
 exports.login = login;
 exports.sendInfo = sendInfo;
 exports.sendRspIllegalCmd = sendRspIllegalCmd;

@@ -10,7 +10,7 @@
         },
         "warn": {
             "pin-dinamic":"Write node - Setting \"pin mode\" to \"dynamic\" but no msg.pin found.",
-            "pin-value":"Write node - The msg.pin must be between 0 and 127."
+            "pin-value":"Write node - The msg.pin must be between 0 and 255."
        },
         "errors": {
             "missing-conf":"Missing configuration"

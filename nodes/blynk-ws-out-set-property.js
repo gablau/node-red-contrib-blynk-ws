@@ -72,7 +72,7 @@ module.exports = function(RED) {
 							node.warn(RED._("blynk-ws-out-set-property.warn.pin-dinamic"));
 							return;
 						}
-						if(msg.pin<0 || msg.pin>127) {
+						if(msg.pin<0 || msg.pin>255) {
 							node.warn(RED._("blynk-ws-out-set-property.warn.pin-value"));
 							return;
 						}
@@ -119,8 +119,8 @@ module.exports = function(RED) {
 						}
 						//styled buttons color (need server v0.36.2)
 						if ((msg.hasOwnProperty("onColor") || msg.hasOwnProperty("offColor") || 
-							 msg.hasOwnProperty("onBackColor") || msg.hasOwnProperty("offBackColor"))
-							) {
+							  msg.hasOwnProperty("onBackColor") || msg.hasOwnProperty("offBackColor"))
+						) {
 							if (msg.hasOwnProperty("onColor")) {
 								node.blynkClient.setProperty(pin, "onColor", RED.util.ensureString(msg.onColor), msgkey);
 							}
@@ -176,6 +176,9 @@ module.exports = function(RED) {
 						else if (msg.hasOwnProperty("rotation")) {
 							var rotation = RED.util.ensureString(msg.rotation);
 							node.blynkClient.setProperty(pin, "rotation", rotation, msgkey);
+						}
+						else if (msg.hasOwnProperty("urls") && Array.isArray(msg.urls)) {
+							node.blynkClient.setProperty(pin, "urls", msg.urls, msgkey);
 						}
 
 					

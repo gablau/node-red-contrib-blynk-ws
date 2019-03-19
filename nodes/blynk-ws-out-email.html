@@ -17,7 +17,7 @@
         paletteLabel: 'email',
         defaults: {
             name: {value: ''},
-            email: {},
+            email: {value: '', required: true, validate:RED.validators.regex(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/) },
             client: {type: "blynk-ws-client", required:true }
         },
         color:"#1BC17C",

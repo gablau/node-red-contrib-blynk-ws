@@ -67,11 +67,11 @@ module.exports = function(RED) {
 				return; 
 			}
 				
-			if (msg.hasOwnProperty("payload") && msg.hasOwnProperty("topic")) {
+			if (msg.hasOwnProperty("payload") || msg.hasOwnProperty("topic")) {
 				var topic = RED.util.ensureString(msg.topic);
 
 				//virtualwrite to node
-				if (topic != 'write-property' ) {
+				if (topic != "write-property" ) {
 					var payload = RED.util.ensureString(msg.payload);
 					if(payload === "true")  payload = "1";
 					if(payload === "false") payload = "0";
@@ -86,7 +86,7 @@ module.exports = function(RED) {
 
 				//set property to node
 				var pin = node.pin;
-			
+
 				//multiple property by code
 				var msgkey = undefined;
 				if(node.blynkClient.multi_cmd) {
@@ -114,8 +114,10 @@ module.exports = function(RED) {
 					if(blynkUtil.checkRangeInt(rotation, 0, 360))
 						node.blynkClient.setProperty(pin, "rotation", rotation, msgkey);
 				}
+				else if (msg.hasOwnProperty("urls") && Array.isArray(msg.urls)) {
+					node.blynkClient.setProperty(pin, "urls", msg.urls, msgkey);
+				}
 
-			
 				if(node.blynkClient.multi_cmd) {
 					node.blynkClient.sendMsgMulti(msgkey);
 				} 

@@ -76,8 +76,8 @@ module.exports = function(RED) {
 						node.warn("Bridge node - Setting \"pin mode\" to \"dynamic\" but no msg.pin found.");
 						return;
 					}
-					if(msg.pin<0 || msg.pin>127) {
-						node.warn("Bridge node - The msg.pin must be between 0 and 127.");
+					if(msg.pin<0 || msg.pin>255) {
+						node.warn("Bridge node - The msg.pin must be between 0 and 255.");
 						return;
 					}
 					pin = msg.pin;
