@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [0.9.1] - 2019-04-17
+### Fixed
+- No automatic reconnect on connection lost
+
 ## [0.9.0] - 2019-03-19
 ### Add
 - Node - *Image Gallery* - Implemented "url" and "urls" property [NOTE: url and urls property are supported only in beta app]

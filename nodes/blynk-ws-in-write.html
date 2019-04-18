@@ -89,11 +89,31 @@
 
 <script type="text/x-red" data-help-name="blynk-ws-in-write">
     <p>Blynk write event node.</p>
-    <p><code>msg.payload</code> will contain the value sent from the specified pin.</p>
-    <p><code>msg.pin</code> will contain the pin number that fire this event.</p>
-    <p><code>msg.arrayOfValues</code> will contain an array of values sent, useful for Widgets that have the MERGE ability.</p>
-    <p class="form-tips">
-        Official documentation: 
-        <a href="http://docs.blynk.cc/#blynk-main-operations-send-data-from-app-to-hardware">Write</a>
-    <p>
+    <h3>Outputs</h3>
+    <ol class="node-ports">
+        <li>Standard output
+            <dl class="message-properties">
+                <dt>payload <span class="property-type">string</span></dt>
+                <dd>the value sent from the specified pin.</dd>
+
+                <dt>pin <span class="property-type">string</span></dt>
+                <dd>the pin number that fire this event.</dd>
+
+                <dt>arrayOfValues <span class="property-type">array</span></dt>
+                <dd>an array of values sent, useful for Widgets that have the MERGE ability.</dd>
+            </dl>
+        </li>
+    </ol>
+
+    <!--
+    <h3>Details</h3>
+    <p><code>msg.payload</code> is used as the payload of the published message.</p>
+    -->
+    
+    <h3>References</h3>
+    <ul>
+        <li>Official documentation -  <a href="http://docs.blynk.cc/#blynk-main-operations-send-data-from-app-to-hardware">Write</a></li>
+        <li><a href="https://github.com/gablau/node-red-contrib-blynk-ws">GitHub</a> - the nodes github repository</li>
+        <li><a href="https://www.npmjs.com/package/node-red-contrib-blynk-ws">NPM</a> - the nodes on package manager</li>
+    </ul>
 </script>

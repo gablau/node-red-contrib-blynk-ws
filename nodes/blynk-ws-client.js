@@ -4,10 +4,10 @@ module.exports = function(RED) {
 	
 	var ws = require("ws");
 
-	var LIBRARY_VERSION = "0.9.0"; //node-red lib version
-	var LIBRARY_DATE = "2019-03-19"; //node-red lib version
+	var LIBRARY_VERSION = "0.9.1"; 		//node-red lib version
+	var LIBRARY_DATE = "2019-04-17"; 	//node-red lib date
 
-	var RECONNECT_TIMEOUT = 5; //number of seconds for reconnection when disconnected or socket error
+	var RECONNECT_TIMEOUT_SECONDS = 5; //number of seconds for reconnection when disconnected or socket error
 
     
 	//blynk util
@@ -63,7 +63,7 @@ module.exports = function(RED) {
 
 		this.LIBRARY_VERSION = LIBRARY_VERSION;
 		this.LIBRARY_DATE = LIBRARY_DATE;
-		this.RECONNECT_TIMEOUT = RECONNECT_TIMEOUT;
+		this.RECONNECT_TIMEOUT_SECONDS = RECONNECT_TIMEOUT_SECONDS;
 		this.RED = RED;
 
 		//heartbit
@@ -86,9 +86,31 @@ module.exports = function(RED) {
 		}, 1000);
 
 		this.msgList = {};
+		this.reconnect_timeout = null;
 		var node = this;
 		
 		node.log("LOG PINS " + JSON.stringify(this.log_pins));
+
+		function reconnect() {
+			node.logged = false;
+			if (!node.closing) {
+				node.log("Reconnect in "+node.RECONNECT_TIMEOUT_SECONDS+" seconds...");
+				clearTimeout(node.reconnect_timeout);
+				node.reconnect_timeout = setTimeout(function() {
+					startconn();
+				}, node.RECONNECT_TIMEOUT_SECONDS * 1000); // try to reconnect
+			}
+		}
+
+		function resetReconnect() {
+			node.logged = false;
+			if(node.websocket) {
+				node.websocket.close();
+			}
+			if (node.reconnect_timeout) {
+				clearTimeout(node.reconnect_timeout);
+			}
+		}
 
 		function startconn() { // Connect to remote endpoint
 			//should not start connection if no server or key
@@ -151,18 +173,6 @@ module.exports = function(RED) {
 				node.login(node.key);
 			});
 
-			websocket.on("close", function() {
-				node.log("Connection closed: "+node.path);
-				node.emit("closed");
-				node.logged = false;
-				if (!node.closing) {
-					clearTimeout(node.tout);
-					node.tout = setTimeout(function() {
-						startconn();
-					}, node.RECONNECT_TIMEOUT * 1000); // try to reconnect
-				}
-			});
-
 			websocket.on("message", function (data, flags) {
 				data = data.toString("binary"); //convert to string
 				if(data.length > blynkLib.BLYNK_PROTOCOL_MAX_LENGTH){
@@ -190,16 +200,16 @@ module.exports = function(RED) {
 				} //process message
 			});
 
+			websocket.on("close", function() {
+				node.log("Websocket closed: "+node.path);
+				node.emit("closed");
+				reconnect();
+			});
+
 			websocket.on("error", function(err) {
 				node.error("Websocket " + err);
 				node.emit("error");
-				node.logged = false;
-				if (!node.closing) {
-					clearTimeout(node.tout);
-					node.tout = setTimeout(function() {
-						startconn();
-					}, node.RECONNECT_TIMEOUT * 1000); // try to reconnect
-				}
+				reconnect();
 			});
 		}
 
@@ -208,27 +218,15 @@ module.exports = function(RED) {
 			// Remove listeners from RED.server
 			node.log("Client Close")
 			node.closing = true;
-			node.logged = false;
-			if(node.websocket) {
-				node.websocket.close();
-			}
-			if (node.tout) {
-				clearTimeout(node.tout);
-			}
+			resetReconnect();
 		});
 
 		node.on("error", function() {
 			// Workaround https://github.com/einaros/ws/pull/253
 			// Remove listeners from RED.server
 			node.log("Client Error")
-			node.closing = true;
-			node.logged = false;
-			if(node.websocket) {
-				node.websocket.close();
-			}
-			if (node.tout) {
-				clearTimeout(node.tout);
-			}
+			node.closing = false;
+			resetReconnect();
 		});
 
 		//test enabled check

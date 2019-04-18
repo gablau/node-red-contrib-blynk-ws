@@ -79,15 +79,20 @@ Blynk is **the most popular IoT platform** used by design studios, makers, educa
 [<img src="https://cdn.rawgit.com/simple-icons/simple-icons/develop/icons/googleplay.svg" width="18" height="18" /> Google Play](https://play.google.com/store/apps/details?id=cc.blynk) | 
 [<img src="https://cdn.rawgit.com/simple-icons/simple-icons/develop/icons/apple.svg" width="18" height="18" /> App Store](https://itunes.apple.com/us/app/blynk-control-arduino-raspberry/id808760481?ls=1&mt=8)**
 
-**Blynk [Server](https://github.com/blynkkk/blynk-server)**
+Optionally you can install **Blynk [Local Server](https://github.com/blynkkk/blynk-server)** and run everything locally. However, **Blynk Cloud is free** for anyone who is using Blynk for personal (non-commercial) use.
 
 ## Documentation
-Social: [Webpage](http://www.blynk.cc) / [Facebook](http://www.fb.com/blynkapp) / [Twitter](http://twitter.com/blynk_app) / [Kickstarter](https://www.kickstarter.com/projects/167134865/blynk-build-an-app-for-your-arduino-project-in-5-m/description)  
-Help Center: http://help.blynk.cc  
-Documentation: http://docs.blynk.cc/#blynk-firmware  
-Community Forum: http://community.blynk.cc  
-Examples Browser: http://examples.blynk.cc  
-Blynk for Business: http://www.blynk.io
+Social: [Webpage](http://www.blynk.io) / [Facebook](http://www.fb.com/blynkapp) / [Twitter](http://twitter.com/blynk_app) / [Twitter](https://twitter.com/blynk_app) / [Youtube](https://www.youtube.com/blynk) / [Instagram](https://www.instagram.com/blynk.iot/) / [LinkedIn](https://www.linkedin.com/company/b-l-y-n-k/)
+
+[Full Blynk Documentation](http://docs.blynk.cc/#blynk-firmware) - a complete guide on Blynk features
+
+[Community (Forum)](http://community.blynk.cc) - join a 500,000 Blynk community to ask questions and share ideas
+
+[Help Center](http://help.blynk.cc) - helpful articles on various Blynk aspects
+
+[Code Examples Browser](http://examples.blynk.cc) - browse examples to explore Blynk possibilities
+
+[Official Website](https://blynk.io) 
 
 ## Quickstart: Arduino + Ethernet shield
 
@@ -103,14 +108,18 @@ You can easily apply any type of board/connection to all examples.
 
 __________
 
-## Implementations for other platforms
+## Official implementations for other platforms
 * [C++, Arduino](https://github.com/blynkkk/blynk-library)
-* [Particle](https://github.com/vshymanskyy/blynk-library-spark)
+* [Python, MicroPython](https://github.com/blynkkk/lib-python)
+
+## Libraries by community
 * [Node.js, Espruino, Browsers](https://github.com/vshymanskyy/blynk-library-js)
+* [Python](https://github.com/vshymanskyy/blynk-library-python)
+* [Particle](https://github.com/vshymanskyy/blynk-library-spark)
 * [Lua, OpenWrt, NodeMCU](https://github.com/vshymanskyy/blynk-library-lua)
-* [Python, MicroPython](https://github.com/vshymanskyy/blynk-library-python)
 * [OpenWrt packages](https://github.com/vshymanskyy/blynk-library-openwrt)
 * [MBED](https://developer.mbed.org/users/vshymanskyy/code/Blynk/)
+* [Node-RED](https://www.npmjs.com/package/node-red-contrib-blynk-ws)
 * [LabVIEW](https://github.com/juncaofish/NI-LabVIEWInterfaceforBlynk)
 * [C#](https://github.com/sverrefroy/BlynkLibrary)
 
