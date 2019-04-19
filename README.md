@@ -41,6 +41,10 @@ Use Raspberry PI as hardware to access 128 virtual pins or Generic Board for 32.
 
 ### How to use
 
+See your server url and auth token in configuration node
+
+![Information Panel](./docs/img/readme-config-connection.png)
+
 See information panel on every nodes
 
 ![Information Panel](./docs/img/readme-info-panel.png)
@@ -50,7 +54,7 @@ See information panel on every nodes
 Use the verbose `-v` flag when starting Node-RED to get more information
 or use `node-red-log` and enable log on Configuration Node as needed
 
-![Log settings](./docs/img/readme-log-settings.png)
+![Log settings](./docs/img/readme-config-advanced.png)
 
 
 ### Compatibility
@@ -82,7 +86,6 @@ Blynk is **the most popular IoT platform** used by design studios, makers, educa
 Optionally you can install **Blynk [Local Server](https://github.com/blynkkk/blynk-server)** and run everything locally. However, **Blynk Cloud is free** for anyone who is using Blynk for personal (non-commercial) use.
 
 ## Documentation
-Social: [Webpage](http://www.blynk.io) / [Facebook](http://www.fb.com/blynkapp) / [Twitter](http://twitter.com/blynk_app) / [Twitter](https://twitter.com/blynk_app) / [Youtube](https://www.youtube.com/blynk) / [Instagram](https://www.instagram.com/blynk.iot/) / [LinkedIn](https://www.linkedin.com/company/b-l-y-n-k/)
 
 [Full Blynk Documentation](http://docs.blynk.cc/#blynk-firmware) - a complete guide on Blynk features
 
@@ -93,6 +96,8 @@ Social: [Webpage](http://www.blynk.io) / [Facebook](http://www.fb.com/blynkapp) 
 [Code Examples Browser](http://examples.blynk.cc) - browse examples to explore Blynk possibilities
 
 [Official Website](https://blynk.io) 
+
+Social: [Webpage](http://www.blynk.io) / [Facebook](http://www.fb.com/blynkapp) / [Twitter](http://twitter.com/blynk_app) / [Twitter](https://twitter.com/blynk_app) / [Youtube](https://www.youtube.com/blynk) / [Instagram](https://www.instagram.com/blynk.iot/) / [LinkedIn](https://www.linkedin.com/company/b-l-y-n-k/)
 
 ## Quickstart: Arduino + Ethernet shield
 
@@ -108,7 +113,7 @@ You can easily apply any type of board/connection to all examples.
 
 __________
 
-## Official implementations for other platforms
+## Official implementations
 * [C++, Arduino](https://github.com/blynkkk/blynk-library)
 * [Python, MicroPython](https://github.com/blynkkk/lib-python)
 
@@ -119,16 +124,13 @@ __________
 * [Lua, OpenWrt, NodeMCU](https://github.com/vshymanskyy/blynk-library-lua)
 * [OpenWrt packages](https://github.com/vshymanskyy/blynk-library-openwrt)
 * [MBED](https://developer.mbed.org/users/vshymanskyy/code/Blynk/)
-* [Node-RED](https://www.npmjs.com/package/node-red-contrib-blynk-ws)
+* [Node-RED](https://www.npmjs.com/package/node-red-contrib-blynk-ws) **This library!**
 * [LabVIEW](https://github.com/juncaofish/NI-LabVIEWInterfaceforBlynk)
 * [C#](https://github.com/sverrefroy/BlynkLibrary)
 
 ## Attributions
 
-The **node-red-contrib-blynk-ws** was born as a fork of **node-red-contrib-blynk-websockets**
-     [https://github.com/tzapu/node-red-contrib-blynk-websockets](https://github.com/tzapu/node-red-contrib-blynk-websockets)  
-Some javascripts code was derived from **blynk-library-js**:   
-     [https://github.com/vshymanskyy/blynk-library-js](https://github.com/vshymanskyy/blynk-library-js) 
+The **node-red-contrib-blynk-ws** was born as a fork of [**node-red-contrib-blynk-websockets**](https://github.com/tzapu/node-red-contrib-blynk-websockets) and some javascripts code was derived from [**Node.js, Espruino, Browsers**](https://github.com/vshymanskyy/blynk-library-js) 
 
 ## License
 This project is released under The MIT License (MIT)
