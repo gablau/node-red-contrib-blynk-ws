@@ -15,7 +15,7 @@
         
         function ws_oneditsave() {
             if ($("#node-input-pin_all").val() == 1) {
-                if(!valid_pin(this.pin)) {
+                if(!valid_pin($("#node-input-pin").val())) {
                     $("#node-input-pin").val("0");
                 }
             }

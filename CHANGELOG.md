@@ -5,6 +5,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Changed
+- Updated images in readme
+
+### Fixed
+- Missing release link in the changelog
+- Saving the Vpin setting for the first time does not work - See [Issue #12](https://github.com/gablau/node-red-contrib-blynk-ws/issues/12)
 
 ## [0.9.1] - 2019-04-17
 ### Fixed
@@ -18,7 +24,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Changed
 - Node - *Configuration* - Using tabs for better UI
 - All nodes - Increased the limit of the pins to 255 and better validation checks
-- Improved heartbeat , send PING command only if necessary.
+- Improved heartbeat, send PING command only if necessary.
 - Control and blocking of sending too long messages (BLYNK_PROTOCOL_MAX_LENGTH)
 - Compatibility with Blynk C++ Library 0.6.1
 - LOGIN command changed to int 29 (old int 2)

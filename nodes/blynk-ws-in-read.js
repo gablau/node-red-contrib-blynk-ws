@@ -11,9 +11,9 @@ module.exports = function(RED) {
 		this.pin_all = n.pin_all;
 
 		if(this.pin_all) 
-				this.connected_label = RED._("blynk-ws-in-read.status.connected-all");
+			this.connected_label = RED._("blynk-ws-in-read.status.connected-all");
 		else
-				this.connected_label = RED._("blynk-ws-in-read.status.connected-fixed") + this.pin; 
+			this.connected_label = RED._("blynk-ws-in-read.status.connected-fixed") + this.pin; 
 
 		if (this.blynkClient) {
 			this.blynkClient.registerInputNode(this);
