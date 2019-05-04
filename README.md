@@ -22,7 +22,6 @@ If you installed Node Red globally use this command to install
 
 ### Supported events, commands and widgets
 
-
 **Events:** read, write, app (connected/disconected)\
 **Commands:** write, bridge, sync (virtual/all), set property\
 **Widgets:** emails, notify, LCD, table, zeRGBa, styled button, image gallery
