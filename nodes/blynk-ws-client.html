@@ -1,111 +1,124 @@
 <script type="text/javascript">
 
-    (function() {
+    // eslint-disable-next-line func-names
+    (function () {
+      function label() {
+        let deviceName = 'n/a';
+        if (this.key !== undefined && this.key !== '') deviceName = this.key.slice(-5);
+        return this.name || `Blynk device-${deviceName}`;
+      }
 
-        function ws_label() {
-            _dev = 'n/a'
-            if(this.key!= undefined && this.key!='') _dev = this.key.slice(-5);
-            return this.name||'Blynk device-'+_dev;
+      function onEditPrepare() {
+        const tabs = RED.tabs.create({
+          id: 'node-config-blynk-ws-client-tabs',
+          onchange(tab) {
+            $('#node-config-blynk-ws-client-tabs-content').children().hide();
+            $(`#${tab.id}`).show();
+          },
+        });
+        tabs.addTab({
+          id: 'blynk-ws-client-tab-connection',
+          label: 'Connection',
+        });
+        tabs.addTab({
+          id: 'blynk-ws-client-tab-advanced',
+          label: 'Advanced',
+        });
+
+        setTimeout(() => { tabs.resize(); }, 0);
+
+        if (this.proxy_type === undefined || this.proxy_type === '') {
+          $('#node-config-input-proxy_type').val('no');
         }
 
-        function ws_oneditprepare() {
-            var tabs = RED.tabs.create({
-                id: "node-config-blynk-ws-client-tabs",
-                onchange: function(tab) {
-                    $("#node-config-blynk-ws-client-tabs-content").children().hide();
-                    $("#" + tab.id).show();
-                }
-            });
-            tabs.addTab({
-                id: "blynk-ws-client-tab-connection",
-                label: 'Connection',
-            });
-            tabs.addTab({
-                id: "blynk-ws-client-tab-advanced",
-                label: 'Advanced',
-            });
+        $('#node-config-input-proxy_type').on('change', function onChangeProxyType() {
+          if ($(this).val() === 'custom') {
+            $('#node-config-input-proxy_url').show();
+          } else {
+            $('#node-config-input-proxy_url').hide();
+          }
+        }).change();
 
-            setTimeout(function() { tabs.resize(); },0);
-
-            if (this.proxy_type === undefined || this.proxy_type == '') {
-                $("#node-config-input-proxy_type").val("no");
-            }
-
-            $("#node-config-input-proxy_type").on("change",function() {
-                if ($(this).val() == 'custom') {
-                    $("#node-config-input-proxy_url").show();
-                } else {
-                    $("#node-config-input-proxy_url").hide();
-                }
-            }).change();
-
-            $("#node-enabled").on("click",function() {
-                if ($("#node-config-input-enabled").is(":checked")) {
-                    $("#node-config-input-enabled").prop('checked', false);
-                    $("#node-enabled").removeClass('fa-toggle-on');
-                    $("#node-enabled").addClass('fa-toggle-off');
-                } else {
-                    $("#node-config-input-enabled").prop('checked', true);
-                    $("#node-enabled").removeClass('fa-toggle-off');
-                    $("#node-enabled").addClass('fa-toggle-on');
-                }
-            }).change();
-
-            if ($("#node-config-input-enabled").is(":checked")) {
-                $("#node-enabled").removeClass('fa-toggle-off');
-                $("#node-enabled").addClass('fa-toggle-on');
-            }
-            else{
-                $("#node-enabled").removeClass('fa-toggle-on');
-                $("#node-enabled").addClass('fa-toggle-off');
-            }
-
-            //compatibility: enable config node from old version < 0.8.0 library
-            if (this.enabled === undefined) {
-                $("#node-enabled").trigger("click");
-            }
-
+        function PowerON() {
+          $('#node-enabled').removeClass('fa-toggle-off');
+          $('#node-enabled').addClass('fa-toggle-on');
+          $('#node-power').removeClass('power-disable');
+          $('#node-power').addClass('power-enable');
         }
-           
 
-    RED.nodes.registerType('blynk-ws-client',{
+        function PowerOFF() {
+          $('#node-enabled').removeClass('fa-toggle-on');
+          $('#node-enabled').addClass('fa-toggle-off');
+          $('#node-power').removeClass('power-enable');
+          $('#node-power').addClass('power-disable');
+        }
+
+        $('#node-enabled').on('click', () => {
+          if ($('#node-config-input-enabled').is(':checked')) {
+            $('#node-config-input-enabled').prop('checked', false);
+            PowerOFF();
+          } else {
+            $('#node-config-input-enabled').prop('checked', true);
+            PowerON();
+          }
+        }).change();
+
+        ($('#node-config-input-enabled').is(':checked')) ? PowerON() : PowerOFF(); // eslint-disable-line no-unused-expressions
+    
+
+        // compatibility: enable config node from old version < 0.8.0 library
+        if (this.enabled === undefined) {
+          $('#node-enabled').trigger('click');
+        }
+      }
+    
+
+  RED.nodes.registerType('blynk-ws-client', {
         category: 'config',
         defaults: {
-	        name: { value: ''},
-            path: {value: '', required:true, validate:RED.validators.regex(/^((ws(s?))\:\/\/)?((([a-zA-Z0-9_\-]{2,}\.)+[a-zA-Z]{2,})|((([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5]))|([a-zA-Z0-9]*))(:[a-zA-Z0-9]{1,5})?(\/[a-zA-Z0-9]*)?$/) },
-            key: {value: '', required:true, validate:RED.validators.regex(/^[a-fA-F0-9]{32}$/) },
-            dbg_all: {value:false},
-            dbg_read: {value:false},
-            dbg_write: {value:false},
-            dbg_notify: {value:false},
-            dbg_mail: {value:false},
-            dbg_prop: {value:false},
-            dbg_sync: {value:false},
-            dbg_bridge: {value:false},
-            dbg_low: {value:false},
-            dbg_pins: {value:''},
-            multi_cmd: {value:false},
-            proxy_type: {value:'no', required:true },
-            proxy_url: {value: ''},
-            enabled: {value: true}
+          name: { value: '' },
+          path: { value: '', required: true, validate: RED.validators.regex(/^((ws(s?)):\/\/)?((([a-zA-Z0-9_-]{2,}\.)+[a-zA-Z]{2,})|((([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5]))|([a-zA-Z0-9]*))(:[a-zA-Z0-9]{1,5})?(\/[a-zA-Z0-9]*)?$/) }, // eslint-disable-line max-len
+          key: { value: '', required: true, validate: RED.validators.regex(/^[a-zA-Z0-9-_=]{32}$/) }, // fix issue #13 https://github.com/gablau/node-red-contrib-blynk-ws/issues/13
+          dbg_all: { value: false },
+          dbg_read: { value: false },
+          dbg_write: { value: false },
+          dbg_notify: { value: false },
+          dbg_mail: { value: false },
+          dbg_prop: { value: false },
+          dbg_sync: { value: false },
+          dbg_bridge: { value: false },
+          dbg_low: { value: false },
+          dbg_pins: { value: '' },
+          multi_cmd: { value: false },
+          proxy_type: { value: 'no', required: true },
+          proxy_url: { value: '' },
+          enabled: { value: true },
         },
-        inputs:0,
-        outputs:0,
-        label: ws_label,
-        oneditprepare: ws_oneditprepare,
-    });
-
-})();
+        inputs: 0,
+        outputs: 0,
+        label,
+        oneditprepare: onEditPrepare,
+  });
+}());
 </script>  
 
 <!-- Blynk Server configuration node -->
 <script type="text/x-red" data-template-name="blynk-ws-client">
+    <style>
+    .power-enable {
+        color: #0aa737;
+        } 
+    .power-disable {
+        color: #ff0000;
+        } 
+    
+    </style>
     <div class="form-row">
         <label for="node-config-input-name"><i class="fa fa-tag"></i> <span>Name</span></label>
         <input type="text" id="node-config-input-name" data-i18n="[placeholder]node-red:common.label.name">
     </div>
     <div class="form-row">
-        <label for="node-config-input-enabled"><i class="fa fa-power-off"></i> Enabled</label>
+        <label for="node-config-input-enabled"><i id="node-power" class="fa fa-power-off"></i> Enabled</label>
         <i id="node-enabled" class="fa fa-lg fa-toggle-on"></i>
         <input type="checkbox" id="node-config-input-enabled" style="display:none"></input>
         <span style="font-size: 80%;"> (enable this button for connect to blynk on startup)</span>
@@ -187,10 +200,10 @@
 <script type="text/x-red" data-help-name="blynk-ws-client">
    <p>This configuration node connects to a Blynk Server via WebSocket on the specified URL.
    <br /><br />
-	    To connect to Blynk Cloud Server use this url:<br>
+      To connect to Blynk Cloud Server use this url:<br>
       Websocket: <b>ws://blynk-cloud.com/websockets</b><br>
       Websocket SSL: <b>wss://blynk-cloud.com/websockets</b><br><br>
-	To connect to Local Server use this url:<br>
+  To connect to Local Server use this url:<br>
       Websocket: <b>ws://&lt;your-local-ip&gt;:8080/websockets</b><br>
       Websocket SSL: <b>wss://&lt;your-local-ip&gt;:9443/websockets</b><br><br>
     The <b>Auth Token</b> is a unique identifier which is needed to connect your hardware to your smartphone.<br>

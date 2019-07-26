@@ -1,69 +1,68 @@
 <script type="text/javascript">
 
-    (function() {
+    // eslint-disable-next-line func-names
+    (function () {
+      function validPin(tmppin) {
+        const tmpPin = parseInt(tmppin, 10);
+        if (Number.isInteger(tmpPin) && tmpPin >= 0 && tmpPin <= 255) {
+          return true;
+        }
+        return false;
+      }
+    
+      function onEditSave() {
+      }
 
-        function valid_pin(_tmppin){
-            _tmppin = parseInt(_tmppin);
-            if(Number.isInteger(_tmppin) && _tmppin >=0 && _tmppin <=255) {
-                return true;
-            }
-            return false;
-        }
-        
-        function ws_oneditsave() {
+      function onEditPrepare() {
+        if (this.prop === undefined) {
+          $('#node-input-prop').val('0');
         }
 
-        function ws_oneditprepare() {
-            if (this.prop === undefined) {
-                 $("#node-input-prop").val("0");
-            }
-
-            $("#node-input-prop").on("change",function() {
-                if ($(this).val() == 0) {
-                    $("#div-set-prop").show();
-                } else {
-                    $("#div-set-prop").hide();
-                }
-            }).change();
+        $('#node-input-prop').on('change', function onChangeProp() {
+          if ($(this).val() == 0) { // eslint-disable-line eqeqeq
+            $('#div-set-prop').show();
+          } else {
+            $('#div-set-prop').hide();
+          }
+        }).change();
+      }
+    
+      function label() {
+        let pin = 'pin error';
+        const type = 'Image Gallery';
+        if (validPin(this.pin)) {
+          pin = `Pin V${this.pin} - ${type}`;
         }
-        
-        function ws_label() {
-            _pin = 'pin error';
-            _type = 'Image Gallery';
-            if(valid_pin(this.pin)) {
-                _pin = 'Pin V'+ this.pin + ' - ' +  _type;
-            }
-            return this.name||_pin;
-        }
-           
-    RED.nodes.registerType('blynk-ws-image-gallery',{
+        return this.name || pin;
+      }
+    
+  RED.nodes.registerType('blynk-ws-image-gallery', {
         category: 'Blynk_ws',
         paletteLabel: 'image-gallery',
         defaults: {
-            name: {value: ''},
-            pin: {value: '', required:true, validate:RED.validators.regex(/^([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])$/) },
-            onlabel: {value: 'ON'},
-            offlabel: {value: 'OFF'},
-            oncolor: {value: '#000000'},
-            onbackcolor: {value: '#ffffff'},
-            offcolor: {value: '#ffffff'},
-            offbackcolor: {value: '#000000'},
-            client: {type: "blynk-ws-client", required:true }
+          name: { value: '' },
+          pin: { value: '', required: true, validate: RED.validators.regex(/^([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])$/) },
+          onlabel: { value: 'ON' },
+          offlabel: { value: 'OFF' },
+          oncolor: { value: '#000000' },
+          onbackcolor: { value: '#ffffff' },
+          offcolor: { value: '#ffffff' },
+          offbackcolor: { value: '#000000' },
+          client: { type: 'blynk-ws-client', required: true },
         },
-        color:"#1BC17C",
-        inputs:1,
-        outputs:0,
-        icon: "image.png",
-        align: "right",
-        labelStyle: function() {
-            return this.name?"node_label_italic":"";
+        color: '#1BC17C',
+        inputs: 1,
+        outputs: 0,
+        icon: 'image.png',
+        align: 'right',
+        labelStyle() {
+          return this.name ? 'node_label_italic' : '';
         },
-        label: ws_label,
-        oneditsave: ws_oneditsave,
-        oneditprepare: ws_oneditprepare,
-    });
-
-})();
+        label,
+        oneditsave: onEditSave,
+        oneditprepare: onEditPrepare,
+  });
+}());
 </script>  
 
 <!-- Blynk out Node - Write -->

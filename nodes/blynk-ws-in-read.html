@@ -1,70 +1,68 @@
 <script type="text/javascript">
 
-    (function() {
+    // eslint-disable-next-line func-names
+    (function () {
+      function validPin(tmppin) {
+        const tmpPin = parseInt(tmppin, 10);
+        if (Number.isInteger(tmpPin) && tmpPin >= 0 && tmpPin <= 255) {
+          return true;
+        }
+        return false;
+      }
+    
+      function onEditSave() {
+        if ($('#node-input-pin_all').val() == 1) { // eslint-disable-line eqeqeq
+          if (!validPin($('#node-input-pin').val())) {
+            $('#node-input-pin').val('0');
+          }
+        }
+      }
 
-        function valid_pin(_tmppin){
-            _tmppin = parseInt(_tmppin);
-            if(Number.isInteger(_tmppin) && _tmppin >=0 && _tmppin <=255) {
-                return true;
-            }
-            return false;
+      function onEditPrepare() {
+        $('#node-input-pin_all').on('change', () => {
+          if ($(this).is(':checked')) {
+            $('#div-input-pin').hide();
+          } else {
+            $('#div-input-pin').show();
+          }
+        }).change();
+      }
+    
+      function label() {
+        let pin = 'pin error';
+        const type = 'Read Event';
+
+        if (validPin(this.pin)) {
+          pin = `Pin V${this.pin} - ${type}`;
+        }
+        if (this.pin_all) {
+          pin = `All Pins - ${type}`;
         }
     
-        function ws_oneditprepare() {
-        }
-        
-        function ws_oneditsave() {
-            if ($("#node-input-pin_all").val() == 1) {
-                if(!valid_pin($("#node-input-pin").val())) {
-                    $("#node-input-pin").val("0");
-                }
-            }
-        }
-        
-        function ws_label() {
-            _pin = 'pin error';
-            _type = 'Read Event';
-
-            if(valid_pin(this.pin)) {
-            _pin = 'Pin V'+ this.pin + ' - ' +  _type;
-            }
-            if(this.pin_all) {
-                _pin = 'All Pins' + ' - ' +  _type;
-            }
+        return this.name || pin;
+      }
     
-            return this.name||_pin;
-        }
-           
-    RED.nodes.registerType('blynk-ws-in-read', {
+  RED.nodes.registerType('blynk-ws-in-read', {
         category: 'Blynk_ws',
         paletteLabel: 'read event',
         defaults: {
-            name: {value: ''},
-            pin: {value: '', required:false, validate:RED.validators.regex(/^([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])$/) },
-            pin_all: {value: 0},
-            client: {type:"blynk-ws-client", required:true }
+          name: { value: '' },
+          pin: { value: '', required: false, validate: RED.validators.regex(/^([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])$/) },
+          pin_all: { value: 0 },
+          client: { type: 'blynk-ws-client', required: true },
         },
-        color:"#1BC17C",
-        inputs:0,
-        outputs:1,
-        icon: "white-globe.png",
-        labelStyle: function() {
-            return this.name?"node_label_italic":"";
+        color: '#1BC17C',
+        inputs: 0,
+        outputs: 1,
+        icon: 'white-globe.png',
+        labelStyle() {
+          return this.name ? 'node_label_italic' : '';
         },
-        label: ws_label,
-        oneditsave: ws_oneditsave,
-        oneditprepare: function() {
-             $("#node-input-pin_all").on("change",function() {
-                if ($(this).is(":checked")) {
-                    $("#div-input-pin").hide();
-                } else {
-                    $("#div-input-pin").show();
-                }
-            }).change();
-        }
-    });
-
-})();
+        label,
+        oneditsave: onEditSave,
+        oneditprepare: onEditPrepare,
+  });
+}());
 </script>  
 
 <!-- Blynk Input Node - Read -->

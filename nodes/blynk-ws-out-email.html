@@ -1,39 +1,38 @@
 <script type="text/javascript">
 
-    (function() {
+    // eslint-disable-next-line func-names
+    (function () {
+      function onEditPrepare() {
+      }
     
-        function ws_oneditprepare() {
-        }
-        
-        function ws_oneditsave() {
-        }
-        
-        function ws_label() {
-            return this.name||this.email||'email';
-        }
-           
-    RED.nodes.registerType('blynk-ws-out-email',{
+      function onEditSave() {
+      }
+    
+      function label() {
+        return this.name || this.email || 'email';
+      }
+    
+  RED.nodes.registerType('blynk-ws-out-email', {
         category: 'Blynk_ws',
         paletteLabel: 'email',
         defaults: {
-            name: {value: ''},
-            email: {value: '', required: true, validate:RED.validators.regex(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/) },
-            client: {type: "blynk-ws-client", required:true }
+          name: { value: '' },
+          email: { value: '', required: true, validate: RED.validators.regex(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/) }, // eslint-disable-line max-len, no-useless-escape
+          client: { type: 'blynk-ws-client', required: true },
         },
-        color:"#1BC17C",
-        inputs:1,
-        outputs:0,
-        icon: "email.png",
-        align: "right",
-        labelStyle: function() {
-            return this.name?"node_label_italic":"";
+        color: '#1BC17C',
+        inputs: 1,
+        outputs: 0,
+        icon: 'email.png',
+        align: 'right',
+        labelStyle() {
+          return this.name ? 'node_label_italic' : '';
         },
-        label: ws_label,
-        oneditsave: ws_oneditsave,
-        oneditprepare: ws_oneditprepare
-    });
-
-})();
+        label,
+        oneditsave: onEditSave,
+        oneditprepare: onEditPrepare,
+  });
+}());
 </script>  
 
 <!-- Blynk out Node - Email -->
@@ -42,11 +41,11 @@
         <label for="node-input-client"><i class="fa fa-bookmark"></i> <span>Connection</span></label>
         <input type="text" id="node-input-client">
     </div>
-   	<div class="form-row">
+     <div class="form-row">
         <label for="node-input-email"><i class="fa fa-envelope-o"></i> <span>Email</span></label>
         <input type="text" id="node-input-email" placeholder="Email address">
     </div>
-   	<div class="form-row">
+     <div class="form-row">
         <label for="node-input-name"><i class="fa fa-tag"></i> <span>Name</span></label>
         <input type="text" id="node-input-name" data-i18n="[placeholder]node-red:common.label.name">
     </div>
@@ -55,8 +54,8 @@
 <script type="text/x-red" data-help-name="blynk-ws-out-email">
     <p>Blynk email node.</p>
     <p>This node will send an email using your <code>msg.topic</code> for subject and <code>msg.payload</code> for content.
-	    <br />
-	    Remember to add the email widget in your project and that the Blynk server has a setting how many emails per minute to send.
+      <br />
+      Remember to add the email widget in your project and that the Blynk server has a setting how many emails per minute to send.
     </p>
     <p class="form-tips">
         Official documentation: 

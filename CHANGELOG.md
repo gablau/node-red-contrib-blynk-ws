@@ -6,6 +6,19 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [1.0.0] - 2019-07-27
+### Added
+- Utf-8 support in blynk message
+- ESLint to increase code quality and discover problems
+- Adopted the Airbnb javascript code style
+
+### Changed
+- Refactoring and adjusted all the source code to the new standard
+- Various code improvements
+
+### Fixed
+- Regexp validation for uth token - See [Issue #13](https://github.com/gablau/node-red-contrib-blynk-ws/issues/13)
+
 ## [0.9.2] - 2019-05-04
 ### Changed
 - Updated images in readme
@@ -19,7 +32,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - No automatic reconnect on connection lost
 
 ## [0.9.0] - 2019-03-19
-### Add
+### Added
 - Node - *Image Gallery* - Implemented "url" and "urls" property [NOTE: url and urls property are supported only in beta app]
 - Node - *Set Property* - Implemented "url" and "urls" property [NOTE: url and urls property are supported only in beta app]
 
@@ -168,7 +181,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Heartbeat once 10 seconds
 - Max virtual pin allowed 128
 
-[Unreleased]: https://github.com/gablau/node-red-contrib-blynk-ws/compare/0.9.2...HEAD
+[Unreleased]: https://github.com/gablau/node-red-contrib-blynk-ws/compare/1.0.0...HEAD
+[1.0.0]: https://github.com/gablau/node-red-contrib-blynk-ws/compare/0.9.2...1.0.0
 [0.9.2]: https://github.com/gablau/node-red-contrib-blynk-ws/compare/0.9.1...0.9.2
 [0.9.1]: https://github.com/gablau/node-red-contrib-blynk-ws/compare/0.9.0...0.9.1
 [0.9.0]: https://github.com/gablau/node-red-contrib-blynk-ws/compare/0.8.0...0.9.0

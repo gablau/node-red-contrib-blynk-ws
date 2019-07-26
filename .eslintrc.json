@@ -1,0 +1,25 @@
+{
+    "env": {
+        "browser": true,
+        "node": true,
+        "mocha":true,
+        "jquery": true
+    },
+    "globals": {
+        "RED": true
+    },
+    "extends": [
+        "airbnb-base"
+    ],
+    "plugins": [
+        "html",
+        "json"
+    ],
+    "rules": {
+        "prefer-destructuring": "off",
+        "no-plusplus": "off",
+        "no-global-require": "off",
+        "no-prototype-builtins": "off",
+        "max-len": [2, {"code": 140, "ignoreUrls": true}]
+    }
+}
