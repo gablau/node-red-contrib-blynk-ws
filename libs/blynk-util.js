@@ -9,7 +9,7 @@ const { MsgType } = blynkEnum;
 
 function getKeyByValue(obj, value) {
   // return Object.keys(obj).find(key => obj[key] === value); //javascript ES6 only
-  return Object.keys(obj).filter(key => obj[key] === value)[0];
+  return Object.keys(obj).filter((key) => obj[key] === value)[0];
 }
 
 function getCommandByCode(cmd) {

@@ -1,0 +1,5 @@
+cert/*
+coverage/*
+docs/*
+node_modules/*
+nodes/icons/*

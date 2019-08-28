@@ -13,8 +13,8 @@ const blynkUtil = require('./../libs/blynk-util.js');
 const blynkLib = require('./../libs/blynk-lib.js');
 
 module.exports = (RED) => {
-  const LIBRARY_VERSION = '1.0.0'; // node-red lib version
-  const LIBRARY_DATE = '2019-07-27'; // node-red lib date
+  const LIBRARY_VERSION = '1.0.1'; // node-red lib version
+  const LIBRARY_DATE = '2019-08-28'; // node-red lib date
 
   const RECONNECT_TIMEOUT_SECONDS = 5; // number of seconds for reconnection when disconnected or socket error
 
@@ -47,7 +47,7 @@ module.exports = (RED) => {
 
     this.log_pins = [];
     if (typeof this.dbg_pins === 'string') {
-      const tmpPins = this.dbg_pins.split(',').map(m => parseInt(m.trim(), 10));
+      const tmpPins = this.dbg_pins.split(',').map((m) => parseInt(m.trim(), 10));
       for (let i = 0; i < tmpPins.length; i++) {
         tmpPins[i] = +tmpPins[i];
         if (!Number.isNaN(tmpPins[i]) && tmpPins[i] >= 0 && tmpPins[i] <= 255) {
@@ -281,7 +281,7 @@ module.exports = (RED) => {
 
   /* Load property from Blink lib and add as client prototype */
   const skipProperty = ['BLYNK_VERSION', 'BLYNK_HEARTBEAT', 'BLYNK_PROTOCOL_MAX_LENGTH', 'BLYNK_MAX_CMD_IN_MESSAGE'];
-  const validProperty = Object.keys(blynkLib).filter(item => (skipProperty.indexOf(item) === -1));
+  const validProperty = Object.keys(blynkLib).filter((item) => (skipProperty.indexOf(item) === -1));
   for (let i = 0; i < validProperty.length; i++) {
     BlynkClientNode.prototype[validProperty[i]] = blynkLib[validProperty[i]];
   }
