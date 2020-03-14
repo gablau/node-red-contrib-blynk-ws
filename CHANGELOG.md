@@ -6,10 +6,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [1.0.2] - 2020-03-14
+### Changed
+- Updated dependencies for security reasons
+- Small changes 
+
 ## [1.0.1] - 2019-08-28
 ### Changed
-- Update dependancies for security
-- Update esLint + airbnb base 
+- Updated dependencies for security reasons
+- Updated esLint + airbnb base 
 
 ### Fixed
 - Bridge node - Regexp validation for auth token
@@ -189,7 +194,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Heartbeat once 10 seconds
 - Max virtual pin allowed 128
 
-[Unreleased]: https://github.com/gablau/node-red-contrib-blynk-ws/compare/1.0.1...HEAD
+[Unreleased]: https://github.com/gablau/node-red-contrib-blynk-ws/compare/1.0.2...HEAD
+[1.0.2]: https://github.com/gablau/node-red-contrib-blynk-ws/compare/1.0.1...1.0.2
 [1.0.1]: https://github.com/gablau/node-red-contrib-blynk-ws/compare/1.0.0...1.0.1
 [1.0.0]: https://github.com/gablau/node-red-contrib-blynk-ws/compare/0.9.2...1.0.0
 [0.9.2]: https://github.com/gablau/node-red-contrib-blynk-ws/compare/0.9.1...0.9.2
