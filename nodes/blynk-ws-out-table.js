@@ -67,6 +67,7 @@ module.exports = (RED) => {
         }
 
         if (msg.hasOwnProperty('clear') && msg.clear === true) {
+          this.rowIdx = 0;
           node.blynkClient.virtualWrite(node.pin, 'clr', msgkey);
         }
         if (msg.hasOwnProperty('add')) {

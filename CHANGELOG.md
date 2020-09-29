@@ -6,6 +6,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [1.0.4] - 2020-09-13
+### Changed
+- Updated dependencies for security reasons
+
+### Fixed
+- Node - *Table* - Table ndex not reset on "clear" command - See [Issue #25](https://github.com/gablau/node-red-contrib-blynk-ws/issues/25)
+- Regexp validation for server url - See [Issue #26](https://github.com/gablau/node-red-contrib-blynk-ws/issues/26)
+
 ## [1.0.3] - 2020-04-10
 ### Changed
 - Updated dependencies for security reasons
@@ -198,7 +206,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Heartbeat once 10 seconds
 - Max virtual pin allowed 128
 
-[Unreleased]: https://github.com/gablau/node-red-contrib-blynk-ws/compare/1.0.3...HEAD
+[Unreleased]: https://github.com/gablau/node-red-contrib-blynk-ws/compare/1.0.4...HEAD
+[1.0.4]: https://github.com/gablau/node-red-contrib-blynk-ws/compare/1.0.3...1.0.4
 [1.0.3]: https://github.com/gablau/node-red-contrib-blynk-ws/compare/1.0.2...1.0.3
 [1.0.2]: https://github.com/gablau/node-red-contrib-blynk-ws/compare/1.0.1...1.0.2
 [1.0.1]: https://github.com/gablau/node-red-contrib-blynk-ws/compare/1.0.0...1.0.1
