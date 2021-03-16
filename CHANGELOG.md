@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [1.0.5] - 2021-03-17
+### Fixed
+- Interim fix for server certificate expiration. You can continue to use the wss connection even if the certificate has expired. See this [forum post](https://community.blynk.cc/t/asia-server-is-down-now/52037/14) 
+
 ## [1.0.4] - 2020-09-29
 ### Changed
 - Updated dependencies for security reasons
@@ -206,7 +210,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Heartbeat once 10 seconds
 - Max virtual pin allowed 128
 
-[Unreleased]: https://github.com/gablau/node-red-contrib-blynk-ws/compare/1.0.4...HEAD
+[Unreleased]: https://github.com/gablau/node-red-contrib-blynk-ws/compare/1.0.5...HEAD
+[1.0.5]: https://github.com/gablau/node-red-contrib-blynk-ws/compare/1.0.4...1.0.5
 [1.0.4]: https://github.com/gablau/node-red-contrib-blynk-ws/compare/1.0.3...1.0.4
 [1.0.3]: https://github.com/gablau/node-red-contrib-blynk-ws/compare/1.0.2...1.0.3
 [1.0.2]: https://github.com/gablau/node-red-contrib-blynk-ws/compare/1.0.1...1.0.2

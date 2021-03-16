@@ -13,8 +13,8 @@ const blynkUtil = require('./../libs/blynk-util.js');
 const blynkLib = require('./../libs/blynk-lib.js');
 
 module.exports = (RED) => {
-  const LIBRARY_VERSION = '1.0.3'; // node-red lib version
-  const LIBRARY_DATE = '2020-04-10'; // node-red lib date
+  const LIBRARY_VERSION = '1.0.5'; // node-red lib version
+  const LIBRARY_DATE = '2021-03-17'; // node-red lib date
 
   const RECONNECT_TIMEOUT_SECONDS = 5; // number of seconds for reconnection when disconnected or socket error
 
@@ -121,7 +121,7 @@ module.exports = (RED) => {
         if (node.path.startsWith('wss://blynk-cloud.com')) {
           const certsPath = path.join(__dirname, '../cert');
           // node.log("crt path " + certsPath);
-          wsArgs.rejectUnauthorized = true;
+          wsArgs.rejectUnauthorized = false; // Warning: interim fix for server cert expiration
           wsArgs.ca = fs.readFileSync(path.join(certsPath, 'server.crt'));
         }
 
