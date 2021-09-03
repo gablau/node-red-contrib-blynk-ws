@@ -143,7 +143,7 @@ const processCommand = function processCommand(cmd) {
         this.logged = true;
         this.sendInfo();
         this.emit('connected', '');
-      } else if (cmd.len === MsgStatus.BLYNK_INVALID_TOKEN) {
+      } else if (cmd.len === MsgStatus.INVALID_TOKEN) {
         this.log('Invalid auth token');
       } else if (cmd.len === MsgStatus.NOT_AUTHENTICATED) {
         this.log('Not autenticated');
@@ -193,7 +193,7 @@ const processCommand = function processCommand(cmd) {
               case MsgStatus.NOT_AUTHENTICATED:
                 this.log('Not autenticated');
                 break;
-              case MsgStatus.BLYNK_INVALID_TOKEN:
+              case MsgStatus.INVALID_TOKEN:
                 this.log('Invalid auth token');
                 break;
               case MsgStatus.ILLEGAL_COMMAND_BODY:
