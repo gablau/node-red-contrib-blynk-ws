@@ -48,7 +48,7 @@ module.exports = (RED) => {
     } else {
       this.error(RED._('blynk-ws-out-lcd.errors.missing-conf'));
     }
-    this.on('input', (msg) => {
+    this.on('input', (msg, done) => {
       // no input operation if client not connected or disabled
       if (!node.blynkClient || !node.blynkClient.logged) {
         return;
@@ -120,6 +120,10 @@ module.exports = (RED) => {
             node.warn(RED._('blynk-ws-out-lcd.warn.payload'));
           }
         }
+      }
+
+      if (done) {
+        done();
       }
     });
   }

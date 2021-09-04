@@ -57,7 +57,7 @@ module.exports = (RED) => {
       this.error(RED._('blynk-ws-style-btn.errors.missing-conf'));
     }
 
-    this.on('input', function input(msg) {
+    this.on('input', (msg, done) => {
       // no input operation if client not connected or disabled
       if (!node.blynkClient || !node.blynkClient.logged) {
         return;
@@ -139,6 +139,10 @@ module.exports = (RED) => {
             node.blynkClient.sendMsgMulti(msgkey);
           }
         }
+      }
+
+      if (done) {
+        done();
       }
     });
 

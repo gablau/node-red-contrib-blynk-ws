@@ -55,7 +55,7 @@ module.exports = (RED) => {
     } else {
       this.error(RED._('blynk-ws-out-notify.errors.missing-conf'));
     }
-    this.on('input', (msg) => {
+    this.on('input', (msg, done) => {
       // no input operation if client not connected or disabled
       if (!node.blynkClient || !node.blynkClient.logged) {
         return;
@@ -112,6 +112,9 @@ module.exports = (RED) => {
       } else if (msg.hasOwnProperty('payload')) {
         const payload = RED.util.ensureString(msg.payload);
         node.blynkClient.sendNotify(payload);
+      }
+      if (done) {
+        done();
       }
     });
 

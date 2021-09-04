@@ -51,7 +51,7 @@ module.exports = (RED) => {
     } else {
       this.error(RED._('blynk-ws-out-write.errors.missing-conf'));
     }
-    this.on('input', (msg) => {
+    this.on('input', (msg, done) => {
       // no input operation if client not connected or disabled
       if (!node.blynkClient || !node.blynkClient.logged) {
         return;
@@ -72,6 +72,10 @@ module.exports = (RED) => {
           pin = msg.pin;
         }
         node.blynkClient.virtualWrite(pin, payload);
+      }
+
+      if (done) {
+        done();
       }
     });
   }

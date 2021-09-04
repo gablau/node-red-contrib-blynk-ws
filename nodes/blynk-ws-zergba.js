@@ -52,7 +52,7 @@ module.exports = (RED) => {
       this.error(RED._('blynk-ws-zergba.errors.missing-conf'));
     }
 
-    this.on('input', function input(msg) {
+    this.on('input', (msg, send, done) => {
       // no input operation if client not connected or disabled
       if (!node.blynkClient || !node.blynkClient.logged) {
         return;
@@ -146,7 +146,11 @@ module.exports = (RED) => {
         });
 
         node.blynkClient.virtualWrite(pin, newmsg.payload);
-        this.send(newmsg);
+        send(newmsg);
+      }
+
+      if (done) {
+        done();
       }
     });
 

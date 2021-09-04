@@ -49,7 +49,7 @@ module.exports = (RED) => {
     } else {
       this.error(RED._('blynk-ws-out-table.errors.missing-conf'));
     }
-    this.on('input', function input(msg) {
+    this.on('input', (msg, done) => {
       // no input operation if client not connected or disabled
       if (!node.blynkClient || !node.blynkClient.logged) {
         return;
@@ -130,6 +130,10 @@ module.exports = (RED) => {
             node.warn(RED._('blynk-ws-out-table.warn.payload'));
           }
         }
+      }
+
+      if (done) {
+        done();
       }
     });
   }

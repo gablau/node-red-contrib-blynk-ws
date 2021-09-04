@@ -50,7 +50,7 @@ module.exports = (RED) => {
         });
       });
 
-      this.on('input', (msg) => {
+      this.on('input', (msg, done) => {
         // no input operation if client not connected or disabled
         if (!node.blynkClient || !node.blynkClient.logged) {
           return;
@@ -173,6 +173,9 @@ module.exports = (RED) => {
               node.blynkClient.sendMsgMulti(msgkey);
             }
           }
+        }
+        if (done) {
+          done();
         }
       });
     } else {

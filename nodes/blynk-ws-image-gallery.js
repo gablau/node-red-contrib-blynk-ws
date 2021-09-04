@@ -58,7 +58,7 @@ module.exports = (RED) => {
       this.error(RED._('blynk-ws-image-gallery.errors.missing-conf'));
     }
 
-    this.on('input', (msg) => {
+    this.on('input', (msg, done) => {
       // no input operation if client not connected or disabled
       if (!node.blynkClient || !node.blynkClient.logged) {
         return;
@@ -111,6 +111,9 @@ module.exports = (RED) => {
         if (node.blynkClient.multi_cmd) {
           node.blynkClient.sendMsgMulti(msgkey);
         }
+      }
+      if (done) {
+        done();
       }
     });
   }
