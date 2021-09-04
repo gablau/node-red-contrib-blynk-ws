@@ -95,10 +95,20 @@ module.exports = (RED) => {
     function reconnect() {
       node.logged = false;
       if (!node.closing) {
-        node.log(`Reconnect in ${node.RECONNECT_TIMEOUT_SECONDS} seconds...`);
+        node.websocket.terminate();
+        node.log(`Reconnect ### in ${node.RECONNECT_TIMEOUT_SECONDS} seconds...`);
         clearTimeout(node.reconnect_timeout);
         node.reconnect_timeout = setTimeout(() => {
-          startconn(); // eslint-disable-line no-use-before-define
+          // startconn(); // eslint-disable-line no-use-before-define
+          if (node.enabled) {
+            startconn(); // eslint-disable-line no-use-before-define
+          } else {
+            node.emit('disabled');
+            setTimeout(() => {
+              node.emit('disabled');
+              node.log('Connection disabled by configuration');
+            }, 2000);
+          }
         }, node.RECONNECT_TIMEOUT_SECONDS * 1000); // try to reconnect
       }
     }
@@ -111,6 +121,7 @@ module.exports = (RED) => {
       if (node.path.startsWith('wss://')) {
         wsArgs = {
           rejectUnauthorized: false,
+          strictSSL: false,
           key: null,
           cert: null,
           ca: null,
@@ -146,7 +157,7 @@ module.exports = (RED) => {
         wsArgs.agent = agent;
       }
 
-      node.log(`Start ${wsLogSecure}connection: ${node.path}`);
+      node.log(`Start ### ${wsLogSecure}connection: ${node.path}`);
       const websocket = new ws(node.path, wsArgs); // eslint-disable-line new-cap
       node.websocket = websocket; // keep for closing
       websocket.setMaxListeners(100);
@@ -189,38 +200,37 @@ module.exports = (RED) => {
 
       websocket.on('close', () => {
         node.log(`Websocket closed: ${node.path}`);
-        node.emit('closed');
-        reconnect();
+        resetReconnect(); // eslint-disable-line no-use-before-define
       });
 
       websocket.on('error', (err) => {
         node.error(`Websocket ${err}`);
-        node.emit('error');
-        reconnect();
+        resetReconnect(); // eslint-disable-line no-use-before-define
       });
     }
 
     function resetReconnect() {
       node.logged = false;
       if (node.websocket) {
-        node.websocket.close();
+        node.websocket.terminate();
       }
       if (node.reconnect_timeout) {
         clearTimeout(node.reconnect_timeout);
       }
+      reconnect();
     }
 
-    node.on('close', () => {
-      // Workaround https://github.com/einaros/ws/pull/253
-      // Remove listeners from RED.server
+    node.on('close', (removed, done) => {
       node.log('Client Close');
       node.closing = true;
-      resetReconnect();
+      if (!removed) resetReconnect();
+
+      if (done) {
+        done();
+      }
     });
 
     node.on('error', () => {
-      // Workaround https://github.com/einaros/ws/pull/253
-      // Remove listeners from RED.server
       node.log('Client Error');
       node.closing = false;
       resetReconnect();
