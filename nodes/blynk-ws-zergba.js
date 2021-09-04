@@ -1,4 +1,4 @@
-const blynkUtil = require('./../libs/blynk-util.js');
+const blynkUtil = require('../libs/blynk-util.js');
 
 module.exports = (RED) => {
   function BlynkZergbaNode(n) {

@@ -7,10 +7,10 @@ const compVer = require('compare-versions');
 
 
 // blynk util
-const blynkUtil = require('./../libs/blynk-util.js');
+const blynkUtil = require('../libs/blynk-util.js');
 
 // blynk lib
-const blynkLib = require('./../libs/blynk-lib.js');
+const blynkLib = require('../libs/blynk-lib.js');
 
 module.exports = (RED) => {
   const LIBRARY_VERSION = '1.0.5'; // node-red lib version
@@ -290,10 +290,10 @@ module.exports = (RED) => {
     if (this.dbg_all || this.dbg_write || this.isLogPin(command.pin)) {
       this.log(`writeEvent: -> cmd ${JSON.stringify(command)}`);
     }
+    const writeNodeTypes = ['write', 'zergba', 'style-btn']; /* 'image-gallery' */
     for (let i = 0; i < this.inputNodes.length; i++) {
-      if ((this.inputNodes[i].nodeType === 'write' || this.inputNodes[i].nodeType === 'zergba'
-           || this.inputNodes[i].nodeType === 'style-btn' /* || this.inputNodes[i].nodeType == "image-gallery" */)
-      && (this.inputNodes[i].pin === command.pin || this.inputNodes[i].pin_all)) {
+      if ((writeNodeTypes.indexOf(this.inputNodes[i].nodeType) !== -1)
+          && (this.inputNodes[i].pin === command.pin || this.inputNodes[i].pin_all)) {
         let msg;
 
         switch (this.inputNodes[i].nodeType) {
