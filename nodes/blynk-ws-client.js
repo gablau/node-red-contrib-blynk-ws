@@ -13,8 +13,8 @@ const blynkUtil = require('../libs/blynk-util.js');
 const blynkLib = require('../libs/blynk-lib.js');
 
 module.exports = (RED) => {
-  const LIBRARY_VERSION = '1.0.5'; // node-red lib version
-  const LIBRARY_DATE = '2021-03-17'; // node-red lib date
+  const LIBRARY_VERSION = '1.0.6'; // node-red lib version
+  const LIBRARY_DATE = '2021-09-06'; // node-red lib date
 
   const RECONNECT_TIMEOUT_SECONDS = 5; // number of seconds for reconnection when disconnected or socket error
 
