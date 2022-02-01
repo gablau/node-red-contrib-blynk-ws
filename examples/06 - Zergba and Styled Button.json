@@ -1,0 +1,300 @@
+[
+    {
+        "id": "8c7a7f2756a4352a",
+        "type": "tab",
+        "label": "06 - Zergba and Styled Button",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "84bb6694f38a68f8",
+        "type": "blynk-ws-zergba",
+        "z": "8c7a7f2756a4352a",
+        "name": "",
+        "pin": "0",
+        "client": "8c06e199.b82b28",
+        "x": 550,
+        "y": 180,
+        "wires": [
+            [
+                "167eba3ca707254a"
+            ]
+        ]
+    },
+    {
+        "id": "079e1951f2238028",
+        "type": "inject",
+        "z": "8c7a7f2756a4352a",
+        "name": "",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "true",
+        "payloadType": "bool",
+        "x": 90,
+        "y": 140,
+        "wires": [
+            [
+                "119b5bd90438c4c4"
+            ]
+        ]
+    },
+    {
+        "id": "167eba3ca707254a",
+        "type": "debug",
+        "z": "8c7a7f2756a4352a",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "x": 730,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "119b5bd90438c4c4",
+        "type": "function",
+        "z": "8c7a7f2756a4352a",
+        "name": "255+\"\\0\"+0+\"\\0\"+0",
+        "func": "msg.payload = \"gr\"+\"\\0\"+245+\"\\0\"+0\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 270,
+        "y": 140,
+        "wires": [
+            [
+                "84bb6694f38a68f8"
+            ]
+        ]
+    },
+    {
+        "id": "7c15d2b679b310f0",
+        "type": "inject",
+        "z": "8c7a7f2756a4352a",
+        "name": "",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "true",
+        "payloadType": "bool",
+        "x": 90,
+        "y": 180,
+        "wires": [
+            [
+                "af331ebd84fe9096"
+            ]
+        ]
+    },
+    {
+        "id": "af331ebd84fe9096",
+        "type": "function",
+        "z": "8c7a7f2756a4352a",
+        "name": "r255 g34 b22",
+        "func": "msg.r = 255;\nmsg.g = 34;\nmsg.b = 22;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 280,
+        "y": 180,
+        "wires": [
+            [
+                "84bb6694f38a68f8"
+            ]
+        ]
+    },
+    {
+        "id": "d90bbc3d8e320326",
+        "type": "inject",
+        "z": "8c7a7f2756a4352a",
+        "name": "",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "true",
+        "payloadType": "bool",
+        "x": 90,
+        "y": 100,
+        "wires": [
+            [
+                "d09e9d21a2ab8828"
+            ]
+        ]
+    },
+    {
+        "id": "d09e9d21a2ab8828",
+        "type": "function",
+        "z": "8c7a7f2756a4352a",
+        "name": "#34DE01",
+        "func": "msg.hex = \"#34JE01\";\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 300,
+        "y": 100,
+        "wires": [
+            [
+                "84bb6694f38a68f8"
+            ]
+        ]
+    },
+    {
+        "id": "c1449b57b0bac864",
+        "type": "inject",
+        "z": "8c7a7f2756a4352a",
+        "name": "",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "0;0;255",
+        "payloadType": "str",
+        "x": 310,
+        "y": 220,
+        "wires": [
+            [
+                "84bb6694f38a68f8"
+            ]
+        ]
+    },
+    {
+        "id": "46c7d601a6555690",
+        "type": "inject",
+        "z": "8c7a7f2756a4352a",
+        "name": "",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "true",
+        "payloadType": "bool",
+        "x": 90,
+        "y": 260,
+        "wires": [
+            [
+                "c8863c9dca2262d3"
+            ]
+        ]
+    },
+    {
+        "id": "c8863c9dca2262d3",
+        "type": "function",
+        "z": "8c7a7f2756a4352a",
+        "name": "[0, 255, 255]",
+        "func": "msg.payload = [0, 352, -5]\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 290,
+        "y": 260,
+        "wires": [
+            [
+                "84bb6694f38a68f8"
+            ]
+        ]
+    },
+    {
+        "id": "fac4a48e2540a6c1",
+        "type": "comment",
+        "z": "8c7a7f2756a4352a",
+        "name": "Example using Zergba widget",
+        "info": "",
+        "x": 140,
+        "y": 40,
+        "wires": []
+    },
+    {
+        "id": "74a12145a9b29df8",
+        "type": "blynk-ws-style-btn",
+        "z": "8c7a7f2756a4352a",
+        "name": "",
+        "pin": "5",
+        "prop": 0,
+        "onlabel": "ON",
+        "offlabel": "OFF",
+        "oncolor": "#00ff00",
+        "onbackcolor": "#000040",
+        "offcolor": "#ff0000",
+        "offbackcolor": "#000000",
+        "client": "8c06e199.b82b28",
+        "x": 300,
+        "y": 400,
+        "wires": [
+            [
+                "342677ee1481874b"
+            ]
+        ]
+    },
+    {
+        "id": "7d260cf645d8c40a",
+        "type": "inject",
+        "z": "8c7a7f2756a4352a",
+        "name": "",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "true",
+        "payloadType": "bool",
+        "x": 90,
+        "y": 400,
+        "wires": [
+            [
+                "74a12145a9b29df8"
+            ]
+        ]
+    },
+    {
+        "id": "342677ee1481874b",
+        "type": "debug",
+        "z": "8c7a7f2756a4352a",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "x": 510,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "2aa39d317c4a60ba",
+        "type": "comment",
+        "z": "8c7a7f2756a4352a",
+        "name": "Example using Styled Button widget",
+        "info": "",
+        "x": 160,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "8c06e199.b82b28",
+        "type": "blynk-ws-client",
+        "name": "Blynk Cloud 1",
+        "path": "ws://blynk-cloud.comme/websockets",
+        "key": "your-auth-token-here",
+        "dbg_all": true,
+        "dbg_read": false,
+        "dbg_write": false,
+        "dbg_notify": false,
+        "dbg_mail": false,
+        "dbg_prop": false,
+        "dbg_sync": false,
+        "dbg_bridge": false,
+        "dbg_low": true,
+        "dbg_pins": "",
+        "multi_cmd": true,
+        "proxy_type": "no",
+        "proxy_url": "",
+        "enabled": true
+    }
+]

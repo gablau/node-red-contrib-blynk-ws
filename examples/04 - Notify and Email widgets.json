@@ -1,0 +1,262 @@
+[
+  {
+    "id": "819f0dcb51428c8b",
+    "type": "tab",
+    "label": "04 - Notify and Email widgets",
+    "disabled": false,
+    "info": ""
+  },
+  {
+    "id": "52e4f322f82bcfab",
+    "type": "blynk-ws-out-notify",
+    "z": "819f0dcb51428c8b",
+    "name": "",
+    "client": "8c06e199.b82b28",
+    "queue": true,
+    "rate": "15",
+    "x": 470,
+    "y": 160,
+    "wires": []
+  },
+  {
+    "id": "25c25222b56ee788",
+    "type": "inject",
+    "z": "819f0dcb51428c8b",
+    "name": "test",
+    "props": [
+      {
+        "p": "payload",
+        "v": "Test notifica",
+        "vt": "str"
+      },
+      {
+        "p": "topic",
+        "v": "",
+        "vt": "str"
+      }
+    ],
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "topic": "",
+    "payload": "Test notifica",
+    "payloadType": "str",
+    "x": 110,
+    "y": 100,
+    "wires": [["5a9a77a287d546e0"]]
+  },
+  {
+    "id": "294b3053b02bea9c",
+    "type": "comment",
+    "z": "819f0dcb51428c8b",
+    "name": "Example notify widget",
+    "info": "",
+    "x": 187,
+    "y": 37,
+    "wires": []
+  },
+  {
+    "id": "5a9a77a287d546e0",
+    "type": "function",
+    "z": "819f0dcb51428c8b",
+    "name": "Long text",
+    "func": "msg.payload=\"0123456789 0123456789 0123456789 0123456789 0123456789 0123456789 0123456789 0123456789 \"\nreturn msg;",
+    "outputs": 1,
+    "noerr": 0,
+    "x": 260,
+    "y": 100,
+    "wires": [["52e4f322f82bcfab", "ed0104bdf21e67b9"]]
+  },
+  {
+    "id": "9fac552242a32ee6",
+    "type": "inject",
+    "z": "819f0dcb51428c8b",
+    "name": "test",
+    "props": [
+      {
+        "p": "payload",
+        "v": "Test notifica",
+        "vt": "str"
+      },
+      {
+        "p": "topic",
+        "v": "",
+        "vt": "str"
+      }
+    ],
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "topic": "",
+    "payload": "Test notifica",
+    "payloadType": "str",
+    "x": 110,
+    "y": 160,
+    "wires": [["dc241bbf304f34c6"]]
+  },
+  {
+    "id": "dc241bbf304f34c6",
+    "type": "function",
+    "z": "819f0dcb51428c8b",
+    "name": "Short text",
+    "func": "num = global.get('testnum');\nif(num === undefined) num = 1;\nelse num++;\nglobal.set('testnum', num);\nmsg.payload=\"Messaggio \"+num;\nreturn msg;",
+    "outputs": 1,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 260,
+    "y": 160,
+    "wires": [["52e4f322f82bcfab", "ed0104bdf21e67b9"]]
+  },
+  {
+    "id": "ed0104bdf21e67b9",
+    "type": "debug",
+    "z": "819f0dcb51428c8b",
+    "name": "",
+    "active": true,
+    "console": "false",
+    "complete": "false",
+    "x": 490,
+    "y": 100,
+    "wires": []
+  },
+  {
+    "id": "6a259e382c42c0bd",
+    "type": "blynk-ws-out-email",
+    "z": "819f0dcb51428c8b",
+    "name": "",
+    "email": "yourmail@example.com",
+    "client": "8c06e199.b82b28",
+    "x": 530,
+    "y": 380,
+    "wires": []
+  },
+  {
+    "id": "88586ca310bcaf7c",
+    "type": "inject",
+    "z": "819f0dcb51428c8b",
+    "name": "test",
+    "props": [
+      {
+        "p": "payload",
+        "v": "Test notifica",
+        "vt": "str"
+      },
+      {
+        "p": "topic",
+        "v": "",
+        "vt": "str"
+      }
+    ],
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "topic": "",
+    "payload": "Test notifica",
+    "payloadType": "str",
+    "x": 110,
+    "y": 320,
+    "wires": [["7582ebae090935b0"]]
+  },
+  {
+    "id": "7582ebae090935b0",
+    "type": "function",
+    "z": "819f0dcb51428c8b",
+    "name": "Long email",
+    "func": "msg.topic=\"Example Blynk Mail\";\nmsg.payload=\"0123456789 0123456789 0123456789 0123456789 0123456789 0123456789 0123456789 0123456789 \"\nreturn msg;",
+    "outputs": 1,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 270,
+    "y": 320,
+    "wires": [["67a8bfab923e053a", "6a259e382c42c0bd"]]
+  },
+  {
+    "id": "ce8e1220ae205f30",
+    "type": "inject",
+    "z": "819f0dcb51428c8b",
+    "name": "test",
+    "props": [
+      {
+        "p": "payload",
+        "v": "Test notifica",
+        "vt": "str"
+      },
+      {
+        "p": "topic",
+        "v": "",
+        "vt": "str"
+      }
+    ],
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "topic": "",
+    "payload": "Test notifica",
+    "payloadType": "str",
+    "x": 110,
+    "y": 380,
+    "wires": [["9a4dd96cf5f887b2"]]
+  },
+  {
+    "id": "9a4dd96cf5f887b2",
+    "type": "function",
+    "z": "819f0dcb51428c8b",
+    "name": "Short email",
+    "func": "num = global.get('testnum');\nif(num === undefined) num = 1;\nelse num++;\nglobal.set('testnum', num);\nmsg.payload=\"Messaggio \"+num;\nmsg.topic=\"Example Blynk Mail \"+num;\nreturn msg;",
+    "outputs": 1,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 270,
+    "y": 380,
+    "wires": [["67a8bfab923e053a", "6a259e382c42c0bd"]]
+  },
+  {
+    "id": "67a8bfab923e053a",
+    "type": "debug",
+    "z": "819f0dcb51428c8b",
+    "name": "",
+    "active": true,
+    "console": "false",
+    "complete": "false",
+    "x": 490,
+    "y": 320,
+    "wires": []
+  },
+  {
+    "id": "e47b6e5548b3a0f3",
+    "type": "comment",
+    "z": "819f0dcb51428c8b",
+    "name": "Example email widget",
+    "info": "",
+    "x": 180,
+    "y": 260,
+    "wires": []
+  },
+  {
+    "id": "8c06e199.b82b28",
+    "type": "blynk-ws-client",
+    "name": "Blynk Cloud 1",
+    "path": "ws://blynk-cloud.com/websockets",
+    "key": "your-auth-token-here",
+    "dbg_all": true,
+    "dbg_read": false,
+    "dbg_write": false,
+    "dbg_notify": false,
+    "dbg_mail": false,
+    "dbg_prop": false,
+    "dbg_sync": false,
+    "dbg_bridge": false,
+    "dbg_low": true,
+    "dbg_pins": "",
+    "multi_cmd": true,
+    "proxy_type": "no",
+    "proxy_url": "",
+    "enabled": true
+  }
+]

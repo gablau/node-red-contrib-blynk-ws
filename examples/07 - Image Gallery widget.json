@@ -1,0 +1,869 @@
+[
+  {
+    "id": "836bf13d0a1bf5cd",
+    "type": "tab",
+    "label": "07 - Image Gallery widget",
+    "disabled": false,
+    "info": "",
+    "env": []
+  },
+  {
+    "id": "a42ac8050cf9eea1",
+    "type": "blynk-ws-image-gallery",
+    "z": "836bf13d0a1bf5cd",
+    "name": "",
+    "pin": "10",
+    "onlabel": "ON",
+    "offlabel": "OFF",
+    "oncolor": "#000000",
+    "onbackcolor": "#ffffff",
+    "offcolor": "#ffffff",
+    "offbackcolor": "#000000",
+    "client": "8c06e199.b82b28",
+    "x": 710,
+    "y": 160,
+    "wires": []
+  },
+  {
+    "id": "f95b77142145ea90",
+    "type": "change",
+    "z": "836bf13d0a1bf5cd",
+    "name": "img 1",
+    "rules": [
+      {
+        "t": "set",
+        "p": "payload",
+        "pt": "msg",
+        "to": "1",
+        "tot": "str"
+      }
+    ],
+    "action": "",
+    "property": "",
+    "from": "",
+    "to": "",
+    "reg": false,
+    "x": 230,
+    "y": 700,
+    "wires": [["a42ac8050cf9eea1"]]
+  },
+  {
+    "id": "05b9a8291b30297e",
+    "type": "change",
+    "z": "836bf13d0a1bf5cd",
+    "name": "img 2",
+    "rules": [
+      {
+        "t": "set",
+        "p": "payload",
+        "pt": "msg",
+        "to": "2",
+        "tot": "str"
+      }
+    ],
+    "action": "",
+    "property": "",
+    "from": "",
+    "to": "",
+    "reg": false,
+    "x": 230,
+    "y": 740,
+    "wires": [["a42ac8050cf9eea1"]]
+  },
+  {
+    "id": "46d3f1375134a625",
+    "type": "change",
+    "z": "836bf13d0a1bf5cd",
+    "name": "img 3",
+    "rules": [
+      {
+        "t": "set",
+        "p": "payload",
+        "pt": "msg",
+        "to": "3",
+        "tot": "str"
+      }
+    ],
+    "action": "",
+    "property": "",
+    "from": "",
+    "to": "",
+    "reg": false,
+    "x": 230,
+    "y": 780,
+    "wires": [["a42ac8050cf9eea1"]]
+  },
+  {
+    "id": "e77823872b4654f0",
+    "type": "inject",
+    "z": "836bf13d0a1bf5cd",
+    "name": "x",
+    "props": [
+      {
+        "p": "payload",
+        "v": "true",
+        "vt": "bool"
+      },
+      {
+        "p": "topic",
+        "v": "",
+        "vt": "str"
+      }
+    ],
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "topic": "",
+    "payload": "true",
+    "payloadType": "bool",
+    "x": 110,
+    "y": 700,
+    "wires": [["f95b77142145ea90"]]
+  },
+  {
+    "id": "e05b4fae9b2668e6",
+    "type": "inject",
+    "z": "836bf13d0a1bf5cd",
+    "name": "x",
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "topic": "",
+    "payload": "true",
+    "payloadType": "bool",
+    "x": 110,
+    "y": 740,
+    "wires": [["05b9a8291b30297e"]]
+  },
+  {
+    "id": "bdcd72be96720866",
+    "type": "inject",
+    "z": "836bf13d0a1bf5cd",
+    "name": "x",
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "topic": "",
+    "payload": "true",
+    "payloadType": "bool",
+    "x": 110,
+    "y": 780,
+    "wires": [["46d3f1375134a625"]]
+  },
+  {
+    "id": "a1f9847aa58d8999",
+    "type": "change",
+    "z": "836bf13d0a1bf5cd",
+    "name": "op 10",
+    "rules": [
+      {
+        "t": "set",
+        "p": "topic",
+        "pt": "msg",
+        "to": "write-property",
+        "tot": "str"
+      },
+      {
+        "t": "set",
+        "p": "opacity",
+        "pt": "msg",
+        "to": "10",
+        "tot": "num"
+      }
+    ],
+    "action": "",
+    "property": "",
+    "from": "",
+    "to": "",
+    "reg": false,
+    "x": 230,
+    "y": 120,
+    "wires": [["a42ac8050cf9eea1"]]
+  },
+  {
+    "id": "97850d0f5d523078",
+    "type": "inject",
+    "z": "836bf13d0a1bf5cd",
+    "name": "x",
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "topic": "",
+    "payload": "true",
+    "payloadType": "bool",
+    "x": 110,
+    "y": 120,
+    "wires": [["a1f9847aa58d8999"]]
+  },
+  {
+    "id": "92ccb2cec990762d",
+    "type": "change",
+    "z": "836bf13d0a1bf5cd",
+    "name": "op 50",
+    "rules": [
+      {
+        "t": "set",
+        "p": "topic",
+        "pt": "msg",
+        "to": "write-property",
+        "tot": "str"
+      },
+      {
+        "t": "set",
+        "p": "opacity",
+        "pt": "msg",
+        "to": "50",
+        "tot": "num"
+      }
+    ],
+    "action": "",
+    "property": "",
+    "from": "",
+    "to": "",
+    "reg": false,
+    "x": 230,
+    "y": 160,
+    "wires": [["a42ac8050cf9eea1"]]
+  },
+  {
+    "id": "125b3c3929ee8080",
+    "type": "inject",
+    "z": "836bf13d0a1bf5cd",
+    "name": "x",
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "topic": "",
+    "payload": "true",
+    "payloadType": "bool",
+    "x": 110,
+    "y": 160,
+    "wires": [["92ccb2cec990762d"]]
+  },
+  {
+    "id": "b597dde2fbd86ccd",
+    "type": "change",
+    "z": "836bf13d0a1bf5cd",
+    "name": "op 100",
+    "rules": [
+      {
+        "t": "set",
+        "p": "topic",
+        "pt": "msg",
+        "to": "write-property",
+        "tot": "str"
+      },
+      {
+        "t": "set",
+        "p": "opacity",
+        "pt": "msg",
+        "to": "100",
+        "tot": "num"
+      }
+    ],
+    "action": "",
+    "property": "",
+    "from": "",
+    "to": "",
+    "reg": false,
+    "x": 240,
+    "y": 200,
+    "wires": [["a42ac8050cf9eea1"]]
+  },
+  {
+    "id": "e0ddab319f49f09b",
+    "type": "inject",
+    "z": "836bf13d0a1bf5cd",
+    "name": "x",
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "topic": "",
+    "payload": "true",
+    "payloadType": "bool",
+    "x": 110,
+    "y": 200,
+    "wires": [["b597dde2fbd86ccd"]]
+  },
+  {
+    "id": "f1ead3a29a3d41ed",
+    "type": "change",
+    "z": "836bf13d0a1bf5cd",
+    "name": "sc 10",
+    "rules": [
+      {
+        "t": "set",
+        "p": "topic",
+        "pt": "msg",
+        "to": "write-property",
+        "tot": "str"
+      },
+      {
+        "t": "set",
+        "p": "scale",
+        "pt": "msg",
+        "to": "10",
+        "tot": "num"
+      }
+    ],
+    "action": "",
+    "property": "",
+    "from": "",
+    "to": "",
+    "reg": false,
+    "x": 230,
+    "y": 300,
+    "wires": [["a42ac8050cf9eea1"]]
+  },
+  {
+    "id": "f870cc63125e15a9",
+    "type": "inject",
+    "z": "836bf13d0a1bf5cd",
+    "name": "x",
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "topic": "",
+    "payload": "true",
+    "payloadType": "bool",
+    "x": 110,
+    "y": 300,
+    "wires": [["f1ead3a29a3d41ed"]]
+  },
+  {
+    "id": "d0b0f1521bc88b4f",
+    "type": "change",
+    "z": "836bf13d0a1bf5cd",
+    "name": "sc 50",
+    "rules": [
+      {
+        "t": "set",
+        "p": "topic",
+        "pt": "msg",
+        "to": "write-property",
+        "tot": "str"
+      },
+      {
+        "t": "set",
+        "p": "scale",
+        "pt": "msg",
+        "to": "50",
+        "tot": "num"
+      }
+    ],
+    "action": "",
+    "property": "",
+    "from": "",
+    "to": "",
+    "reg": false,
+    "x": 230,
+    "y": 340,
+    "wires": [["a42ac8050cf9eea1"]]
+  },
+  {
+    "id": "40088104cc4ea887",
+    "type": "inject",
+    "z": "836bf13d0a1bf5cd",
+    "name": "x",
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "topic": "",
+    "payload": "true",
+    "payloadType": "bool",
+    "x": 110,
+    "y": 340,
+    "wires": [["d0b0f1521bc88b4f"]]
+  },
+  {
+    "id": "782ab17c417436c3",
+    "type": "change",
+    "z": "836bf13d0a1bf5cd",
+    "name": "sc 100",
+    "rules": [
+      {
+        "t": "set",
+        "p": "topic",
+        "pt": "msg",
+        "to": "write-property",
+        "tot": "str"
+      },
+      {
+        "t": "set",
+        "p": "scale",
+        "pt": "msg",
+        "to": "100",
+        "tot": "num"
+      }
+    ],
+    "action": "",
+    "property": "",
+    "from": "",
+    "to": "",
+    "reg": false,
+    "x": 230,
+    "y": 380,
+    "wires": [["a42ac8050cf9eea1"]]
+  },
+  {
+    "id": "3a5437bb4d0d1413",
+    "type": "inject",
+    "z": "836bf13d0a1bf5cd",
+    "name": "x",
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "topic": "",
+    "payload": "true",
+    "payloadType": "bool",
+    "x": 110,
+    "y": 380,
+    "wires": [["782ab17c417436c3"]]
+  },
+  {
+    "id": "a3dfe8ce14b61318",
+    "type": "change",
+    "z": "836bf13d0a1bf5cd",
+    "name": "rt 0",
+    "rules": [
+      {
+        "t": "set",
+        "p": "topic",
+        "pt": "msg",
+        "to": "write-property",
+        "tot": "str"
+      },
+      {
+        "t": "set",
+        "p": "rotation",
+        "pt": "msg",
+        "to": "0",
+        "tot": "num"
+      }
+    ],
+    "action": "",
+    "property": "",
+    "from": "",
+    "to": "",
+    "reg": false,
+    "x": 230,
+    "y": 480,
+    "wires": [["a42ac8050cf9eea1"]]
+  },
+  {
+    "id": "cecccd97b05ce618",
+    "type": "inject",
+    "z": "836bf13d0a1bf5cd",
+    "name": "x",
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "topic": "",
+    "payload": "true",
+    "payloadType": "bool",
+    "x": 110,
+    "y": 480,
+    "wires": [["a3dfe8ce14b61318"]]
+  },
+  {
+    "id": "8b01bad981334c17",
+    "type": "change",
+    "z": "836bf13d0a1bf5cd",
+    "name": "rt 90",
+    "rules": [
+      {
+        "t": "set",
+        "p": "topic",
+        "pt": "msg",
+        "to": "write-property",
+        "tot": "str"
+      },
+      {
+        "t": "set",
+        "p": "rotation",
+        "pt": "msg",
+        "to": "90",
+        "tot": "num"
+      }
+    ],
+    "action": "",
+    "property": "",
+    "from": "",
+    "to": "",
+    "reg": false,
+    "x": 230,
+    "y": 520,
+    "wires": [["a42ac8050cf9eea1"]]
+  },
+  {
+    "id": "6885b250bb756a5a",
+    "type": "inject",
+    "z": "836bf13d0a1bf5cd",
+    "name": "x",
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "topic": "",
+    "payload": "true",
+    "payloadType": "bool",
+    "x": 110,
+    "y": 520,
+    "wires": [["8b01bad981334c17"]]
+  },
+  {
+    "id": "27c1d04c25f7ed4a",
+    "type": "change",
+    "z": "836bf13d0a1bf5cd",
+    "name": "rt 180",
+    "rules": [
+      {
+        "t": "set",
+        "p": "topic",
+        "pt": "msg",
+        "to": "write-property",
+        "tot": "str"
+      },
+      {
+        "t": "set",
+        "p": "rotation",
+        "pt": "msg",
+        "to": "180",
+        "tot": "num"
+      }
+    ],
+    "action": "",
+    "property": "",
+    "from": "",
+    "to": "",
+    "reg": false,
+    "x": 230,
+    "y": 560,
+    "wires": [["a42ac8050cf9eea1"]]
+  },
+  {
+    "id": "0a2c8e79b3c18df1",
+    "type": "inject",
+    "z": "836bf13d0a1bf5cd",
+    "name": "x",
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "topic": "",
+    "payload": "true",
+    "payloadType": "bool",
+    "x": 110,
+    "y": 560,
+    "wires": [["27c1d04c25f7ed4a"]]
+  },
+  {
+    "id": "93dcc2f25ae3caaf",
+    "type": "change",
+    "z": "836bf13d0a1bf5cd",
+    "name": "rt 270",
+    "rules": [
+      {
+        "t": "set",
+        "p": "topic",
+        "pt": "msg",
+        "to": "write-property",
+        "tot": "str"
+      },
+      {
+        "t": "set",
+        "p": "rotation",
+        "pt": "msg",
+        "to": "270",
+        "tot": "num"
+      }
+    ],
+    "action": "",
+    "property": "",
+    "from": "",
+    "to": "",
+    "reg": false,
+    "x": 230,
+    "y": 600,
+    "wires": [["a42ac8050cf9eea1"]]
+  },
+  {
+    "id": "22adfdf94e3e9945",
+    "type": "inject",
+    "z": "836bf13d0a1bf5cd",
+    "name": "x",
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "topic": "",
+    "payload": "true",
+    "payloadType": "bool",
+    "x": 110,
+    "y": 600,
+    "wires": [["93dcc2f25ae3caaf"]]
+  },
+  {
+    "id": "7ed82b51f227d006",
+    "type": "function",
+    "z": "836bf13d0a1bf5cd",
+    "name": "set 4 image urls",
+    "func": "msg = {}\nmsg.topic = \"write-property\";\nmsg.urls=[\n    \"https://www.iconsdb.com/icons/preview/white/test-tube-2-xxl.png\",\n    \"https://www.iconsdb.com/icons/preview/yellow/test-tube-2-xxl.png\",\n    \"https://www.iconsdb.com/icons/preview/blue/test-tube-2-xxl.png\",\n    \"https://www.iconsdb.com/icons/preview/red/test-tube-2-xxl.png\",\n    ]\nreturn msg;",
+    "outputs": 1,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 820,
+    "y": 300,
+    "wires": [["a42ac8050cf9eea1"]]
+  },
+  {
+    "id": "624bbc7df2ee0b3a",
+    "type": "inject",
+    "z": "836bf13d0a1bf5cd",
+    "name": "x",
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "topic": "",
+    "payload": "true",
+    "payloadType": "bool",
+    "x": 650,
+    "y": 300,
+    "wires": [["7ed82b51f227d006"]]
+  },
+  {
+    "id": "bcf0df24f5f22711",
+    "type": "function",
+    "z": "836bf13d0a1bf5cd",
+    "name": "set image url of id 1",
+    "func": "msg = {}\nmsg.topic = \"write-property\";\nmsg.imgid=1\nmsg.url=\"https://www.iconsdb.com/icons/preview/green/test-tube-2-xxl.png\";\nreturn msg;",
+    "outputs": 1,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 840,
+    "y": 340,
+    "wires": [["a42ac8050cf9eea1"]]
+  },
+  {
+    "id": "f1bd16cdd259de43",
+    "type": "inject",
+    "z": "836bf13d0a1bf5cd",
+    "name": "x",
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "topic": "",
+    "payload": "true",
+    "payloadType": "bool",
+    "x": 650,
+    "y": 340,
+    "wires": [["bcf0df24f5f22711"]]
+  },
+  {
+    "id": "dc9f2b446f64036e",
+    "type": "function",
+    "z": "836bf13d0a1bf5cd",
+    "name": "set image url of id 3",
+    "func": "msg = {}\nmsg.topic = \"write-property\";\nmsg.payload='';\nmsg.imgid=3\nmsg.url=\"https://www.iconsdb.com/icons/preview/orange/test-tube-2-xxl.png\";\nreturn msg;",
+    "outputs": 1,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 840,
+    "y": 380,
+    "wires": [["a42ac8050cf9eea1"]]
+  },
+  {
+    "id": "45dd727e010ed64a",
+    "type": "inject",
+    "z": "836bf13d0a1bf5cd",
+    "name": "x",
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "topic": "",
+    "payload": "true",
+    "payloadType": "bool",
+    "x": 650,
+    "y": 380,
+    "wires": [["dc9f2b446f64036e"]]
+  },
+  {
+    "id": "31a3a611fe793c3a",
+    "type": "blynk-ws-out-set-property",
+    "z": "836bf13d0a1bf5cd",
+    "name": "",
+    "pin": "10",
+    "pinmode": 0,
+    "prop": "bycode",
+    "client": "8c06e199.b82b28",
+    "x": 940,
+    "y": 540,
+    "wires": []
+  },
+  {
+    "id": "7dd97104d9c1c4e5",
+    "type": "function",
+    "z": "836bf13d0a1bf5cd",
+    "name": "set url 12",
+    "func": "msg = {}\nmsg.topic = \"write-property\";\nmsg.payload='';\nmsg.imgid=5\nmsg.url=\"https://www.iconsdb.com/icons/preview/orange/test-tube-2-xxl.png\";\nreturn msg;",
+    "outputs": 1,
+    "noerr": 0,
+    "x": 720,
+    "y": 600,
+    "wires": [["31a3a611fe793c3a"]]
+  },
+  {
+    "id": "ad5cc22ec8f9d9dc",
+    "type": "inject",
+    "z": "836bf13d0a1bf5cd",
+    "name": "x",
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "topic": "",
+    "payload": "true",
+    "payloadType": "bool",
+    "x": 580,
+    "y": 600,
+    "wires": [["7dd97104d9c1c4e5"]]
+  },
+  {
+    "id": "cd89c85863e0b2c5",
+    "type": "function",
+    "z": "836bf13d0a1bf5cd",
+    "name": "set urls",
+    "func": "msg = {}\nmsg.topic = \"bycode\";\nmsg.payload = \"gg\";\nmsg.urls=[\n    \"https://www.iconsdb.com/icons/preview/white/test-tube-2-xxl.png\",\n    \"https://www.iconsdb.com/icons/preview/yellow/test-tube-2-xxl.png\",\n    \"https://www.iconsdb.com/icons/preview/blue/test-tube-2-xxl.png\",\n    \"https://www.iconsdb.com/icons/preview/red/test-tube-2-xxl.png\",\n    \"https://www.iconsdb.com/icons/preview/white/test-tube-2-xxl.png\",\n    \"https://www.iconsdb.com/icons/preview/yellow/test-tube-2-xxl.png\",\n    \"https://www.iconsdb.com/icons/preview/blue/test-tube-2-xxl.png\",\n    \"https://www.iconsdb.com/icons/preview/red/test-tube-2-xxl.png\",\n    \"https://www.iconsdb.com/icons/preview/white/test-tube-2-xxl.png\",\n    \"https://www.iconsdb.com/icons/preview/yellow/test-tube-2-xxl.png\",\n    \"https://www.iconsdb.com/icons/preview/blue/test-tube-2-xxl.png\",\n    \"https://www.iconsdb.com/icons/preview/red/test-tube-2-xxl.png\",\n    ]\nreturn msg;",
+    "outputs": 1,
+    "noerr": 0,
+    "x": 720,
+    "y": 540,
+    "wires": [["31a3a611fe793c3a"]]
+  },
+  {
+    "id": "ca1a39d08dd4d656",
+    "type": "inject",
+    "z": "836bf13d0a1bf5cd",
+    "name": "x",
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "topic": "",
+    "payload": "true",
+    "payloadType": "bool",
+    "x": 580,
+    "y": 540,
+    "wires": [["cd89c85863e0b2c5"]]
+  },
+  {
+    "id": "74fb08d250bf3af1",
+    "type": "comment",
+    "z": "836bf13d0a1bf5cd",
+    "name": "Example Image Gallery widget",
+    "info": "",
+    "x": 500,
+    "y": 40,
+    "wires": []
+  },
+  {
+    "id": "09449db47009d5ad",
+    "type": "comment",
+    "z": "836bf13d0a1bf5cd",
+    "name": "Change opacity %",
+    "info": "",
+    "x": 130,
+    "y": 80,
+    "wires": []
+  },
+  {
+    "id": "4770de52b95fdb9e",
+    "type": "comment",
+    "z": "836bf13d0a1bf5cd",
+    "name": "Change scale %",
+    "info": "",
+    "x": 120,
+    "y": 260,
+    "wires": []
+  },
+  {
+    "id": "deaf617b51726c41",
+    "type": "comment",
+    "z": "836bf13d0a1bf5cd",
+    "name": "Rotate deg",
+    "info": "",
+    "x": 100,
+    "y": 440,
+    "wires": []
+  },
+  {
+    "id": "eb33875a79063f44",
+    "type": "comment",
+    "z": "836bf13d0a1bf5cd",
+    "name": "Change image to display",
+    "info": "",
+    "x": 150,
+    "y": 660,
+    "wires": []
+  },
+  {
+    "id": "356f1143901305f9",
+    "type": "comment",
+    "z": "836bf13d0a1bf5cd",
+    "name": "Set image urls ",
+    "info": "",
+    "x": 650,
+    "y": 260,
+    "wires": []
+  },
+  {
+    "id": "530ae0b021be422b",
+    "type": "comment",
+    "z": "836bf13d0a1bf5cd",
+    "name": "Set image urls alternative - Property node ",
+    "info": "",
+    "x": 680,
+    "y": 480,
+    "wires": []
+  },
+  {
+    "id": "8c06e199.b82b28",
+    "type": "blynk-ws-client",
+    "name": "Blynk Cloud 1",
+    "path": "ws://blynk-cloud.com/websockets",
+    "key": "your-auth-token-here",
+    "dbg_all": true,
+    "dbg_read": false,
+    "dbg_write": false,
+    "dbg_notify": false,
+    "dbg_mail": false,
+    "dbg_prop": false,
+    "dbg_sync": false,
+    "dbg_bridge": false,
+    "dbg_low": true,
+    "dbg_pins": "",
+    "multi_cmd": true,
+    "proxy_type": "no",
+    "proxy_url": "",
+    "enabled": true
+  }
+]
