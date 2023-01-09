@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [1.0.8] - 2023-01-09
+
+### Changed
+
+- Increased minimum Node-red version to 2.0.0
+- Increased minimum Node version to 12.22.12
+- Updated dependencies for security reasons
+- Remove info of public server: blynk-cloud.com
+- Returns warning if trying to connect to old cloud server
+- Converting the examples to local server
+- Updated docs link to new address [https://gablau.dev/blynk-legacy-docs/](https://gablau.dev/blynk-legacy-docs/)
+
+
 ## [1.0.7] - 2022-02-01
 
 ### Changed
@@ -290,7 +303,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Heartbeat once 10 seconds
 - Max virtual pin allowed 128
 
-[unreleased]: https://github.com/gablau/node-red-contrib-blynk-ws/compare/1.0.7...HEAD
+[unreleased]: https://github.com/gablau/node-red-contrib-blynk-ws/compare/1.0.8...HEAD
+[1.0.8]: https://github.com/gablau/node-red-contrib-blynk-ws/compare/1.0.7...1.0.8
 [1.0.7]: https://github.com/gablau/node-red-contrib-blynk-ws/compare/1.0.6...1.0.7
 [1.0.6]: https://github.com/gablau/node-red-contrib-blynk-ws/compare/1.0.5...1.0.6
 [1.0.5]: https://github.com/gablau/node-red-contrib-blynk-ws/compare/1.0.4...1.0.5

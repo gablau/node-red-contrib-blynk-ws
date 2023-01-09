@@ -1,4 +1,4 @@
-const blynkUtil = require('../libs/blynk-util.js');
+const blynkUtil = require('../libs/blynk-util');
 
 module.exports = (RED) => {
   function BlynkImageGalleryNode(n) {

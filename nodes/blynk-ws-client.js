@@ -7,14 +7,14 @@ const compVer = require('compare-versions');
 
 
 // blynk util
-const blynkUtil = require('../libs/blynk-util.js');
+const blynkUtil = require('../libs/blynk-util');
 
 // blynk lib
-const blynkLib = require('../libs/blynk-lib.js');
+const blynkLib = require('../libs/blynk-lib');
 
 module.exports = (RED) => {
-  const LIBRARY_VERSION = '1.0.6'; // node-red lib version
-  const LIBRARY_DATE = '2021-09-06'; // node-red lib date
+  const LIBRARY_VERSION = '1.0.8'; // node-red lib version
+  const LIBRARY_DATE = '2023-01-09'; // node-red lib date
 
   const RECONNECT_TIMEOUT_SECONDS = 5; // number of seconds for reconnection when disconnected or socket error
 
@@ -118,6 +118,9 @@ module.exports = (RED) => {
       node.logged = false;
       let wsArgs = {};
       let wsLogSecure = '';
+      if (node.path.indexOf('blynk-cloud.com')!== -1) {
+        node.warn(`Warning: You are trying to connect to the Blynk Cloud Server (blynk-cloud.com) which has not been shut down permanently as of year end 2022`);
+      }
       if (node.path.startsWith('wss://')) {
         wsArgs = {
           rejectUnauthorized: false,

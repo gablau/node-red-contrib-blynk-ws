@@ -1,13 +1,13 @@
 // blynk enum
 const srs = require('secure-random-string');
 const utf8 = require('utf8');
-const blynkEnum = require('./blynk-enum.js');
+const blynkEnum = require('./blynk-enum');
 
 const MsgStatus = blynkEnum.MsgStatus;
 const MsgType = blynkEnum.MsgType;
 
 // blynk util
-const blynkUtil = require('./blynk-util.js');
+const blynkUtil = require('./blynk-util');
 
 const messageToDebugString = blynkUtil.messageToDebugString;
 const commandToDebugString = blynkUtil.commandToDebugString;
@@ -324,7 +324,7 @@ const syncAll = function syncAll(msgkey) {
   }
   const msg = this.blynkCmd(MsgType.HW_SYNC);
   if (this.multi_cmd && msgkey !== undefined) {
-    this.msgList[msgkey] = this.msgList[msgkey] + msg;
+    this.msgList[msgkey] = this.msgList[msgkey] + msg; // eslint-disable-line operator-assignment
   } else this.sendMsg(msg);
 };
 
@@ -335,7 +335,7 @@ const syncVirtual = function syncVirtual(vpin, msgkey) {
   }
   const msg = this.blynkCmd(MsgType.HW_SYNC, ['vr', vpin]);
   if (this.multi_cmd && msgkey !== undefined) {
-    this.msgList[msgkey] = this.msgList[msgkey] + msg;
+    this.msgList[msgkey] = this.msgList[msgkey] + msg; // eslint-disable-line operator-assignment
   } else this.sendMsg(msg);
 };
 
@@ -346,7 +346,7 @@ const virtualWrite = function virtualWrite(vpin, val, msgkey) {
   }
   const msg = this.blynkCmd(MsgType.HW, ['vw', vpin].concat(val));
   if (this.multi_cmd && msgkey !== undefined) {
-    this.msgList[msgkey] = this.msgList[msgkey] + msg;
+    this.msgList[msgkey] = this.msgList[msgkey] + msg; // eslint-disable-line operator-assignment
   } else this.sendMsg(msg);
 };
 
@@ -357,7 +357,7 @@ const setProperty = function setProperty(vpin, prop, val, msgkey) {
   }
   const msg = this.blynkCmd(MsgType.PROPERTY, [vpin, prop].concat(val));
   if (this.multi_cmd && msgkey !== undefined) {
-    this.msgList[msgkey] = this.msgList[msgkey] + msg;
+    this.msgList[msgkey] = this.msgList[msgkey] + msg; // eslint-disable-line operator-assignment
   } else this.sendMsg(msg);
 };
 

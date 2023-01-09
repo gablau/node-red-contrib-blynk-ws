@@ -187,8 +187,8 @@
   {
     "id": "8c06e199.b82b28",
     "type": "blynk-ws-client",
-    "name": "Blynk Cloud 1",
-    "path": "ws://blynk-cloud.com/websockets",
+    "name": "Blynk Local Server 1",
+    "path": "ws://your-local-server.ip/websockets",
     "key": "your-auth-token-here",
     "dbg_all": true,
     "dbg_read": false,

@@ -130,7 +130,7 @@
         <div id="blynk-ws-client-tab-connection" style="display:none">
             <div class="form-row">
                 <label for="node-config-input-path"><i class="fa fa-bookmark"></i> Url</label>
-                <input type="text" id="node-config-input-path" placeholder="ex. ws://blynk-cloud.com/websockets">
+                <input type="text" id="node-config-input-path" placeholder="ex. wss://&lt;your-local-ip&gt;:9443/websockets">
             </div>
             <div class="form-row">
                 <label for="node-config-input-key"><i class="fa fa-key"></i> Auth Token</label>
@@ -148,12 +148,8 @@
                 </div>
             </div>
             <div class="form-tips">
-                <p>The url of Blynk Cloud Server is:<br>
-                <b>ws://blynk-cloud.com/websockets</b><br>
-                <s>or with secure SSL:<br>
-                <b>wss://blynk-cloud.com/websockets</b></s><br>
                 <span style="color:#ff0000;font-weight:bold">
-                  * Attention: from 2021-03-16, use only the non-SSL connection, the certificate on the server has expired
+                  * Warning: as of January 1, 2023 it is no longer possible to use the Blynk Cloud Server (blynk-cloud.com)
                 </span><br>
             </div>
             <div class="form-tips">
@@ -194,7 +190,7 @@
             </div>
             <div class="form-row">
                 <label for="node-config-input-multi_cmd"><i class="fa fa-cog"></i> <span>Protocol</span></label>
-                <input type="checkbox" id="node-config-input-multi_cmd" value="all" style="width: auto; vertical-align: top;"> Use multiple command <span style="font-size: 80%;">(blynk cloud or local server >= 0.34.0)</span></input>
+                <input type="checkbox" id="node-config-input-multi_cmd" value="all" style="width: auto; vertical-align: top;"> Use multiple command <span style="font-size: 80%;">(local server >= 0.34.0)</span></input>
             </div>
         </div>
     </div>
@@ -203,12 +199,9 @@
 <script type="text/x-red" data-help-name="blynk-ws-client">
    <p>This configuration node connects to a Blynk Server via WebSocket on the specified URL.
    <br /><br />
-      To connect to Blynk Cloud Server use this url:<br>
-      Websocket: <b>ws://blynk-cloud.com/websockets</b><br>
-      <s>Websocket SSL: <b>wss://blynk-cloud.com/websockets</b></s><br>
-        <span style="color:#ff0000;font-weight:bold">
-          * Attention: from 2021-03-16, use only the non-SSL connection, the certificate on the server has expired
-        </span><br><br>
+   <span style="color:#ff0000;font-weight:bold">
+    * Warning: as of January 1, 2023 it is no longer possible to use the Blynk Cloud Server (blynk-cloud.com)
+  </span><br><br>
   To connect to Local Server use this url:<br>
       Websocket: <b>ws://&lt;your-local-ip&gt;:8080/websockets</b><br>
       Websocket SSL: <b>wss://&lt;your-local-ip&gt;:9443/websockets</b><br><br>
@@ -218,7 +211,7 @@
 
     <p class="form-tips">
         Official documentation: 
-        <a href="http://docs.blynk.cc/#getting-started-getting-started-with-the-blynk-app-4-auth-token">Auth Token</a>
+        <a href="https://gablau.dev/blynk-legacy-docs/#getting-started-getting-started-with-the-blynk-app-4-auth-token">Auth Token</a>
     <p>
 </script>
 

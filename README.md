@@ -14,9 +14,9 @@ __________
 ## Warning: this library is for old Blynk [or Blynk 1.0 or Legacy] for the new Blynk Iot Platform go to the new library repository: [node-red-contrib-blynk-iot](https://github.com/gablau/node-red-contrib-blynk-iot) 
 ---
 ## Node-RED blynk Websockets version
-This library supports both SSL (wss://) and non secure (ws://) connection to local server and Blynk cloud server.
+This library supports both SSL (wss://) and non secure (ws://) connection to local server ~~and Blynk cloud server~~.
 For local server, wss:// works only if you ve got a certificate installed.
-For Blynk cloud server, you can use **ws://blynk-cloud.com/websockets** or with SSL **wss://blynk-cloud.com/websockets** as the server url.
+~~For Blynk cloud server, you can use **ws://blynk-cloud.com/websockets** or with SSL **wss://blynk-cloud.com/websockets** as the server url.~~
 
 If you installed Node Red globally use this command to install
 ```npm install --global node-red-contrib-blynk-ws```

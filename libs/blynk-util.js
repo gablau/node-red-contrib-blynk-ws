@@ -1,6 +1,6 @@
 /* blynk helper function */
 const utf8 = require('utf8');
-const blynkEnum = require('./blynk-enum.js');
+const blynkEnum = require('./blynk-enum');
 
 const { MsgStatus } = blynkEnum;
 const { MsgType } = blynkEnum;
