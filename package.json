@@ -1,6 +1,6 @@
 {
   "name": "node-red-contrib-blynk-ws",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "Node Red integration with Blynk App and Server through websockets",
   "scripts": {
     "lint": "./node_modules/.bin/eslint \"{libs,nodes}/**/*.{js,json,html}\"",
@@ -23,7 +23,7 @@
   },
   "homepage": "https://github.com/gablau/node-red-contrib-blynk-ws",
   "dependencies": {
-    "compare-versions": "^4.x.x",
+    "compare-versions": "^5.x.x",
     "https-proxy-agent": ">=5.0.0",
     "secure-random-string": ">=1.1.x",
     "utf8": "^3.0.0",
