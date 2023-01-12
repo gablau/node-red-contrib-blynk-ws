@@ -309,7 +309,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Heartbeat once 10 seconds
 - Max virtual pin allowed 128
 
-[unreleased]: https://github.com/gablau/node-red-contrib-blynk-ws/compare/1.0.8...HEAD
+[unreleased]: https://github.com/gablau/node-red-contrib-blynk-ws/compare/1.0.9...HEAD
+[1.0.9]: https://github.com/gablau/node-red-contrib-blynk-ws/compare/1.0.9...1.0.9
 [1.0.8]: https://github.com/gablau/node-red-contrib-blynk-ws/compare/1.0.7...1.0.8
 [1.0.7]: https://github.com/gablau/node-red-contrib-blynk-ws/compare/1.0.6...1.0.7
 [1.0.6]: https://github.com/gablau/node-red-contrib-blynk-ws/compare/1.0.5...1.0.6
