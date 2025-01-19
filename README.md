@@ -110,7 +110,9 @@ Check out our Examples Browser: http://examples.blynk.cc
 
 ## Documentation and other helpful links
 
-[Full Blynk Documentation](http://docs.blynk.cc/#blynk-firmware) - a complete guide on Blynk features  
+~~[Full Blynk Documentation](http://docs.blynk.cc/#blynk-firmware)~~ - ~~a complete guide on Blynk features~~ 
+
+[Full Blynk Legacy Documentation](https://gablau.dev/blynk-legacy-docs/) - a complete guide on Blynk features (forked from original repo) 
 [Community (Forum)](http://community.blynk.cc) - join a 500,000 Blynk community to ask questions and share ideas  
 [Help Center](http://help.blynk.cc) - helpful articles on various Blynk aspects  
 [Code Examples Browser](http://examples.blynk.cc) - browse examples to explore Blynk possibilities  

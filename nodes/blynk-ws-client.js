@@ -3,7 +3,7 @@ const url = require('url');
 const HttpsProxyAgent = require('https-proxy-agent');
 const fs = require('fs');
 const path = require('path');
-const { compareVersions  } = require('compare-versions');
+const { compareVersions } = require('compare-versions');
 
 
 // blynk util
@@ -13,8 +13,8 @@ const blynkUtil = require('../libs/blynk-util');
 const blynkLib = require('../libs/blynk-lib');
 
 module.exports = (RED) => {
-  const LIBRARY_VERSION = '1.0.9'; // node-red lib version
-  const LIBRARY_DATE = '2023-01-12'; // node-red lib date
+  const LIBRARY_VERSION = '1.0.10'; // node-red lib version
+  const LIBRARY_DATE = '2025-01-19'; // node-red lib date
 
   const RECONNECT_TIMEOUT_SECONDS = 5; // number of seconds for reconnection when disconnected or socket error
 
@@ -118,8 +118,9 @@ module.exports = (RED) => {
       node.logged = false;
       let wsArgs = {};
       let wsLogSecure = '';
-      if (node.path.indexOf('blynk-cloud.com')!== -1) {
-        node.warn(`Warning: You are trying to connect to the Blynk Cloud Server (blynk-cloud.com) which has not been shut down permanently as of year end 2022`);
+      if (node.path.indexOf('blynk-cloud.com') !== -1) {
+        // eslint-disable-next-line max-len
+        node.warn('Warning: You are trying to connect to the Blynk Cloud Server (blynk-cloud.com) which has not been shut down permanently as of year end 2022');
       }
       if (node.path.startsWith('wss://')) {
         wsArgs = {
@@ -141,7 +142,7 @@ module.exports = (RED) => {
 
 
         // check if node >= 8.6.4 and apply curve parameter for ssl
-        if (compareVersions (process.version, '8.6.4') >= 0) {
+        if (compareVersions(process.version, '8.6.4') >= 0) {
           wsArgs.ecdhCurve = 'auto';
         }
         wsLogSecure = 'secure ';
