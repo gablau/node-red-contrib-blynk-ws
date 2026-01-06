@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [1.0.11] - 2026-01-06
+
+### Changed
+
+- Updated dependencies
+
 ## [1.0.10] - 2025-01-19
 
 ### Changed
@@ -316,7 +322,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Heartbeat once 10 seconds
 - Max virtual pin allowed 128
 
-[unreleased]: https://github.com/gablau/node-red-contrib-blynk-ws/compare/1.0.10...HEAD
+[unreleased]: https://github.com/gablau/node-red-contrib-blynk-ws/compare/1.0.11...HEAD
+[1.0.11]: https://github.com/gablau/node-red-contrib-blynk-ws/compare/1.0.10...1.0.11
 [1.0.10]: https://github.com/gablau/node-red-contrib-blynk-ws/compare/1.0.9...1.0.10
 [1.0.9]: https://github.com/gablau/node-red-contrib-blynk-ws/compare/1.0.8...1.0.9
 [1.0.8]: https://github.com/gablau/node-red-contrib-blynk-ws/compare/1.0.7...1.0.8

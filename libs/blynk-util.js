@@ -38,7 +38,7 @@ function commandToDebugString(cmd) {
     }
   }
 
-  logdata = logdata.replace(new RegExp('\u0000', 'g'), '|'); // eslint-disable-line no-control-regex
+  logdata = logdata.replace(/\u0000/g, '|'); // eslint-disable-line no-control-regex
   logdata = utf8.decode(logdata);
   return `Cmd: ${cmd.typeString}, Id: ${cmd.msgId}, len: ${cmd.len}, data: ${JSON.stringify(logdata)}`;
 }
@@ -107,8 +107,8 @@ function messageToDebugString(msg) {
 function blynkHeader(msgType, msgId, msgLen) {
   return String.fromCharCode(
     msgType,
-    msgId >> 8, msgId & 0xFF, // eslint-disable-line no-bitwise
-    msgLen >> 8, msgLen & 0xFF, // eslint-disable-line no-bitwise
+    msgId >> 8, msgId & 0xFF, // eslint-disable-line
+    msgLen >> 8, msgLen & 0xFF, // eslint-disable-line
   );
 }
 
