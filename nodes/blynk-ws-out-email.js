@@ -9,14 +9,14 @@ module.exports = (RED) => {
     if (this.blynkClient) {
       this.blynkClient.registerGenericNode(this, 'email');
 
-      this.blynkClient.on('opened', (n) => { // eslint-disable-line no-shadow
+      this.blynkClient.on('opened', (n) => {
         node.status({
           fill: 'yellow',
           shape: 'dot',
           text: RED._('blynk-ws-out-email.status.connecting') + n,
         });
       });
-      this.blynkClient.on('connected', (n) => { // eslint-disable-line no-shadow
+      this.blynkClient.on('connected', (n) => {
         node.status({
           fill: 'green',
           shape: 'dot',

@@ -11,7 +11,7 @@ module.exports = (RED) => {
     if (this.blynkClient) {
       this.blynkClient.registerGenericNode(this, 'table');
 
-      this.blynkClient.on('opened', (n) => { // eslint-disable-line no-shadow
+      this.blynkClient.on('opened', (n) => {
         node.status({
           fill: 'yellow',
           shape: 'dot',

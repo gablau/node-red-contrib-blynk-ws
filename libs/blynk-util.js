@@ -49,8 +49,8 @@ function decodeCommand(data) {
 
   cmd.type = data.charCodeAt(0);
   cmd.typeString = getCommandByCode(cmd.type);
-  cmd.msgId = (data.charCodeAt(1) << 8) | data.charCodeAt(2); // eslint-disable-line no-bitwise
-  cmd.len = (data.charCodeAt(3) << 8) | data.charCodeAt(4); // eslint-disable-line no-bitwise
+  cmd.msgId = (data.charCodeAt(1) << 8) | data.charCodeAt(2);
+  cmd.len = (data.charCodeAt(3) << 8) | data.charCodeAt(4);
   cmd.msgLength = 5;
 
   switch (cmd.type) {
@@ -75,7 +75,7 @@ function decodeCommand(data) {
       }
       break;
     case MsgType.RSP:
-      cmd.status = (data.charCodeAt(3) << 8) | data.charCodeAt(4); // eslint-disable-line no-bitwise
+      cmd.status = (data.charCodeAt(3) << 8) | data.charCodeAt(4);
       break;
     default:
       cmd.body = data.substr(5, cmd.len);
@@ -107,8 +107,8 @@ function messageToDebugString(msg) {
 function blynkHeader(msgType, msgId, msgLen) {
   return String.fromCharCode(
     msgType,
-    msgId >> 8, msgId & 0xFF, // eslint-disable-line
-    msgLen >> 8, msgLen & 0xFF, // eslint-disable-line
+    msgId >> 8, msgId & 0xFF,
+    msgLen >> 8, msgLen & 0xFF,
   );
 }
 
@@ -116,7 +116,7 @@ function blynkHeader(msgType, msgId, msgLen) {
 
 /* ### OTHER FUNCTION ### */
 function rgbToHex(r, g, b) {
-  return `#${((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1)}`; // eslint-disable-line no-bitwise
+  return `#${((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1)}`;
 }
 
 function hexToRgb(paramHex) {
@@ -135,7 +135,7 @@ function hexToRgb(paramHex) {
 
 function checkRangeInt(i, min, max) {
   const n = parseFloat(i);
-  return (!Number.isNaN(n) && n >= min && n <= max && n == parseInt(i, 10)); // eslint-disable-line eqeqeq, max-len
+  return (!Number.isNaN(n) && n >= min && n <= max && n == parseInt(i, 10));
 }
 
 function checkByte(b) {

@@ -9,7 +9,7 @@ module.exports = (RED) => {
     this.bpin = n.bpin;
     this.key = n.key;
 
-    if (this.pinmode == 1) this.connected_label = RED._('blynk-ws-out-bridge.status.connected-dynamic'); // eslint-disable-line eqeqeq
+    if (this.pinmode == 1) this.connected_label = RED._('blynk-ws-out-bridge.status.connected-dynamic');
     else {
       const type = node.pintype.charAt(0).toUpperCase();
       this.connected_label = RED._('blynk-ws-out-bridge.status.connected-fixed') + type + this.pin;
@@ -18,7 +18,7 @@ module.exports = (RED) => {
 
     this.blynkClient = RED.nodes.getNode(this.client);
     if (this.blynkClient) {
-      this.blynkClient.on('opened', (n) => { // eslint-disable-line no-shadow
+      this.blynkClient.on('opened', (n) => {
         node.status({
           fill: 'yellow',
           shape: 'dot',
@@ -67,7 +67,7 @@ module.exports = (RED) => {
       if (msg.hasOwnProperty('payload')) {
         const payload = Array.isArray(msg.payload) ? msg.payload : RED.util.ensureString(msg.payload);
         let pin = node.pin;
-        if (node.pinmode == 1) { // eslint-disable-line eqeqeq
+        if (node.pinmode == 1) {
           if (!msg.hasOwnProperty('pin')) {
             node.warn('Bridge node - Setting "pin mode" to "dynamic" but no msg.pin found.');
             return;

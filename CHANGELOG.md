@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [1.0.12] - 2026-09-07
+
+### Changed
+
+- Updated dependencies
+- Migrated linting to ESLint 10 flat config (`eslint.config.mjs`); `eslint-config-airbnb-base` replaced by `@eslint/js`, `eslint-plugin-json` by `@eslint/json`, `eslint-plugin-html` by `@html-eslint`
+- Removed `eslint-plugin-import`, `eslint-plugin-progress` and the legacy `.eslintrc.json` / `.eslintignore`
+
+### Fixed
+
+- `lint` npm script now runs on Windows
+- Useless variable assignment in `blynk-lib.js` reported by ESLint
+
 ## [1.0.11] - 2026-01-06
 
 ### Changed

@@ -13,7 +13,7 @@ module.exports = (RED) => {
       // this.log("Register notify node - on client: " + this.blynkClient.name);
       this.blynkClient.registerGenericNode(this, 'notify');
 
-      this.blynkClient.on('opened', (n) => { // eslint-disable-line no-shadow
+      this.blynkClient.on('opened', (n) => {
         node.status({
           fill: 'yellow',
           shape: 'dot',

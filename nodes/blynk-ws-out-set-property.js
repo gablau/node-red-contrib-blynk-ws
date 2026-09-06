@@ -1,4 +1,4 @@
-/* eslint-disable brace-style */
+
 module.exports = (RED) => {
   function BlynkOutSetPropertyNode(n) {
     RED.nodes.createNode(this, n);
@@ -11,10 +11,10 @@ module.exports = (RED) => {
 
     this.blynkClient = RED.nodes.getNode(this.client);
     if (this.blynkClient) {
-      if (this.pinmode == 1) this.connected_label = RED._('blynk-ws-out-set-property.status.connected-dynamic'); // eslint-disable-line eqeqeq, max-len
+      if (this.pinmode == 1) this.connected_label = RED._('blynk-ws-out-set-property.status.connected-dynamic'); // eslint-disable-line max-len
       else this.connected_label = RED._('blynk-ws-out-set-property.status.connected-fixed') + this.pin;
 
-      this.blynkClient.on('opened', (n) => { // eslint-disable-line no-shadow
+      this.blynkClient.on('opened', (n) => {
         node.status({
           fill: 'yellow',
           shape: 'dot',
@@ -61,7 +61,7 @@ module.exports = (RED) => {
           // var subject = msg.topic ? msg.topic : payload;
           let prop = node.prop;
           let pin = node.pin;
-          if (node.pinmode == 1) { // eslint-disable-line eqeqeq
+          if (node.pinmode == 1) {
             if (!msg.hasOwnProperty('pin')) {
               node.warn(RED._('blynk-ws-out-set-property.warn.pin-dinamic'));
               return;

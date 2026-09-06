@@ -81,7 +81,7 @@ const blynkCmd = function blynkCmd(msgType, vals, forceMsgId) {
 
 const sendRsp = function sendRsp(msgType, msgId, msgLen, msgData) {
   const data = msgData || '';
-  let msg = null;
+  let msg;
   if (msgType === MsgType.RSP) {
     msg = this.blynkCmd(msgType, msgLen, msgId);
   } else {
@@ -182,9 +182,9 @@ const processCommand = function processCommand(cmd) {
         if (cmd.status !== MsgStatus.OK) {
           // handle not ok response message
           let error = false;
-          for (const k in MsgStatus) {// eslint-disable-line 
-            if (MsgStatus.hasOwnProperty(k)) { // eslint-disable-line
-              if (cmd.status == MsgStatus[k]) error = true; // eslint-disable-line
+          for (const k in MsgStatus) {
+            if (MsgStatus.hasOwnProperty(k)) {
+              if (cmd.status == MsgStatus[k]) error = true;
             }
           }
           if (error) {
@@ -324,7 +324,7 @@ const syncAll = function syncAll(msgkey) {
   }
   const msg = this.blynkCmd(MsgType.HW_SYNC);
   if (this.multi_cmd && msgkey !== undefined) {
-    this.msgList[msgkey] = this.msgList[msgkey] + msg; // eslint-disable-line operator-assignment
+    this.msgList[msgkey] = this.msgList[msgkey] + msg;
   } else this.sendMsg(msg);
 };
 
@@ -335,7 +335,7 @@ const syncVirtual = function syncVirtual(vpin, msgkey) {
   }
   const msg = this.blynkCmd(MsgType.HW_SYNC, ['vr', vpin]);
   if (this.multi_cmd && msgkey !== undefined) {
-    this.msgList[msgkey] = this.msgList[msgkey] + msg; // eslint-disable-line operator-assignment
+    this.msgList[msgkey] = this.msgList[msgkey] + msg;
   } else this.sendMsg(msg);
 };
 
@@ -346,7 +346,7 @@ const virtualWrite = function virtualWrite(vpin, val, msgkey) {
   }
   const msg = this.blynkCmd(MsgType.HW, ['vw', vpin].concat(val));
   if (this.multi_cmd && msgkey !== undefined) {
-    this.msgList[msgkey] = this.msgList[msgkey] + msg; // eslint-disable-line operator-assignment
+    this.msgList[msgkey] = this.msgList[msgkey] + msg;
   } else this.sendMsg(msg);
 };
 
@@ -357,7 +357,7 @@ const setProperty = function setProperty(vpin, prop, val, msgkey) {
   }
   const msg = this.blynkCmd(MsgType.PROPERTY, [vpin, prop].concat(val));
   if (this.multi_cmd && msgkey !== undefined) {
-    this.msgList[msgkey] = this.msgList[msgkey] + msg; // eslint-disable-line operator-assignment
+    this.msgList[msgkey] = this.msgList[msgkey] + msg;
   } else this.sendMsg(msg);
 };
 

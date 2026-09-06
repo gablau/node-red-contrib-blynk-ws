@@ -23,7 +23,7 @@ module.exports = (RED) => {
     const node = this;
     // compatibility: enable config node from old version < 0.8.0 library
     if (n.enabled === undefined) {
-      n.enabled = true; // eslint-disable-line no-param-reassign
+      n.enabled = true;
     }
     // Create a RED node
     RED.nodes.createNode(this, n);
@@ -101,7 +101,7 @@ module.exports = (RED) => {
         node.reconnect_timeout = setTimeout(() => {
           // startconn(); // eslint-disable-line no-use-before-define
           if (node.enabled) {
-            startconn(); // eslint-disable-line no-use-before-define
+            startconn();
           } else {
             node.emit('disabled');
             setTimeout(() => {
@@ -162,7 +162,7 @@ module.exports = (RED) => {
       }
 
       node.log(`Start ### ${wsLogSecure}connection: ${node.path}`);
-      const websocket = new ws(node.path, wsArgs); // eslint-disable-line new-cap
+      const websocket = new ws(node.path, wsArgs);
       node.websocket = websocket; // keep for closing
       websocket.setMaxListeners(100);
 
@@ -204,12 +204,12 @@ module.exports = (RED) => {
 
       websocket.on('close', () => {
         node.log(`Websocket closed: ${node.path}`);
-        resetReconnect(); // eslint-disable-line no-use-before-define
+        resetReconnect();
       });
 
       websocket.on('error', (err) => {
         node.error(`Websocket ${err}`);
-        resetReconnect(); // eslint-disable-line no-use-before-define
+        resetReconnect();
       });
     }
 
@@ -367,7 +367,7 @@ module.exports = (RED) => {
       this.log(`readEvent: -> cmd ${JSON.stringify(command)}`);
     }
     for (let i = 0; i < this.inputNodes.length; i++) {
-      if (this.inputNodes[i].nodeType === 'read' && (this.inputNodes[i].pin == command.pin || this.inputNodes[i].pin_all)) { // eslint-disable-line eqeqeq, max-len
+      if (this.inputNodes[i].nodeType === 'read' && (this.inputNodes[i].pin == command.pin || this.inputNodes[i].pin_all)) { // eslint-disable-line max-len
         const msg = {
           payload: command.pin,
         };

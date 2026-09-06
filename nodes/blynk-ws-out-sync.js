@@ -6,13 +6,13 @@ module.exports = (RED) => {
     this.pin = n.pin;
     this.pinmode = n.pinmode;
 
-    if (this.pinmode == 1) this.connected_label = RED._('blynk-ws-out-sync.status.connected-all'); // eslint-disable-line eqeqeq
+    if (this.pinmode == 1) this.connected_label = RED._('blynk-ws-out-sync.status.connected-all');
     else this.connected_label = RED._('blynk-ws-out-sync.status.connected-fixed') + this.pin;
 
 
     this.blynkClient = RED.nodes.getNode(this.client);
     if (this.blynkClient) {
-      this.blynkClient.on('opened', (n) => { // eslint-disable-line no-shadow
+      this.blynkClient.on('opened', (n) => {
         node.status({
           fill: 'yellow',
           shape: 'dot',
@@ -58,7 +58,7 @@ module.exports = (RED) => {
 
       if (msg.hasOwnProperty('payload')) {
         const pin = node.pin;
-        if (node.pinmode == 1) { // eslint-disable-line eqeqeq
+        if (node.pinmode == 1) {
           node.blynkClient.syncAll();
         } else {
           node.blynkClient.syncVirtual(pin);
